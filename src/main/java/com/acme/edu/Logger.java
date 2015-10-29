@@ -4,10 +4,6 @@ public class Logger {
 
     private final static String PRIMITIVE_STRING = "primitive: ";
 
-    private static void println(String message) {
-        System.out.println(message);
-    }
-
     /**
      * Logs an integer and then terminate the line.
      *
@@ -51,5 +47,9 @@ public class Logger {
      */
     public static void log(Object object) {
         println("reference: " + object);
+    }
+
+    private static void println(String message) {
+        System.out.println(message);
     }
 }
