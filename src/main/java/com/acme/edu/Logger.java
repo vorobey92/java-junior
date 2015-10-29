@@ -1,19 +1,49 @@
 package com.acme.edu;
 
 public class Logger {
-    public static void log(int message) {
-        System.out.println("primitive: " + message);
+    private final static String PRIMITIVE_STRING = "primitive: ";
+
+    private static void println(String message) {
+        System.out.println(message);
     }
 
-    public static void log(byte message) {
-        System.out.println("primitive: " + message);
+    /**
+     * Prints an integer and then terminate the line.
+     * @param i <code>int</code> to be logged.
+     */
+    public static void log(int i) {
+        println(PRIMITIVE_STRING + i);
     }
 
-    public static void log(boolean message) {
-        System.out.println("primitive: " + message);
+    /**
+     * Prints an integer and then terminate the line.
+     * @param bool <code>boolean</code> to be logged.
+     */
+    public static void log(boolean bool) {
+        println(PRIMITIVE_STRING + bool);
     }
 
-    public static void log(char message) {
-        System.out.println("char: " + message);
+    /**
+     * Prints an integer and then terminate the line.
+     * @param c <code>char</code> to be logged.
+     */
+    public static void log(char c) {
+        println("char: " + c);
+    }
+
+    /**
+     * Prints an integer and then terminate the line.
+     * @param string <code>String</code> to be logged.
+     */
+    public static void log(String string) {
+        println("string: " + string);
+    }
+
+    /**
+     * Prints an integer and then terminate the line.
+     * @param object <code>Object</code> to be logged.
+     */
+    public static void log(Object object) {
+        println("reference: " + object);
     }
 }
