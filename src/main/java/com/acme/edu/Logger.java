@@ -1,6 +1,7 @@
 package com.acme.edu;
 
 public class Logger {
+
     private final static String PRIMITIVE_STRING = "primitive: ";
 
     private static void println(String message) {
@@ -8,7 +9,8 @@ public class Logger {
     }
 
     /**
-     * Prints an integer and then terminate the line.
+     * Logs an integer and then terminate the line.
+     *
      * @param i <code>int</code> to be logged.
      */
     public static void log(int i) {
@@ -16,7 +18,8 @@ public class Logger {
     }
 
     /**
-     * Prints an integer and then terminate the line.
+     * Logs a boolean and then terminate the line.
+     *
      * @param bool <code>boolean</code> to be logged.
      */
     public static void log(boolean bool) {
@@ -24,7 +27,8 @@ public class Logger {
     }
 
     /**
-     * Prints an integer and then terminate the line.
+     * Logs a char and then terminate the line.
+     *
      * @param c <code>char</code> to be logged.
      */
     public static void log(char c) {
@@ -32,7 +36,8 @@ public class Logger {
     }
 
     /**
-     * Prints an integer and then terminate the line.
+     * Logs a String and then terminate the line.
+     *
      * @param string <code>String</code> to be logged.
      */
     public static void log(String string) {
@@ -40,7 +45,8 @@ public class Logger {
     }
 
     /**
-     * Prints an integer and then terminate the line.
+     * Logs an Object and then terminate the line.
+     *
      * @param object <code>Object</code> to be logged.
      */
     public static void log(Object object) {

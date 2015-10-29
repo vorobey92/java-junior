@@ -5,10 +5,11 @@ import com.acme.edu.SysoutCaptureAndAssertionAbility;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.*;
+import java.io.IOException;
 
 public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     private final static String SEP = System.lineSeparator();
+
     //region given
     @Before
     public void setUpSystemOut() throws IOException {
@@ -33,9 +34,9 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     @Test
     public void shouldLogByte() throws IOException {
         //region when
-        Logger.log((byte)1);
-        Logger.log((byte)0);
-        Logger.log((byte)-1);
+        Logger.log((byte) 1);
+        Logger.log((byte) 0);
+        Logger.log((byte) -1);
         //endregion
 
         //region then
