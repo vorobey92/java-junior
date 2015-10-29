@@ -2,10 +2,21 @@ package com.acme.edu;
 
 public class Logger {
     public static void log(int message) {
-        System.out.println("primitive: " + message);
+        print("primitive: " + message);
     }
 
     public static void log(byte message) {
-        System.out.println("primitive: " + message);
+        print("primitive: " + message);
+    }
+
+    public static void log(char message) {
+        print("char: " + message);
+    }
+    public static void log(boolean message) {
+        print("primitive: " + message);
+    }
+
+    private static void print(String message){
+        System.out.println(message);
     }
 }
