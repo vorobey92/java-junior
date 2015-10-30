@@ -34,7 +34,6 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         );
         //endregion
     }
-
 /*
     @Test
     public void shouldLogIntegersMatrix() throws IOException {
