@@ -58,16 +58,7 @@ public class Logger{
             temp = message;
             return;
         }
-        if (message.equals(temp)){
-            strCnt++;
-            return;
-        }
-        else if (strCnt==1)
-            print("string: " + temp);
-            else {
-            print("string: " + temp + " (x"+strCnt+")");
-            strCnt=1;
-            }
+        if (LogOrCountAndReturn(message)) return;
         temp=message;
     }
 
@@ -83,17 +74,8 @@ public class Logger{
      * Method for finishing logging. Prints the rest statement.
      */
     public static void close(){
-        if (cnt > 0) {
-            print("primitive: " + sum);
-            sum = 0;
-            cnt=0;
-        }
-        if (strCnt > 1) {
-            print("string: " +temp + " (x"+strCnt+")");
-            strCnt=1;
-            temp="";
-        }
-        if (!temp.equals("")) print("string: " + temp);
+        checkAndPrintSum();
+        releaseStringsFromTemp();
     }
 
     private static void print(String message){
@@ -104,38 +86,55 @@ public class Logger{
         if (message + sum < 0) {
             print("primitive: " + sum);
             print("primitive: " + message);
-            sum =0;
-            cnt=0;
+            resetCounters();
             return true;
         }
         return false;
     }
 
     private static boolean checkOverflof(byte message) {
-        if ((byte)(message +( (byte) sum)) < 0) {
+        if ((byte)(message +( sum)) < 0) {
             print("primitive: " + sum);
             print("primitive: " + message);
-            sum =0;
-            cnt=0;
+            resetCounters();
             return true;
         }
         return false;
     }
 
     private static void checkAndPrintSum() {
-        if ( cnt>0 && sum >=0) {
+        if ( cnt>0 ) {
             print("primitive: " + sum);
-            sum =0;
-            cnt=0;
+            resetCounters();
         }
     }
 
     private static void releaseStringsFromTemp() {
         if (strCnt!=1)
-        print("string: " + temp + " (x"+strCnt+")");
-        else print("string: " + temp);
+            print("string: " + temp + " (x"+strCnt+")");
+        else if (!temp.equals("")) print("string: " + temp);
         strCnt=1;
         temp="";
+
+    }
+
+    private static boolean LogOrCountAndReturn(String message) {
+        if (message.equals(temp)){
+            strCnt++;
+            return true;
+        }
+        else if (strCnt==1)
+            print("string: " + temp);
+        else {
+            print("string: " + temp + " (x"+strCnt+")");
+            strCnt=1;
+        }
+        return false;
+    }
+
+    private static void resetCounters() {
+        sum =0;
+        cnt=0;
     }
 
 
