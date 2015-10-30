@@ -14,6 +14,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     //region given
     @Before
     public void setUpSystemOut() throws IOException {
+        resetOut();
         captureSysout();
     }
     //endregion
@@ -32,14 +33,15 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         Logger.log(2);
         Logger.log("str 2");
         Logger.log(0);
+        Logger.close();
         //endregion
 
         //region then
         assertSysoutEquals(
-            "string: str 1" + SEP +
-            "primitive: 3" + SEP +
-            "string: str 2" + SEP +
-            "primitive: 0"  +SEP
+                "string: str 1" + SEP +
+                        "primitive: 3" + SEP +
+                        "string: str 2" + SEP +
+                        "primitive: 0" + SEP
         );
         //endregion
     }
@@ -52,6 +54,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         Logger.log(Integer.MAX_VALUE);
         Logger.log("str 2");
         Logger.log(0);
+        Logger.close();
         //endregion
 
         //region then
@@ -64,7 +67,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         );
         //endregion
     }
-/*
+
     @Test
     public void shouldLogCorrectlyByteOverflowWhenSequentBytes() {
         //region when
@@ -73,19 +76,20 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         Logger.log((byte)Byte.MAX_VALUE);
         Logger.log("str 2");
         Logger.log(0);
+        Logger.close();
         //endregion
 
         //region then
         assertSysoutEquals(
-            "str 1\n" +
-            "10\n" +
-            Byte.MAX_VALUE + "\n" +
-            "str 2\n" +
-            "0\n"
+            "string: str 1" + SEP +
+            "primitive: 10" + SEP  +
+            "primitive: " +Byte.MAX_VALUE + SEP +
+            "string: str 2" + SEP  +
+            "primitive: 0" + SEP
         );
         //endregion
     }
-
+/*
     @Test
     public void shouldLogSameSubsequentStringsWithoutRepeat() throws IOException {
         //region when
