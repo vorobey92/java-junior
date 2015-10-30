@@ -20,9 +20,9 @@ public class Logger{
             }
             print("primitive: " + message);
         }
-        if (message == Integer.MAX_VALUE) {
+        if (message + cnt < 0) {
             print("primitive: " + cnt);
-            print(""+Integer.MAX_VALUE);
+            print("primitive: " + message);
         }
         cnt+=message;
     }
@@ -60,6 +60,7 @@ public class Logger{
     public static void log(Object message) {
         print("reference: " + message.toString());
     }
+
 
     private static void print(String message){
         System.out.println(message);
