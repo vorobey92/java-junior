@@ -91,6 +91,26 @@ public class Logger{
         System.out.println("}");
     }
 
+    public static void log(int[][][][] message){
+        System.out.println("primitives multimatrix: {");
+        for (int i = 0; i < message.length; i++){
+            System.out.println("{");
+            for(int j = 0; j < message[i].length; j++){
+                System.out.println("{");
+                for (int k = 0; j < message[i][j].length; k++){
+                    System.out.println("{");
+                    for(int x:message[i][j][k])System.out.print(x);
+                    System.out.println();
+                    System.out.println("}");
+                    break;
+                }
+                System.out.println("}");
+            }
+            System.out.println("}");
+        }
+        System.out.println("}");
+    }
+
     /**
      * Method for finishing logging. Prints the rest statement.
      */
