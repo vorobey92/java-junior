@@ -1,6 +1,8 @@
 package com.acme.edu;
 
-public class Logger1 {
+import java.util.Arrays;
+
+public class Logger {
 
     private final static int NOTHING = 0;
     private final static int INT = 1;
@@ -9,6 +11,7 @@ public class Logger1 {
     private final static int STRING = 4;
     private final static int BOOLEAN = 5;
     private final static int OBJECT = 6;
+    private final static int INT_ARRAY = 7;
 
     private static int currentType = NOTHING;
 
@@ -21,43 +24,43 @@ public class Logger1 {
 
 
     public static void log(int message) {
-        if (currentType != INT) {
-            fflush(currentType);
-        }
-        currentType = INT;
+        changeType(INT);
 
+        if (isSumOutOfIntegerRange(message, intSum)) {
+            changeType(NOTHING);
+            printlnInt(message);
+
+            return;
+        }
         intSum += message;
     }
 
     public static void log(byte message) {
-        if (currentType != BYTE) {
-            fflush(currentType);
-        }
-        currentType = BYTE;
+        changeType(BYTE);
 
+        if (isSumOutOfByteRange(message, byteSum)) {
+            changeType(NOTHING);
+            printlnInt(message);
+
+            return;
+        }
         byteSum += message;
     }
 
     public static void log(char message) {
-        if (currentType != CHAR) {
-            fflush(currentType);
-        }
-        currentType = CHAR;
+        changeType(CHAR);
 
         println("char: " + message);
     }
 
     public static void log(String message) {
-        if (currentType != STRING) {
-            fflush(currentType);
-        }
-        currentType = STRING;
+        changeType(STRING);
 
         if (lastString != null) {
             if (lastString.equals(message)) {
                 lengthOfStringsSequence++;
             } else {
-                printString();
+                printlnAccumulatedData(STRING);
                 lengthOfStringsSequence = 1;
             }
         } else {
@@ -67,50 +70,74 @@ public class Logger1 {
     }
 
     public static void log(boolean message) {
-        if (currentType != BOOLEAN) {
-            fflush(currentType);
-        }
-        currentType = BOOLEAN;
+        changeType(BOOLEAN);
 
         println(PRIMITIVE_STRING + message);
     }
 
     public static void log(Object message) {
-        if (currentType != OBJECT) {
-            fflush(currentType);
-        }
-        currentType = OBJECT;
+        changeType(OBJECT);
 
         println("reference: " + message);
     }
 
+    public static void log(int[] message) {
+        changeType(INT_ARRAY);
+
+        println("primitives array: " + toString(message));
+    }
+
     public static void close() {
-        if (currentType != NOTHING) {
-            fflush(currentType);
+        changeType(NOTHING);
+    }
+
+    private static void changeType(int type) {
+        if (currentType != type) {
+            printlnAccumulatedData(currentType);
         }
-        currentType = NOTHING;
+        currentType = type;
+    }
+
+    private static boolean isSumOutOfIntegerRange(int summand1, int summand2) {
+
+        return isSumOutOfRange(summand1, summand2, Integer.MAX_VALUE, Integer.MIN_VALUE);
+    }
+
+    private static boolean isSumOutOfByteRange(int summand1, int summand2) {
+
+        return isSumOutOfRange(summand1, summand2, Byte.MAX_VALUE, Byte.MIN_VALUE);
+    }
+
+    private static boolean isSumOutOfRange(int summand1, int summand2, int positiveBoundary, int negativeBoundary) {
+
+        return (summand1 > 0 && positiveBoundary - summand1 < summand2)
+                || (summand1 < 0 && negativeBoundary - summand1 > summand2);
+    }
+
+    private static String toString(int[] message) {
+        return Arrays.toString(message).replaceFirst("\\[", "\\{").replaceFirst("\\]", "\\}");
     }
 
     private static String stringSuffix() {
         return (lengthOfStringsSequence == 1) ? "" : (" (x" + lengthOfStringsSequence + ")");
     }
 
-    private static void fflush(int type) {
+    private static void printlnAccumulatedData(int type) {
         switch (type) {
             case NOTHING:
                 break;
             case INT:
-                printIntSum();
+                printlnInt(intSum);
                 intSum = 0;
                 break;
             case BYTE:
-                printByteSum();
+                printlnInt(byteSum);
                 byteSum = 0;
                 break;
             case CHAR:
                 break;
             case STRING:
-                printString();
+                printlnSting();
                 lastString = null;
                 lengthOfStringsSequence = 0;
                 break;
@@ -118,22 +145,20 @@ public class Logger1 {
                 break;
             case OBJECT:
                 break;
+            case INT_ARRAY:
+                break;
             default:
                 throw new IllegalArgumentException("Unsupported type: " + type);
 
         }
     }
 
-    private static void printIntSum() {
-        println(PRIMITIVE_STRING + intSum);
+    private static void printlnInt(int integer) {
+        println(PRIMITIVE_STRING + integer);
     }
 
-    private static void printString() {
+    private static void printlnSting() {
         println("string: " + lastString + stringSuffix());
-    }
-
-    private static void printByteSum() {
-        println(PRIMITIVE_STRING + byteSum);
     }
 
     private static void println(String message) {
