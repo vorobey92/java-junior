@@ -1,5 +1,7 @@
 package com.acme.edu;
 
+import java.util.Arrays;
+
 public class Logger {
 
     private static final String PRIMITIVE_STRING = "primitive: ";
@@ -135,6 +137,11 @@ public class Logger {
      */
     public static void log(Object message) {
         println("reference: " + message);
+    }
+
+    public static void log(int[] message) {
+        println("primitives array: "
+                + Arrays.toString(message).replaceFirst("\\[", "\\{").replaceFirst("\\]", "\\}"));
     }
 
     private static void println(String message) {
