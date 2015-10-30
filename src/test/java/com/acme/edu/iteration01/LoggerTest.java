@@ -20,7 +20,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
 
     @After
     public void tearDown() {
-       resetOut();
+        resetOut();
     }
     //endregion
 
@@ -29,25 +29,28 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         //region when
         Logger.log(1);
         Logger.log(0);
+        Logger.log(-1);
         Logger.close();
         //endregion
 
         //region then
         assertSysoutContains("primitive: ");
-        assertSysoutEquals("primitive: 1" + SEP);
+        assertSysoutEquals("primitive: 0" + SEP);
         //endregion
     }
 
     @Test
     public void shouldLogByte() throws IOException {
         //region when
-        Logger.log((byte) 0);
         Logger.log((byte) 1);
+        Logger.log((byte) 0);
+        Logger.log((byte) -1);
         Logger.close();
         //endregion
 
         //region then
-        assertSysoutContains("primitive: 1" + SEP);
+        assertSysoutContains("primitive: ");
+        assertSysoutContains("0");
         //endregion
     }
 
