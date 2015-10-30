@@ -164,4 +164,6 @@ public class Logger {
     private static void println(String message) {
         System.out.println(message);
     }
+
+    private Logger() {}
 }
