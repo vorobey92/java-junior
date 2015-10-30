@@ -91,6 +91,10 @@ public class Logger{
         System.out.println("}");
     }
 
+    /**
+     *
+     * @param message multimatrix that will be loged
+     */
     public static void log(int[][][][] message){
         System.out.println("primitives multimatrix: {");
         for (int i = 0; i < message.length; i++){
@@ -109,6 +113,14 @@ public class Logger{
             System.out.println("}");
         }
         System.out.println("}");
+    }
+
+    /**
+     *
+     * @param message array of Strings that will be loged
+     */
+    public static void log(String... message){
+        for(String str:message)System.out.println(str);
     }
 
     /**
