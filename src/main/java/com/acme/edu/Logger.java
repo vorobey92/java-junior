@@ -74,7 +74,7 @@ public class Logger{
      *
      * @param message array of ints that will be loged
      */
-    public static void log(int[] message){
+    public static void log(int... message){
         System.out.print("primitives array: ");
         printArray(message);
     }
@@ -122,7 +122,7 @@ public class Logger{
     public static void log(String... message){
         for(String str:message)System.out.println(str);
     }
-
+    
     /**
      * Method for finishing logging. Prints the rest statement.
      */
