@@ -70,16 +70,25 @@ public class Logger{
         print("reference: " + message.toString());
     }
 
+    /**
+     *
+     * @param message array of ints that will be loged
+     */
     public static void log(int[] message){
+        System.out.print("primitives array: ");
         printArray(message);
     }
 
-    private static void printArray(int[] message) {
-        System.out.print("primitives array: {");
-        for (int i = 0; i < message.length-1; i++){
-            System.out.print(message[i]+", ");
+    /**
+     *
+     * @param message matrix of ints that will be loged
+     */
+    public static void log(int[][] message){
+        System.out.println("primitives matrix: {");
+        for (int i = 0; i < message.length; i++){
+            printArray(message[i]);
         }
-        System.out.println(message[message.length-1]+"}");
+        System.out.println("}");
     }
 
     /**
@@ -147,6 +156,14 @@ public class Logger{
     private static void resetCounters() {
         sum =0;
         cnt=0;
+    }
+
+    private static void printArray(int[] message) {
+        System.out.print("{");
+        for (int i = 0; i < message.length-1; i++){
+            System.out.print(message[i]+", ");
+        }
+        System.out.println(message[message.length - 1] + "}");
     }
 
 
