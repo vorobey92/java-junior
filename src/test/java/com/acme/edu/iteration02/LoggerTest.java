@@ -81,15 +81,15 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
 
         //region then
         assertSysoutEquals(
-            "string: str 1" + SEP +
-            "primitive: 10" + SEP  +
-            "primitive: " +Byte.MAX_VALUE + SEP +
-            "string: str 2" + SEP  +
-            "primitive: 0" + SEP
+                "string: str 1" + SEP +
+                        "primitive: 10" + SEP +
+                        "primitive: " + Byte.MAX_VALUE + SEP +
+                        "string: str 2" + SEP +
+                        "primitive: 0" + SEP
         );
         //endregion
     }
-/*
+
     @Test
     public void shouldLogSameSubsequentStringsWithoutRepeat() throws IOException {
         //region when
@@ -101,18 +101,19 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         Logger.log("str 3");
         Logger.log("str 3");
         Logger.log("str 3");
+        Logger.close();
         //endregion
 
         //region then
         assertSysoutEquals(
-            "str 1\n" +
-            "str 2 (x2)\n" +
-            "0\n" +
-            "str 2\n" +
-            "str 3 (x3)\n"
+            "string: str 1" + SEP +
+            "string: str 2 (x2)" + SEP +
+            "primitive: 0" + SEP +
+            "string: str 2" + SEP +
+            "string: str 3 (x3)" + SEP
         );
         //endregion
     }
 
-   */
+
 }

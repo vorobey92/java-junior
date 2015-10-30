@@ -1,21 +1,24 @@
 package com.acme.edu;
 
-import java.io.PrintStream;
-
 /**
  *  Class for logging messages.
  *  To use logging you need to use method Logger.close() to finish.
  */
 public class Logger{
     private static int cnt =0;
+    private static int sum = 0;
+    private static String temp = "";
+    private static int strCnt = 1;
 
     /**
      *
      * @param message  number (int) that will be logged
      */
     public static void log(int message) {
+        if (!temp.equals("")) releaseStringsFromTemp();
         if (checkOverflof(message)) return;
-        cnt+=message;
+        sum +=message;
+        cnt++;
     }
 
     /**
@@ -23,9 +26,10 @@ public class Logger{
      * @param message  number (byte) that will be logged
      */
     public static void log(byte message) {
+        if (!temp.equals("")) releaseStringsFromTemp();
         if (checkOverflof(message)) return;
-        cnt=(byte)cnt;
-        cnt+=message;
+        sum +=message;
+        cnt++;
     }
 
     /**
@@ -50,7 +54,21 @@ public class Logger{
      */
     public static void log(String message) {
         checkAndPrintSum();
-        print("string: " + message);
+        if (temp.equals("")){
+            temp = message;
+            return;
+        }
+        if (message.equals(temp)){
+            strCnt++;
+            return;
+        }
+        else if (strCnt==1)
+            print("string: " + temp);
+            else {
+            print("string: " + temp + " (x"+strCnt+")");
+            strCnt=1;
+            }
+        temp=message;
     }
 
     /**
@@ -65,8 +83,17 @@ public class Logger{
      * Method for finishing logging. Prints the rest statement.
      */
     public static void close(){
-        print("primitive: " + cnt);
-        cnt=0;
+        if (cnt > 0) {
+            print("primitive: " + sum);
+            sum = 0;
+            cnt=0;
+        }
+        if (strCnt > 1) {
+            print("string: " +temp + " (x"+strCnt+")");
+            strCnt=1;
+            temp="";
+        }
+        if (!temp.equals("")) print("string: " + temp);
     }
 
     private static void print(String message){
@@ -74,9 +101,10 @@ public class Logger{
     }
 
     private static boolean checkOverflof(int message) {
-        if (message + cnt < 0) {
-            print("primitive: " + cnt);
+        if (message + sum < 0) {
+            print("primitive: " + sum);
             print("primitive: " + message);
+            sum =0;
             cnt=0;
             return true;
         }
@@ -84,20 +112,30 @@ public class Logger{
     }
 
     private static boolean checkOverflof(byte message) {
-        if ((byte)(message +( (byte) cnt)) < 0) {
-            print("primitive: " + cnt);
+        if ((byte)(message +( (byte) sum)) < 0) {
+            print("primitive: " + sum);
             print("primitive: " + message);
+            sum =0;
             cnt=0;
             return true;
         }
         return false;
     }
-    
+
     private static void checkAndPrintSum() {
-        if (cnt>0) {
-            print("primitive: " + cnt);
+        if ( cnt>0 && sum >=0) {
+            print("primitive: " + sum);
+            sum =0;
             cnt=0;
         }
+    }
+
+    private static void releaseStringsFromTemp() {
+        if (strCnt!=1)
+        print("string: " + temp + " (x"+strCnt+")");
+        else print("string: " + temp);
+        strCnt=1;
+        temp="";
     }
 
 
