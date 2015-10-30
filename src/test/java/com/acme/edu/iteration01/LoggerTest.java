@@ -98,8 +98,8 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         assertSysoutContains("@");
         //endregion
     }
-    @After
-    public void tearDown() {
-       resetOut();
-    }
+//    @After
+//    public void tearDown() {
+//       resetOut();
+//    }
 }
