@@ -70,6 +70,18 @@ public class Logger{
         print("reference: " + message.toString());
     }
 
+    public static void log(int[] message){
+        printArray(message);
+    }
+
+    private static void printArray(int[] message) {
+        System.out.print("primitives array: {");
+        for (int i = 0; i < message.length-1; i++){
+            System.out.print(message[i]+", ");
+        }
+        System.out.println(message[message.length-1]+"}");
+    }
+
     /**
      * Method for finishing logging. Prints the rest statement.
      */

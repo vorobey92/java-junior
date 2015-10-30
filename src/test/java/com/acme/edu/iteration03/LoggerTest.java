@@ -1,11 +1,15 @@
 package com.acme.edu.iteration03;
 
+import com.acme.edu.Logger;
 import com.acme.edu.SysoutCaptureAndAssertionAbility;
+import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 
 import java.io.IOException;
 
 public class LoggerTest implements SysoutCaptureAndAssertionAbility {
+    private static final String SEP = System.lineSeparator();
     //region given
     @Before
     public void setUpSystemOut() throws IOException {
@@ -13,22 +17,26 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     }
     //endregion
 
-    /*
-    TODO: implement Logger solution to match specification as tests
+    @After
+    public void tearDown() {
+        resetOut();
+    }
+
+
 
     @Test
     public void shouldLogIntegersArray() throws IOException {
         //region when
-        Logger.log(new int[] {-1, 0, 1});
+        Logger.log(new int[]{-1, 0, 1});
         //endregion
 
         //region then
         assertSysoutEquals(
-            "primitives array: {-1, 0, 1}\n"
+            "primitives array: {-1, 0, 1}" + SEP
         );
         //endregion
     }
-
+/*
     @Test
     public void shouldLogIntegersMatrix() throws IOException {
         //region when
