@@ -2,51 +2,68 @@ package com.acme.edu;
 
 public class Logger {
 
-    private final static String PRIMITIVE_STRING = "primitive: ";
+    private static final String PRIMITIVE_STRING = "primitive: ";
+    private static int sum = 0;
+    private static boolean hasLastInteger = false;
+
 
     /**
-     * Logs an integer and then terminate the line.
+     * Logs an integer message and then terminate the line.
      *
-     * @param i <code>int</code> to be logged.
+     * @param message <code>int</code> to be logged.
      */
-    public static void log(int i) {
-        println(PRIMITIVE_STRING + i);
+    public static void log(int message) {
+        if (message == 0) {
+            if (hasLastInteger) {
+                println(PRIMITIVE_STRING + sum);
+                hasLastInteger = false;
+            }
+            println(PRIMITIVE_STRING + message);
+        } else {
+            hasLastInteger = true;
+            sum += message;
+        }
     }
 
     /**
-     * Logs a boolean and then terminate the line.
+     * Logs a boolean message and then terminate the line.
      *
-     * @param bool <code>boolean</code> to be logged.
+     * @param message <code>boolean</code> to be logged.
      */
-    public static void log(boolean bool) {
-        println(PRIMITIVE_STRING + bool);
+    public static void log(boolean message) {
+        println("primitive: " + message);
     }
 
     /**
-     * Logs a char and then terminate the line.
+     * Logs a char message and then terminate the line.
      *
-     * @param c <code>char</code> to be logged.
+     * @param message <code>char</code> to be logged.
      */
-    public static void log(char c) {
-        println("char: " + c);
+    public static void log(char message) {
+        println("char: " + message);
     }
 
     /**
-     * Logs a String and then terminate the line.
+     * Logs a String message and then terminate the line.
      *
-     * @param string <code>String</code> to be logged.
+     * @param message <code>String</code> to be logged.
      */
-    public static void log(String string) {
-        println("string: " + string);
+    public static void log(String message) {
+        if (hasLastInteger) {
+            println(PRIMITIVE_STRING + sum);
+            sum = 0;
+            hasLastInteger = false;
+        }
+        println("string: " + message);
     }
 
     /**
-     * Logs an Object and then terminate the line.
+     * Logs an Object message and then terminate the line.
      *
-     * @param object <code>Object</code> to be logged.
+     * @param message <code>Object</code> to be logged.
      */
-    public static void log(Object object) {
-        println("reference: " + object);
+    public static void log(Object message) {
+        println("reference: " + message);
     }
 
     private static void println(String message) {
