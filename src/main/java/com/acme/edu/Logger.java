@@ -1,147 +1,139 @@
 package com.acme.edu;
 
-import java.util.Arrays;
+public class Logger1 {
 
-public class Logger {
+    private final static int NOTHING = 0;
+    private final static int INT = 1;
+    private final static int BYTE = 2;
+    private final static int CHAR = 3;
+    private final static int STRING = 4;
+    private final static int BOOLEAN = 5;
+    private final static int OBJECT = 6;
 
-    private static final String PRIMITIVE_STRING = "primitive: ";
+    private static int currentType = NOTHING;
+
+    private final static String PRIMITIVE_STRING = "primitive: ";
+
     private static int intSum = 0;
-    private static boolean hasLastInteger = false;
     private static byte byteSum = 0;
-    private static boolean hasLastByte = false;
+    private static int lengthOfStringsSequence = 0;
     private static String lastString = null;
-    private static int numStrings = 0;
 
-    public static void close() {
-        if (hasLastInteger) {
-            println(PRIMITIVE_STRING + intSum);
-        }
-        if (hasLastByte) {
-            println(PRIMITIVE_STRING + byteSum);
-        }
-        if (lastString != null) {
-            println("string: " + lastString + (numStrings == 1 ? "" : " (x" + numStrings + ")"));
-            lastString = null;
-            numStrings = 0;
-        }
 
-        hasLastInteger = hasLastByte = false;
-        numStrings = intSum = 0;
-        byteSum = 0;
-        lastString = null;
-    }
-
-    /**
-     * Logs an integer message and then terminate the line.
-     *
-     * @param message <code>int</code> to be logged.
-     */
-    public static void log(byte message) {
-        if (lastString != null) {
-            println("string: " + lastString + (numStrings == 1 ? "" : " (x" + numStrings + ")"));
-            lastString = null;
-            numStrings = 0;
-        }
-        if ((byteSum > 0 && Byte.MAX_VALUE - byteSum < message)
-                || (byteSum < 0 && Byte.MIN_VALUE - byteSum > message)) {
-            if (hasLastByte) {
-                println(PRIMITIVE_STRING + byteSum);
-                hasLastByte = false;
-                byteSum = 0;
-            }
-            println(PRIMITIVE_STRING + message);
-        }
-        else {
-            hasLastByte = true;
-            byteSum += message;
-        }
-    }
-
-    /**
-     * Logs an integer message and then terminate the line.
-     *
-     * @param message <code>int</code> to be logged.
-     */
     public static void log(int message) {
-        if (lastString != null) {
-            println("string: " + lastString + (numStrings == 1 ? "" : " (x" + numStrings + ")"));
-            lastString = null;
-            numStrings = 0;
+        if (currentType != INT) {
+            fflush(currentType);
         }
-        if ((intSum > 0 && Integer.MAX_VALUE - intSum < message)
-                || (intSum < 0 && Integer.MIN_VALUE - intSum > message)) {
-            if (hasLastInteger) {
-                println(PRIMITIVE_STRING + intSum);
-                hasLastInteger = false;
-                intSum = 0;
-            }
-            println(PRIMITIVE_STRING + message);
-        }
-        else {
-            hasLastInteger = true;
-            intSum += message;
-        }
+        currentType = INT;
+
+        intSum += message;
     }
 
-    /**
-     * Logs a boolean message and then terminate the line.
-     *
-     * @param message <code>boolean</code> to be logged.
-     */
-    public static void log(boolean message) {
-        println("primitive: " + message);
+    public static void log(byte message) {
+        if (currentType != BYTE) {
+            fflush(currentType);
+        }
+        currentType = BYTE;
+
+        byteSum += message;
     }
 
-    /**
-     * Logs a char message and then terminate the line.
-     *
-     * @param message <code>char</code> to be logged.
-     */
     public static void log(char message) {
+        if (currentType != CHAR) {
+            fflush(currentType);
+        }
+        currentType = CHAR;
+
         println("char: " + message);
     }
 
-    /**
-     * Logs a String message and then terminate the line.
-     *
-     * @param message <code>String</code> to be logged.
-     */
     public static void log(String message) {
-        if (hasLastInteger) {
-            println(PRIMITIVE_STRING + intSum);
-            intSum = 0;
-            hasLastInteger = false;
+        if (currentType != STRING) {
+            fflush(currentType);
         }
-        if (hasLastByte) {
-            println(PRIMITIVE_STRING + byteSum);
-            byteSum = 0;
-            hasLastByte = false;
-        }
+        currentType = STRING;
 
-        if (lastString == null) {
-            lastString = message;
-            numStrings = 1;
-        } else if (lastString.equals(message)) {
-            numStrings++;
+        if (lastString != null) {
+            if (lastString.equals(message)) {
+                lengthOfStringsSequence++;
+            } else {
+                printString();
+                lengthOfStringsSequence = 1;
+            }
         } else {
-            println("string: " + lastString + (numStrings == 1 ? "" : " (x" + numStrings + ")"));
-            lastString = message;
-            numStrings = 1;
+            lengthOfStringsSequence = 1;
         }
+        lastString = message;
     }
 
-    /**
-     * Logs an Object message and then terminate the line.
-     *
-     * @param message <code>Object</code> to be logged.
-     */
+    public static void log(boolean message) {
+        if (currentType != BOOLEAN) {
+            fflush(currentType);
+        }
+        currentType = BOOLEAN;
+
+        println(PRIMITIVE_STRING + message);
+    }
+
     public static void log(Object message) {
+        if (currentType != OBJECT) {
+            fflush(currentType);
+        }
+        currentType = OBJECT;
+
         println("reference: " + message);
     }
 
-    public static void log(int[] message) {
-        println("primitives array: "
-                + Arrays.toString(message).replaceFirst("\\[", "\\{").replaceFirst("\\]", "\\}"));
+    public static void close() {
+        if (currentType != NOTHING) {
+            fflush(currentType);
+        }
+        currentType = NOTHING;
+    }
+
+    private static String stringSuffix() {
+        return (lengthOfStringsSequence == 1) ? "" : (" (x" + lengthOfStringsSequence + ")");
+    }
+
+    private static void fflush(int type) {
+        switch (type) {
+            case NOTHING:
+                break;
+            case INT:
+                printIntSum();
+                intSum = 0;
+                break;
+            case BYTE:
+                printByteSum();
+                byteSum = 0;
+                break;
+            case CHAR:
+                break;
+            case STRING:
+                printString();
+                lastString = null;
+                lengthOfStringsSequence = 0;
+                break;
+            case BOOLEAN:
+                break;
+            case OBJECT:
+                break;
+            default:
+                throw new IllegalArgumentException("Unsupported type: " + type);
+
+        }
+    }
+
+    private static void printIntSum() {
+        println(PRIMITIVE_STRING + intSum);
+    }
+
+    private static void printString() {
+        println("string: " + lastString + stringSuffix());
+    }
+
+    private static void printByteSum() {
+        println(PRIMITIVE_STRING + byteSum);
     }
 
     private static void println(String message) {
