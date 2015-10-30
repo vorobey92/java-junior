@@ -1,16 +1,30 @@
 package com.acme.edu;
 
+import java.io.PrintStream;
+
 /**
  *  Class for logging messages
  */
-public class Logger {
+public class Logger{
+    private static int cnt =0;
 
     /**
      *
      * @param message  number (byte or int) that will be logged
      */
     public static void log(int message) {
-        print("primitive: " + message);
+        if (message==0) {
+            if (cnt>0) {
+                print("primitive: " + cnt);
+                cnt=0;
+            }
+            print("primitive: " + message);
+        }
+        if (message == Integer.MAX_VALUE) {
+            print("primitive: " + cnt);
+            print(""+Integer.MAX_VALUE);
+        }
+        cnt+=message;
     }
 
     /**
@@ -34,7 +48,9 @@ public class Logger {
      * @param message string that will be logged
      */
     public static void log(String message) {
+        if (cnt>0) print("primitive: " + cnt);
         print("string: " + message);
+        cnt=0;
     }
 
     /**
