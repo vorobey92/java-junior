@@ -3,9 +3,14 @@ package com.acme.edu;
 public class Logger {
 
     private static final String PRIMITIVE_STRING = "primitive: ";
-    private static int sum = 0;
+    private static int intSum = 0;
     private static boolean hasLastInteger = false;
 
+    public static void close() {
+        if (hasLastInteger) {
+            println(PRIMITIVE_STRING + intSum);
+        }
+    }
 
     /**
      * Logs an integer message and then terminate the line.
@@ -13,15 +18,18 @@ public class Logger {
      * @param message <code>int</code> to be logged.
      */
     public static void log(int message) {
-        if (message == 0) {
+        if ((intSum > 0 && Integer.MAX_VALUE - intSum < message)
+                || (intSum < 0 && Integer.MIN_VALUE - intSum > message)) {
             if (hasLastInteger) {
-                println(PRIMITIVE_STRING + sum);
+                println(PRIMITIVE_STRING + intSum);
                 hasLastInteger = false;
+                intSum = 0;
             }
             println(PRIMITIVE_STRING + message);
-        } else {
+        }
+        else {
             hasLastInteger = true;
-            sum += message;
+            intSum += message;
         }
     }
 
@@ -50,8 +58,8 @@ public class Logger {
      */
     public static void log(String message) {
         if (hasLastInteger) {
-            println(PRIMITIVE_STRING + sum);
-            sum = 0;
+            println(PRIMITIVE_STRING + intSum);
+            intSum = 0;
             hasLastInteger = false;
         }
         println("string: " + message);
