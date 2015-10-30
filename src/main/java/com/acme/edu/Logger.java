@@ -122,7 +122,7 @@ public class Logger{
     public static void log(String... message){
         for(String str:message)System.out.println(str);
     }
-    
+
     /**
      * Method for finishing logging. Prints the rest statement.
      */
