@@ -12,10 +12,12 @@ public class Logger {
     private final static int BOOLEAN = 5;
     private final static int OBJECT = 6;
     private final static int INT_ARRAY = 7;
+    private final static int INT_MATRIX = 8;
 
     private static int currentType = NOTHING;
 
     private final static String PRIMITIVE_STRING = "primitive: ";
+    private final static String LINE_SEPARATOR = System.lineSeparator();
 
     private static int intSum = 0;
     private static byte byteSum = 0;
@@ -75,6 +77,17 @@ public class Logger {
         println(PRIMITIVE_STRING + message);
     }
 
+    public static void log(int[][] message) {
+        changeType(INT_MATRIX);
+
+        String matrixString = Helper.multidimensionalIntArraytoString(message)
+                .replaceAll("\\}, ", "\\}" + LINE_SEPARATOR)
+                .replaceFirst("\\{\\{", "\\{" + LINE_SEPARATOR + "\\{")
+                .replaceFirst("\\}\\}", "\\}" + LINE_SEPARATOR + "\\}");
+
+        println("primitives matrix: " + matrixString);
+    }
+
     public static void log(Object message) {
         changeType(OBJECT);
 
@@ -84,7 +97,7 @@ public class Logger {
     public static void log(int[] message) {
         changeType(INT_ARRAY);
 
-        println("primitives array: " + toString(message));
+        println("primitives array: " + Helper.intArrayToString(message));
     }
 
     public static void close() {
@@ -112,10 +125,6 @@ public class Logger {
 
         return (summand1 > 0 && positiveBoundary - summand1 < summand2)
                 || (summand1 < 0 && negativeBoundary - summand1 > summand2);
-    }
-
-    private static String toString(int[] message) {
-        return Arrays.toString(message).replaceFirst("\\[", "\\{").replaceFirst("\\]", "\\}");
     }
 
     private static String stringSuffix() {
@@ -146,6 +155,8 @@ public class Logger {
             case OBJECT:
                 break;
             case INT_ARRAY:
+                break;
+            case INT_MATRIX:
                 break;
             default:
                 throw new IllegalArgumentException("Unsupported type: " + type);
