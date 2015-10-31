@@ -84,6 +84,12 @@ public class Logger {
         println("primitives multimatrix: " + Helper.multidimensionalIntArraytoString(message));
     }
 
+    public static void log(String... messages) {
+        for (String string : messages) {
+            log(string);
+        }
+    }
+
     public static void close() {
         changeType(NOTHING);
     }
