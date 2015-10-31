@@ -2,6 +2,8 @@ package com.acme.edu;
 
 class Helper {
 
+    private final static String LINE_SEPARATOR = System.lineSeparator();
+
     private Helper() {
 
     }
@@ -28,20 +30,17 @@ class Helper {
     }
 
     private static void arrayToStringBuilder(Object[] array, StringBuilder sb) {
-        sb.append("{");
-        for (int i = 0; i < array.length - 1; ++i) {
+        sb.append("{").append(LINE_SEPARATOR);
+        for (int i = 0; i < array.length; ++i) {
             elementToStringBuilder(i, array, sb);
-            sb.append(", ");
-        }
-        if (array.length > 0) {
-            elementToStringBuilder(array.length - 1, array, sb);
+            sb.append(LINE_SEPARATOR);
         }
         sb.append("}");
     }
 
     private static void elementToStringBuilder(int index, Object[] array, StringBuilder sb) {
         if (array[index] == null) {
-            sb.append("{}");
+            sb.append("{").append(LINE_SEPARATOR).append("}");
             return;
         }
         if (array[index] instanceof int[]) {

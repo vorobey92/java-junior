@@ -16,7 +16,6 @@ public class Logger {
     private static int currentType = NOTHING;
 
     private final static String PRIMITIVE_STRING = "primitive: ";
-    private final static String LINE_SEPARATOR = System.lineSeparator();
 
     private static int intSum = 0;
     private static byte byteSum = 0;
@@ -93,17 +92,13 @@ public class Logger {
     public static void log(int[][] message) {
         changeType(INT_MATRIX);
 
-        println("primitives matrix: " +
-                formatMultidimensionalArraySting(Helper.multidimensionalIntArraytoString(message))
-        );
+        println("primitives matrix: " + Helper.multidimensionalIntArraytoString(message));
     }
 
     public static void log(int[][][][] message) {
         changeType(INT_MULTIMATRIX);
 
-        println("primitives multimatrix: " +
-                formatMultidimensionalArraySting(Helper.multidimensionalIntArraytoString(message))
-        );
+        println("primitives multimatrix: " + Helper.multidimensionalIntArraytoString(message));
     }
 
     public static void close() {
@@ -182,13 +177,5 @@ public class Logger {
 
     private static void println(String message) {
         System.out.println(message);
-    }
-
-    private static String formatMultidimensionalArraySting(String arrayString) {
-        return arrayString.replaceAll("\\}, ", "\\}" + LINE_SEPARATOR)
-                .replaceAll("\\{", "\\{" + LINE_SEPARATOR)
-                .replaceAll("\\}", "\\}" + LINE_SEPARATOR)
-                .replaceAll(LINE_SEPARATOR + "([^{}])", "$1")
-                .replaceFirst(LINE_SEPARATOR + "$", "");
     }
 }
