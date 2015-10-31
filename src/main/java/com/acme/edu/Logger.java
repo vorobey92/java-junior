@@ -5,17 +5,20 @@ package com.acme.edu;
  *  To use logging you need to use method Logger.close() to finish.
  */
 public class Logger{
+
+    //region privateVars
     private static int cnt =0;
     private static int sum = 0;
     private static String temp = "";
     private static int strCnt = 1;
+    //endregions
 
     /**
      *
      * @param message  number (int) that will be logged
      */
     public static void log(int message) {
-        if (!temp.equals("")) releaseStringsFromTemp();
+        if (!"".equals(temp)) releaseStringsFromTemp();
         if (checkOverflof(message)) return;
         sum +=message;
         cnt++;
@@ -26,7 +29,7 @@ public class Logger{
      * @param message  number (byte) that will be logged
      */
     public static void log(byte message) {
-        if (!temp.equals("")) releaseStringsFromTemp();
+        if (!"".equals(temp)) releaseStringsFromTemp();
         if (checkOverflof(message)) return;
         sum +=message;
         cnt++;
@@ -54,7 +57,7 @@ public class Logger{
      */
     public static void log(String message) {
         checkAndPrintSum();
-        if (temp.equals("")){
+        if ("".equals(temp)){
             temp = message;
             return;
         }
@@ -165,7 +168,7 @@ public class Logger{
     private static void releaseStringsFromTemp() {
         if (strCnt!=1)
             print("string: " + temp + " (x"+strCnt+")");
-        else if (!temp.equals("")) print("string: " + temp);
+        else if (!"".equals(temp)) print("string: " + temp);
         strCnt=1;
         temp="";
 
@@ -197,6 +200,8 @@ public class Logger{
         }
         System.out.println(message[message.length - 1] + "}");
     }
+
+    private Logger(){}
 
 
 
