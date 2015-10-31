@@ -1,7 +1,5 @@
 package com.acme.edu;
 
-import java.util.Arrays;
-
 public class Logger {
 
     private final static int NOTHING = 0;
@@ -13,6 +11,7 @@ public class Logger {
     private final static int OBJECT = 6;
     private final static int INT_ARRAY = 7;
     private final static int INT_MATRIX = 8;
+    private final static int INT_MULTIMATRIX = 9;
 
     private static int currentType = NOTHING;
 
@@ -24,6 +23,8 @@ public class Logger {
     private static int lengthOfStringsSequence = 0;
     private static String lastString = null;
 
+    private Logger() {
+    }
 
     public static void log(int message) {
         changeType(INT);
@@ -77,17 +78,6 @@ public class Logger {
         println(PRIMITIVE_STRING + message);
     }
 
-    public static void log(int[][] message) {
-        changeType(INT_MATRIX);
-
-        String matrixString = Helper.multidimensionalIntArraytoString(message)
-                .replaceAll("\\}, ", "\\}" + LINE_SEPARATOR)
-                .replaceFirst("\\{\\{", "\\{" + LINE_SEPARATOR + "\\{")
-                .replaceFirst("\\}\\}", "\\}" + LINE_SEPARATOR + "\\}");
-
-        println("primitives matrix: " + matrixString);
-    }
-
     public static void log(Object message) {
         changeType(OBJECT);
 
@@ -98,6 +88,22 @@ public class Logger {
         changeType(INT_ARRAY);
 
         println("primitives array: " + Helper.intArrayToString(message));
+    }
+
+    public static void log(int[][] message) {
+        changeType(INT_MATRIX);
+
+        println("primitives matrix: " +
+                formatMultidimensionalArraySting(Helper.multidimensionalIntArraytoString(message))
+        );
+    }
+
+    public static void log(int[][][][] message) {
+        changeType(INT_MULTIMATRIX);
+
+        println("primitives multimatrix: " +
+                formatMultidimensionalArraySting(Helper.multidimensionalIntArraytoString(message))
+        );
     }
 
     public static void close() {
@@ -158,6 +164,8 @@ public class Logger {
                 break;
             case INT_MATRIX:
                 break;
+            case INT_MULTIMATRIX:
+                break;
             default:
                 throw new IllegalArgumentException("Unsupported type: " + type);
 
@@ -176,5 +184,11 @@ public class Logger {
         System.out.println(message);
     }
 
-    private Logger() {}
+    private static String formatMultidimensionalArraySting(String arrayString) {
+        return arrayString.replaceAll("\\}, ", "\\}" + LINE_SEPARATOR)
+                .replaceAll("\\{", "\\{" + LINE_SEPARATOR)
+                .replaceAll("\\}", "\\}" + LINE_SEPARATOR)
+                .replaceAll(LINE_SEPARATOR + "([^{}])", "$1")
+                .replaceFirst(LINE_SEPARATOR + "$", "");
+    }
 }
