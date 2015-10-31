@@ -17,8 +17,7 @@ public class Logger {
 
     private final static String PRIMITIVE_STRING = "primitive: ";
 
-    private static int intSum = 0;
-    private static byte byteSum = 0;
+    private static int sum = 0;
     private static int lengthOfStringsSequence = 0;
     private static String lastString = null;
 
@@ -26,27 +25,11 @@ public class Logger {
     }
 
     public static void log(int message) {
-        changeType(INT);
-
-        if (isSumOutOfIntegerRange(message, intSum)) {
-            changeType(NOTHING);
-            printlnInt(message);
-
-            return;
-        }
-        intSum += message;
+        logIntegerMessage(INT, message);
     }
 
     public static void log(byte message) {
-        changeType(BYTE);
-
-        if (isSumOutOfByteRange(message, byteSum)) {
-            changeType(NOTHING);
-            printlnInt(message);
-
-            return;
-        }
-        byteSum += message;
+        logIntegerMessage(BYTE, message);
     }
 
     public static void log(char message) {
@@ -112,24 +95,37 @@ public class Logger {
         currentType = type;
     }
 
-    private static boolean isSumOutOfIntegerRange(int summand1, int summand2) {
+    private static void logIntegerMessage(int type, int message) {
+        changeType(type);
 
-        return isSumOutOfRange(summand1, summand2, Integer.MAX_VALUE, Integer.MIN_VALUE);
+        if (isSumOutOfRange(type, message, sum)) {
+            changeType(NOTHING);
+            printlnInteger(message);
+
+            return;
+        }
+        sum += message;
     }
 
-    private static boolean isSumOutOfByteRange(int summand1, int summand2) {
+    private static boolean isSumOutOfRange(int type, int summand1, int summand2) {
+        int positiveBoundary;
+        int negativeBoundary;
 
-        return isSumOutOfRange(summand1, summand2, Byte.MAX_VALUE, Byte.MIN_VALUE);
-    }
-
-    private static boolean isSumOutOfRange(int summand1, int summand2, int positiveBoundary, int negativeBoundary) {
+        switch (type) {
+            case INT:
+                positiveBoundary = Integer.MAX_VALUE;
+                negativeBoundary = Integer.MIN_VALUE;
+                break;
+            case BYTE:
+                positiveBoundary = Byte.MAX_VALUE;
+                negativeBoundary = Byte.MIN_VALUE;
+                break;
+            default:
+                throw new IllegalArgumentException("Unsupported type: " + type);
+        }
 
         return (summand1 > 0 && positiveBoundary - summand1 < summand2)
                 || (summand1 < 0 && negativeBoundary - summand1 > summand2);
-    }
-
-    private static String stringSuffix() {
-        return (lengthOfStringsSequence == 1) ? "" : (" (x" + lengthOfStringsSequence + ")");
     }
 
     private static void printlnAccumulatedData(int type) {
@@ -137,17 +133,14 @@ public class Logger {
             case NOTHING:
                 break;
             case INT:
-                printlnInt(intSum);
-                intSum = 0;
-                break;
             case BYTE:
-                printlnInt(byteSum);
-                byteSum = 0;
+                printlnInteger(sum);
+                sum = 0;
                 break;
             case CHAR:
                 break;
             case STRING:
-                printlnSting();
+                printlnLastString();
                 lastString = null;
                 lengthOfStringsSequence = 0;
                 break;
@@ -167,12 +160,16 @@ public class Logger {
         }
     }
 
-    private static void printlnInt(int integer) {
+    private static void printlnInteger(int integer) {
         println(PRIMITIVE_STRING + integer);
     }
 
-    private static void printlnSting() {
+    private static void printlnLastString() {
         println("string: " + lastString + stringSuffix());
+    }
+
+    private static String stringSuffix() {
+        return (lengthOfStringsSequence == 1) ? "" : (" (x" + lengthOfStringsSequence + ")");
     }
 
     private static void println(String message) {
