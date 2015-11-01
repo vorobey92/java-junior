@@ -7,14 +7,14 @@ package com.acme.edu;
  */
 public class Logger {
 
-    private final static int UNACCUMULATING = 0;
-    private final static int INT_ACCUMULATING = 1;
-    private final static int BYTE_ACCUMULATING = 2;
-    private final static int STRING_ACCUMULATING = 3;
+    private static final int UNACCUMULATING = 0;
+    private static final int INT_ACCUMULATING = 1;
+    private static final int BYTE_ACCUMULATING = 2;
+    private static final int STRING_ACCUMULATING = 3;
 
     private static int currentSate = UNACCUMULATING;
 
-    private final static String PRIMITIVE_STRING = "primitive: ";
+    private static final String PRIMITIVE_STRING = "primitive: ";
 
     private static int sum = 0;
     private static int lengthOfStringsSequence = 0;
