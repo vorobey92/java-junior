@@ -18,7 +18,7 @@ public class Logger {
      * @param message  number (int) that will be logged
      */
     public static void log(int message) {
-        if (!"".equals(tempStr)) {
+        if (!tempStr.isEmpty()) {
             releaseStringsFromTemp();
         }
 
@@ -35,7 +35,7 @@ public class Logger {
      * @param message  number (byte) that will be logged
      */
     public static void log(byte message) {
-        if (!"".equals(tempStr)) {
+        if (!tempStr.isEmpty()) {
             releaseStringsFromTemp();
         }
 
@@ -70,7 +70,7 @@ public class Logger {
     public static void log(String message) {
         checkAndPrintSum();
 
-        if ("".equals(tempStr)){
+        if (tempStr.isEmpty()){
             tempStr = message;
             return;
         }
@@ -177,7 +177,7 @@ public class Logger {
     private static void releaseStringsFromTemp() {
         if (cntOfStrings != 1) {
             print("string: " + tempStr + " (x" + cntOfStrings + ")");
-        } else if (!"".equals(tempStr)) {
+        } else if (!tempStr.isEmpty()) {
             print("string: " + tempStr);
         }
         cntOfStrings = 1;
