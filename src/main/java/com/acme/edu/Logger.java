@@ -87,11 +87,8 @@ public class Logger{
      * @param message matrix of ints that will be loged
      */
     public static void log(int[][] message){
-        System.out.println("primitives matrix: {");
-        for (int i = 0; i < message.length; i++){
-            printArray(message[i]);
-        }
-        System.out.println("}");
+        System.out.print("primitives matrix: ");
+        printMatrix(message);
     }
 
     /**
@@ -100,19 +97,10 @@ public class Logger{
      */
     public static void log(int[][][][] message){
         System.out.println("primitives multimatrix: {");
-        for (int i = 0; i < message.length; i++){
+        for ( int[][][] mes:message) {
             System.out.println("{");
-            for(int j = 0; j < message[i].length; j++){
-                System.out.println("{");
-                for (int k = 0; j < message[i][j].length; k++){
-                    System.out.println("{");
-                    for(int x:message[i][j][k])System.out.print(x);
-                    System.out.println();
-                    System.out.println("}");
-                    break;
-                }
-                System.out.println("}");
-            }
+            for (int[][] mes2 : mes)
+                printMatrix(mes2);
             System.out.println("}");
         }
         System.out.println("}");
@@ -199,6 +187,14 @@ public class Logger{
             System.out.print(message[i]+", ");
         }
         System.out.println(message[message.length - 1] + "}");
+    }
+
+    private static void printMatrix(int[][] message) {
+        System.out.println("{");
+        for (int i = 0; i < message.length; i++){
+            printArray(message[i]);
+        }
+        System.out.println("}");
     }
 
     private Logger(){}
