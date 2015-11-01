@@ -8,11 +8,11 @@ package com.acme.edu;
 public class Logger {
 
     private final static int UNACCUMULATING = 0;
-    private final static int INT = 1;
-    private final static int BYTE = 2;
-    private final static int STRING = 3;
+    private final static int INT_ACCUMULATING = 1;
+    private final static int BYTE_ACCUMULATING = 2;
+    private final static int STRING_ACCUMULATING = 3;
 
-    private static int currentType = UNACCUMULATING;
+    private static int currentSate = UNACCUMULATING;
 
     private final static String PRIMITIVE_STRING = "primitive: ";
 
@@ -36,7 +36,7 @@ public class Logger {
      * @param message The int to be accumulated.
      */
     public static void log(int message) {
-        logIntegerMessage(INT, message);
+        logIntegerMessage(INT_ACCUMULATING, message);
     }
 
     /**
@@ -52,7 +52,7 @@ public class Logger {
      * @param message The byte to be accumulated.
      */
     public static void log(byte message) {
-        logIntegerMessage(BYTE, message);
+        logIntegerMessage(BYTE_ACCUMULATING, message);
     }
 
     /**
@@ -63,7 +63,7 @@ public class Logger {
      * @param message The char to be logged.
      */
     public static void log(char message) {
-        changeType(UNACCUMULATING);
+        changeState(UNACCUMULATING);
 
         println("char: " + message);
     }
@@ -82,13 +82,13 @@ public class Logger {
      * @param message The String to be accumulated.
      */
     public static void log(String message) {
-        changeType(STRING);
+        changeState(STRING_ACCUMULATING);
 
         if (lastString != null) {
             if (lastString.equals(message)) {
                 lengthOfStringsSequence++;
             } else {
-                printlnAccumulatedData(STRING);
+                printlnAccumulatedData(STRING_ACCUMULATING);
                 lengthOfStringsSequence = 1;
             }
         } else {
@@ -105,7 +105,7 @@ public class Logger {
      * @param message The boolean to be logged.
      */
     public static void log(boolean message) {
-        changeType(UNACCUMULATING);
+        changeState(UNACCUMULATING);
 
         println(PRIMITIVE_STRING + message);
     }
@@ -118,7 +118,7 @@ public class Logger {
      * @param message The Object to be logged.
      */
     public static void log(Object message) {
-        changeType(UNACCUMULATING);
+        changeState(UNACCUMULATING);
 
         println("reference: " + message);
     }
@@ -172,21 +172,21 @@ public class Logger {
      * after the close() method is invoked.
      */
     public static void close() {
-        changeType(UNACCUMULATING);
+        changeState(UNACCUMULATING);
     }
 
-    private static void changeType(int type) {
-        if (currentType != type) {
-            printlnAccumulatedData(currentType);
+    private static void changeState(int state) {
+        if (currentSate != state) {
+            printlnAccumulatedData(currentSate);
         }
-        currentType = type;
+        currentSate = state;
     }
 
-    private static void logIntegerMessage(int type, int message) {
-        changeType(type);
+    private static void logIntegerMessage(int state, int message) {
+        changeState(state);
 
-        if (isSumOutOfRange(type, message, sum)) {
-            changeType(UNACCUMULATING);
+        if (isSumOutOfRange(state, message, sum)) {
+            changeState(UNACCUMULATING);
             printlnInteger(message);
 
             return;
@@ -194,43 +194,43 @@ public class Logger {
         sum += message;
     }
 
-    private static boolean isSumOutOfRange(int type, int summand1, int summand2) {
+    private static boolean isSumOutOfRange(int state, int summand1, int summand2) {
         int positiveBoundary;
         int negativeBoundary;
 
-        switch (type) {
-            case INT:
+        switch (state) {
+            case INT_ACCUMULATING:
                 positiveBoundary = Integer.MAX_VALUE;
                 negativeBoundary = Integer.MIN_VALUE;
                 break;
-            case BYTE:
+            case BYTE_ACCUMULATING:
                 positiveBoundary = Byte.MAX_VALUE;
                 negativeBoundary = Byte.MIN_VALUE;
                 break;
             default:
-                throw new IllegalArgumentException("Unsupported type: " + type);
+                throw new IllegalArgumentException("Unsupported state: " + state);
         }
 
         return (summand1 > 0 && positiveBoundary - summand1 < summand2)
                 || (summand1 < 0 && negativeBoundary - summand1 > summand2);
     }
 
-    private static void printlnAccumulatedData(int type) {
-        switch (type) {
+    private static void printlnAccumulatedData(int state) {
+        switch (state) {
             case UNACCUMULATING:
                 break;
-            case INT:
-            case BYTE:
+            case INT_ACCUMULATING:
+            case BYTE_ACCUMULATING:
                 printlnInteger(sum);
                 sum = 0;
                 break;
-            case STRING:
+            case STRING_ACCUMULATING:
                 printlnLastString();
                 lastString = null;
                 lengthOfStringsSequence = 0;
                 break;
             default:
-                throw new IllegalArgumentException("Unsupported type: " + type);
+                throw new IllegalArgumentException("Unsupported state: " + state);
 
         }
     }
