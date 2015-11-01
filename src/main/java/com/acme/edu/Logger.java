@@ -58,7 +58,7 @@ public class Logger {
      * @param message  char that will be logged
      */
     public static void log(char message) {
-        print("char: " + message);
+        println("char: " + message);
     }
 
     /**
@@ -66,7 +66,7 @@ public class Logger {
      * @param message  boolean that will be logged
      */
     public static void log(boolean message) {
-        print("primitive: " + message);
+        println("primitive: " + message);
     }
 
     /**
@@ -96,7 +96,7 @@ public class Logger {
      * @param message object that will be logged
      */
     public static void log(Object message) {
-        print("reference: " + message.toString());
+        println("reference: " + message.toString());
     }
 
     /**
@@ -104,7 +104,7 @@ public class Logger {
      * @param message array of ints that will be loged
      */
     public static void log(int... message){
-        System.out.print("primitives array: ");
+        print("primitives array: ");
         printArray(message);
     }
 
@@ -113,7 +113,7 @@ public class Logger {
      * @param message matrix of ints that will be loged
      */
     public static void log(int[][] message){
-        System.out.print("primitives matrix: ");
+        print("primitives matrix: ");
         printMatrix(message);
     }
 
@@ -122,16 +122,16 @@ public class Logger {
      * @param message multimatrix that will be loged
      */
     public static void log(int[][][][] message){
-        System.out.println("primitives multimatrix: {");
+        println("primitives multimatrix: {");
 
         for (int[][][] mes : message) {
-            System.out.println("{");
+            println("{");
             for (int[][] mes2 : mes) {
                 printMatrix(mes2);
             }
-            System.out.println("}");
+            println("}");
         }
-        System.out.println("}");
+        println("}");
     }
 
     /**
@@ -140,7 +140,7 @@ public class Logger {
      */
     public static void log(String... message){
         for(String str : message) {
-            System.out.println(str);
+            println(str);
         }
     }
 
@@ -153,13 +153,17 @@ public class Logger {
     }
 
     private static void print(String message){
-        System.out.println(message);
+        System.out.print(message);
+    }
+
+    private static void println(String message){
+        print(message + System.lineSeparator());
     }
 
     private static boolean printIfOverflof(int message) {
         if (message + sumOfInts < 0) {
-            print("primitive: " + sumOfInts);
-            print("primitive: " + message);
+            println("primitive: " + sumOfInts);
+            println("primitive: " + message);
             resetCounters();
             return true;
         }
@@ -168,8 +172,8 @@ public class Logger {
 
     private static boolean printIfOverflof(byte message) {
         if ((byte)(message + sumOfInts) < 0) {
-            print("primitive: " + sumOfInts);
-            print("primitive: " + message);
+            println("primitive: " + sumOfInts);
+            println("primitive: " + message);
             resetCounters();
             return true;
         }
@@ -178,16 +182,16 @@ public class Logger {
 
     private static void checkAndPrintSum() {
         if (cntOfInts > 0) {
-            print("primitive: " + sumOfInts);
+            println("primitive: " + sumOfInts);
             resetCounters();
         }
     }
 
     private static void releaseStringsFromTemp() {
         if (cntOfStrings != 1) {
-            print("string: " + tempStr + " (x" + cntOfStrings + ")");
+            println("string: " + tempStr + " (x" + cntOfStrings + ")");
         } else if (!tempStr.isEmpty()) {
-            print("string: " + tempStr);
+            println("string: " + tempStr);
         }
         cntOfStrings = 1;
         tempStr = "";
@@ -199,9 +203,9 @@ public class Logger {
             cntOfStrings++;
             return true;
         } else if (cntOfStrings == 1) {
-            print("string: " + tempStr);
+            println("string: " + tempStr);
         } else {
-            print("string: " + tempStr + " (x" + cntOfStrings + ")");
+            println("string: " + tempStr + " (x" + cntOfStrings + ")");
             cntOfStrings = 1;
         }
         return false;
@@ -213,19 +217,19 @@ public class Logger {
     }
 
     private static void printArray(int[] message) {
-        System.out.print("{");
+        print("{");
         for (int i = 0; i < message.length - 1; i++){
-            System.out.print(message[i] + ", ");
+            print(message[i] + ", ");
         }
-        System.out.println(message[message.length - 1] + "}");
+        println(message[message.length - 1] + "}");
     }
 
     private static void printMatrix(int[][] message) {
-        System.out.println("{");
+        println("{");
         for (int[] arr : message){
             printArray(arr);
         }
-        System.out.println("}");
+        println("}");
     }
 
     private Logger(){}
