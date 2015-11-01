@@ -222,8 +222,8 @@ public class Logger {
 
     private static void printMatrix(int[][] message) {
         System.out.println("{");
-        for (int i = 0; i < message.length; i++){
-            printArray(message[i]);
+        for (int[] arr : message){
+            printArray(arr);
         }
         System.out.println("}");
     }
