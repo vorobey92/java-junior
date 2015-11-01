@@ -21,16 +21,15 @@ public class Logger {
      * @param message  number (int) that will be logged (or sum for sequence)
      */
     public static void log(int message) {
-        if (!tempStr.isEmpty()) {
-            releaseStringsFromTemp();
-        }
-
         if (printIfOverflof(message)) {
             return;
         }
-
+        if (!tempStr.isEmpty()) {
+            releaseStringsFromTemp();
+        }
         sumOfInts += message;
         cntOfInts++;
+
     }
 
     /**
@@ -41,16 +40,10 @@ public class Logger {
      * @param message  number (byte) that will be logged (or sum for sequence)
      */
     public static void log(byte message) {
-        if (!tempStr.isEmpty()) {
-            releaseStringsFromTemp();
-        }
-
         if (printIfOverflof(message)) {
             return;
         }
-
-        sumOfInts += message;
-        cntOfInts++;
+        log((int)message);
     }
 
     /**
@@ -199,6 +192,9 @@ public class Logger {
     }
 
     private static boolean logOrCountAndReturn(String message) {
+        if (message == null) {
+            return false;
+        }
         if (message.equals(tempStr)){
             cntOfStrings++;
             return true;
@@ -233,7 +229,5 @@ public class Logger {
     }
 
     private Logger(){}
-
-
-
+    
 }
