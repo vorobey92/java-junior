@@ -87,7 +87,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         assertSysoutContains("3");
         //endregion
     }
-/*
+
     @Test
     public void shouldCorrectDealWithIntegerOverflowWhenOneMethodCall() throws IOException {
         //region when
@@ -95,15 +95,14 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         Logger.log("str");
         Logger.log(Integer.MAX_VALUE - 10);
         Logger.log(11);
+        Logger.close();
         //endregion
 
         //region then
-        assertSysoutContains(1);
+        assertSysoutContains("" + 1);
         assertSysoutContains("str");
-        assertSysoutContains(Integer.MAX_VALUE - 10);
-        assertSysoutContains(11);
+        assertSysoutContains("" + (Integer.MAX_VALUE - 10));
+        assertSysoutContains("" + 11);
         //endregion
     }
-
-    */
 }
