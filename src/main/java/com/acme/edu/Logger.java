@@ -19,7 +19,7 @@ public class Logger{
      */
     public static void log(int message) {
         if (!"".equals(temp)) releaseStringsFromTemp();
-        if (checkOverflof(message)) return;
+        if (printIfOverflof(message)) return;
         sum +=message;
         cnt++;
     }
@@ -30,7 +30,7 @@ public class Logger{
      */
     public static void log(byte message) {
         if (!"".equals(temp)) releaseStringsFromTemp();
-        if (checkOverflof(message)) return;
+        if (printIfOverflof(message)) return;
         sum +=message;
         cnt++;
     }
@@ -61,7 +61,7 @@ public class Logger{
             temp = message;
             return;
         }
-        if (LogOrCountAndReturn(message)) return;
+        if (logOrCountAndReturn(message)) return;
         temp=message;
     }
 
@@ -126,7 +126,7 @@ public class Logger{
         System.out.println(message);
     }
 
-    private static boolean checkOverflof(int message) {
+    private static boolean printIfOverflof(int message) {
         if (message + sum < 0) {
             print("primitive: " + sum);
             print("primitive: " + message);
@@ -136,7 +136,7 @@ public class Logger{
         return false;
     }
 
-    private static boolean checkOverflof(byte message) {
+    private static boolean printIfOverflof(byte message) {
         if ((byte)(message +( sum)) < 0) {
             print("primitive: " + sum);
             print("primitive: " + message);
@@ -162,7 +162,7 @@ public class Logger{
 
     }
 
-    private static boolean LogOrCountAndReturn(String message) {
+    private static boolean logOrCountAndReturn(String message) {
         if (message.equals(temp)){
             strCnt++;
             return true;
@@ -184,7 +184,7 @@ public class Logger{
     private static void printArray(int[] message) {
         System.out.print("{");
         for (int i = 0; i < message.length-1; i++){
-            System.out.print(message[i]+", ");
+            System.out.print(message[i] + ", ");
         }
         System.out.println(message[message.length - 1] + "}");
     }
