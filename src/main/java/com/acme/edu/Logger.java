@@ -14,8 +14,11 @@ public class Logger {
     //endregions
 
     /**
-     *
-     * @param message  number (int) that will be logged
+     *  Method for logging ints.
+     *  Tip: For sequence of ints This method will log sum of ints when
+     *  Stirng log is came or logging is completed.
+     *  Also it logs two numbers (sum and new int) if type overflow while summing.
+     * @param message  number (int) that will be logged (or sum for sequence)
      */
     public static void log(int message) {
         if (!tempStr.isEmpty()) {
@@ -31,8 +34,11 @@ public class Logger {
     }
 
     /**
-     *
-     * @param message  number (byte) that will be logged
+     *  Method for logging bytes.
+     *  Tip: For sequence of bytes This method will log sum of bytes when
+     *  Stirng log is came or logging is completed.
+     *  Also it logs two numbers (sum and new byte) if type overflow while summing.
+     * @param message  number (byte) that will be logged (or sum for sequence)
      */
     public static void log(byte message) {
         if (!tempStr.isEmpty()) {
@@ -48,7 +54,7 @@ public class Logger {
     }
 
     /**
-     *
+     *  Method for logging bytes.
      * @param message  char that will be logged
      */
     public static void log(char message) {
@@ -56,7 +62,7 @@ public class Logger {
     }
 
     /**
-     *
+     *  Method for logging boolean.
      * @param message  boolean that will be logged
      */
     public static void log(boolean message) {
@@ -64,7 +70,10 @@ public class Logger {
     }
 
     /**
-     *
+     * Method for logging Strings.
+     * Before logging String, this method will log sum of sequent ints (if sum is exists).
+     * If message matches last logged String, method will count it before new String is came or Logger.close()
+     * method is called or any number is logged.
      * @param message string that will be logged
      */
     public static void log(String message) {
@@ -83,7 +92,7 @@ public class Logger {
     }
 
     /**
-     *
+     *  Method for logging Object
      * @param message object that will be logged
      */
     public static void log(Object message) {
@@ -91,7 +100,7 @@ public class Logger {
     }
 
     /**
-     *
+     *  Method for logging arrays of ints.
      * @param message array of ints that will be loged
      */
     public static void log(int... message){
