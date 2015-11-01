@@ -67,15 +67,11 @@ public class Logger {
     }
 
     public static void log(int[][] message) {
-        changeType(UNACCUMULATING);
-
-        println("primitives matrix: " + Helper.multidimensionalIntArraytoString(message));
+        log(Helper.multiDimIntArrayToOneDimIntArray(message));
     }
 
     public static void log(int[][][][] message) {
-        changeType(UNACCUMULATING);
-
-        println("primitives multimatrix: " + Helper.multidimensionalIntArraytoString(message));
+        log(Helper.multiDimIntArrayToOneDimIntArray(message));
     }
 
     public static void log(String... messages) {
