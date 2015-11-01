@@ -9,6 +9,8 @@ import org.junit.Test;
 import java.io.IOException;
 
 public class LoggerTest implements SysoutCaptureAndAssertionAbility {
+    private final static String SEP = System.lineSeparator();
+
     //region given
     @Before
     public void setUpSystemOut() throws IOException {
@@ -31,7 +33,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
 
         //region then
         assertSysoutEquals(
-                "primitive: 0\n"
+                "primitive: 0" + SEP
         );
         //endregion
     }
@@ -45,7 +47,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
 
         //region then
         assertSysoutEquals(
-                "primitive: 0\n"
+                "primitive: 0" + SEP
         );
         //endregion
     }
@@ -59,7 +61,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
 
         //region then
         assertSysoutEquals(
-                "primitive: 0\n"
+                "primitive: 0" + SEP
         );
         //endregion
     }
@@ -72,7 +74,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         //endregion
 
         //region then
-        assertSysoutContains("string: str1\nstring: string 2\nstring: str 3\n");
+        assertSysoutContains("string: str1" + SEP + "string: string 2" + SEP + "string: str 3" + SEP);
         //endregion
     }
 
