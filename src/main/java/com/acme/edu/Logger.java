@@ -60,10 +60,10 @@ public class Logger {
         println("reference: " + message);
     }
 
-    public static void log(int[] message) {
-        changeType(UNACCUMULATING);
-
-        println("primitives array: " + Helper.intArrayToString(message));
+    public static void log(int... messages) {
+        for (int message : messages) {
+            log(message);
+        }
     }
 
     public static void log(int[][] message) {
