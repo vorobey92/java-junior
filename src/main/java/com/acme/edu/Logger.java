@@ -84,16 +84,16 @@ public class Logger {
     public static void log(String message) {
         changeState(STRING_ACCUMULATING);
 
-        if (lastString != null) {
-            if (lastString.equals(message)) {
-                lengthOfStringsSequence++;
-            } else {
-                printlnAccumulatedData(STRING_ACCUMULATING);
-                lengthOfStringsSequence = 1;
-            }
-        } else {
-            lengthOfStringsSequence = 1;
+        if (lastString != null && lastString.equals(message)) {
+            ++lengthOfStringsSequence;
+            return;
         }
+
+        if (lastString != null && !lastString.equals(message)) {
+            printlnAccumulatedData(currentSate);
+        }
+
+        lengthOfStringsSequence = 1;
         lastString = message;
     }
 
