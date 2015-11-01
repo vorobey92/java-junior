@@ -2,18 +2,12 @@ package com.acme.edu;
 
 public class Logger {
 
-    private final static int NOTHING = 0;
+    private final static int UNACCUMULATING = 0;
     private final static int INT = 1;
     private final static int BYTE = 2;
-    private final static int CHAR = 3;
-    private final static int STRING = 4;
-    private final static int BOOLEAN = 5;
-    private final static int OBJECT = 6;
-    private final static int INT_ARRAY = 7;
-    private final static int INT_MATRIX = 8;
-    private final static int INT_MULTIMATRIX = 9;
+    private final static int STRING = 3;
 
-    private static int currentType = NOTHING;
+    private static int currentType = UNACCUMULATING;
 
     private final static String PRIMITIVE_STRING = "primitive: ";
 
@@ -33,7 +27,7 @@ public class Logger {
     }
 
     public static void log(char message) {
-        changeType(CHAR);
+        changeType(UNACCUMULATING);
 
         println("char: " + message);
     }
@@ -55,31 +49,31 @@ public class Logger {
     }
 
     public static void log(boolean message) {
-        changeType(BOOLEAN);
+        changeType(UNACCUMULATING);
 
         println(PRIMITIVE_STRING + message);
     }
 
     public static void log(Object message) {
-        changeType(OBJECT);
+        changeType(UNACCUMULATING);
 
         println("reference: " + message);
     }
 
     public static void log(int[] message) {
-        changeType(INT_ARRAY);
+        changeType(UNACCUMULATING);
 
         println("primitives array: " + Helper.intArrayToString(message));
     }
 
     public static void log(int[][] message) {
-        changeType(INT_MATRIX);
+        changeType(UNACCUMULATING);
 
         println("primitives matrix: " + Helper.multidimensionalIntArraytoString(message));
     }
 
     public static void log(int[][][][] message) {
-        changeType(INT_MULTIMATRIX);
+        changeType(UNACCUMULATING);
 
         println("primitives multimatrix: " + Helper.multidimensionalIntArraytoString(message));
     }
@@ -91,7 +85,7 @@ public class Logger {
     }
 
     public static void close() {
-        changeType(NOTHING);
+        changeType(UNACCUMULATING);
     }
 
     private static void changeType(int type) {
@@ -105,7 +99,7 @@ public class Logger {
         changeType(type);
 
         if (isSumOutOfRange(type, message, sum)) {
-            changeType(NOTHING);
+            changeType(UNACCUMULATING);
             printlnInteger(message);
 
             return;
@@ -136,29 +130,17 @@ public class Logger {
 
     private static void printlnAccumulatedData(int type) {
         switch (type) {
-            case NOTHING:
+            case UNACCUMULATING:
                 break;
             case INT:
             case BYTE:
                 printlnInteger(sum);
                 sum = 0;
                 break;
-            case CHAR:
-                break;
             case STRING:
                 printlnLastString();
                 lastString = null;
                 lengthOfStringsSequence = 0;
-                break;
-            case BOOLEAN:
-                break;
-            case OBJECT:
-                break;
-            case INT_ARRAY:
-                break;
-            case INT_MATRIX:
-                break;
-            case INT_MULTIMATRIX:
                 break;
             default:
                 throw new IllegalArgumentException("Unsupported type: " + type);
