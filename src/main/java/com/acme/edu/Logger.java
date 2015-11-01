@@ -5,13 +5,20 @@ package com.acme.edu;
  *  To use logging you need to use method Logger.close() to finish.
  */
 public class Logger {
-
+    //region Constants
+    public static final String PRIMITIVE = "primitive: ";
+    public static final String STRING = "string: ";
+    //endregion
     //region privateVars
     private static int cntOfInts = 0;
     private static int sumOfInts = 0;
     private static String tempStr = "";
     private static int cntOfStrings = 1;
     //endregions
+
+    private Logger(){
+
+    }
 
     /**
      *  Method for logging ints.
@@ -59,7 +66,7 @@ public class Logger {
      * @param message  boolean that will be logged
      */
     public static void log(boolean message) {
-        println("primitive: " + message);
+        println(PRIMITIVE + message);
     }
 
     /**
@@ -155,8 +162,8 @@ public class Logger {
 
     private static boolean printIfOverflof(int message) {
         if (message + sumOfInts < 0) {
-            println("primitive: " + sumOfInts);
-            println("primitive: " + message);
+            println(PRIMITIVE + sumOfInts);
+            println(PRIMITIVE + message);
             resetCounters();
             return true;
         }
@@ -165,8 +172,8 @@ public class Logger {
 
     private static boolean printIfOverflof(byte message) {
         if ((byte)(message + sumOfInts) < 0) {
-            println("primitive: " + sumOfInts);
-            println("primitive: " + message);
+            println(PRIMITIVE + sumOfInts);
+            println(PRIMITIVE + message);
             resetCounters();
             return true;
         }
@@ -175,16 +182,16 @@ public class Logger {
 
     private static void checkAndPrintSum() {
         if (cntOfInts > 0) {
-            println("primitive: " + sumOfInts);
+            println(PRIMITIVE + sumOfInts);
             resetCounters();
         }
     }
 
     private static void releaseStringsFromTemp() {
         if (cntOfStrings != 1) {
-            println("string: " + tempStr + " (x" + cntOfStrings + ")");
+            println(STRING + tempStr + " (x" + cntOfStrings + ")");
         } else if (!tempStr.isEmpty()) {
-            println("string: " + tempStr);
+            println(STRING + tempStr);
         }
         cntOfStrings = 1;
         tempStr = "";
@@ -199,9 +206,9 @@ public class Logger {
             cntOfStrings++;
             return true;
         } else if (cntOfStrings == 1) {
-            println("string: " + tempStr);
+            println(STRING + tempStr);
         } else {
-            println("string: " + tempStr + " (x" + cntOfStrings + ")");
+            println(STRING + tempStr + " (x" + cntOfStrings + ")");
             cntOfStrings = 1;
         }
         return false;
@@ -228,6 +235,4 @@ public class Logger {
         println("}");
     }
 
-    private Logger(){}
-    
 }
