@@ -4,13 +4,13 @@ package com.acme.edu;
  *  Class for logging messages.
  *  To use logging you need to use method Logger.close() to finish.
  */
-public class Logger{
+public class Logger {
 
     //region privateVars
-    private static int cnt =0;
-    private static int sum = 0;
-    private static String temp = "";
-    private static int strCnt = 1;
+    private static int cntOfInts = 0;
+    private static int sumOfInts = 0;
+    private static String tempStr = "";
+    private static int cntOfStrings = 1;
     //endregions
 
     /**
@@ -18,10 +18,16 @@ public class Logger{
      * @param message  number (int) that will be logged
      */
     public static void log(int message) {
-        if (!"".equals(temp)) releaseStringsFromTemp();
-        if (printIfOverflof(message)) return;
-        sum +=message;
-        cnt++;
+        if (!"".equals(tempStr)) {
+            releaseStringsFromTemp();
+        }
+
+        if (printIfOverflof(message)) {
+            return;
+        }
+
+        sumOfInts += message;
+        cntOfInts++;
     }
 
     /**
@@ -29,10 +35,16 @@ public class Logger{
      * @param message  number (byte) that will be logged
      */
     public static void log(byte message) {
-        if (!"".equals(temp)) releaseStringsFromTemp();
-        if (printIfOverflof(message)) return;
-        sum +=message;
-        cnt++;
+        if (!"".equals(tempStr)) {
+            releaseStringsFromTemp();
+        }
+
+        if (printIfOverflof(message)) {
+            return;
+        }
+
+        sumOfInts += message;
+        cntOfInts++;
     }
 
     /**
@@ -57,12 +69,17 @@ public class Logger{
      */
     public static void log(String message) {
         checkAndPrintSum();
-        if ("".equals(temp)){
-            temp = message;
+
+        if ("".equals(tempStr)){
+            tempStr = message;
             return;
         }
-        if (logOrCountAndReturn(message)) return;
-        temp=message;
+
+        if (logOrCountAndReturn(message)) {
+            return;
+        }
+
+        tempStr = message;
     }
 
     /**
@@ -97,10 +114,12 @@ public class Logger{
      */
     public static void log(int[][][][] message){
         System.out.println("primitives multimatrix: {");
-        for ( int[][][] mes:message) {
+
+        for (int[][][] mes : message) {
             System.out.println("{");
-            for (int[][] mes2 : mes)
+            for (int[][] mes2 : mes) {
                 printMatrix(mes2);
+            }
             System.out.println("}");
         }
         System.out.println("}");
@@ -111,7 +130,9 @@ public class Logger{
      * @param message array of Strings that will be loged
      */
     public static void log(String... message){
-        for(String str:message)System.out.println(str);
+        for(String str : message) {
+            System.out.println(str);
+        }
     }
 
     /**
@@ -127,8 +148,8 @@ public class Logger{
     }
 
     private static boolean printIfOverflof(int message) {
-        if (message + sum < 0) {
-            print("primitive: " + sum);
+        if (message + sumOfInts < 0) {
+            print("primitive: " + sumOfInts);
             print("primitive: " + message);
             resetCounters();
             return true;
@@ -137,8 +158,8 @@ public class Logger{
     }
 
     private static boolean printIfOverflof(byte message) {
-        if ((byte)(message +( sum)) < 0) {
-            print("primitive: " + sum);
+        if ((byte)(message + sumOfInts) < 0) {
+            print("primitive: " + sumOfInts);
             print("primitive: " + message);
             resetCounters();
             return true;
@@ -147,43 +168,44 @@ public class Logger{
     }
 
     private static void checkAndPrintSum() {
-        if ( cnt>0 ) {
-            print("primitive: " + sum);
+        if (cntOfInts > 0) {
+            print("primitive: " + sumOfInts);
             resetCounters();
         }
     }
 
     private static void releaseStringsFromTemp() {
-        if (strCnt!=1)
-            print("string: " + temp + " (x"+strCnt+")");
-        else if (!"".equals(temp)) print("string: " + temp);
-        strCnt=1;
-        temp="";
+        if (cntOfStrings != 1) {
+            print("string: " + tempStr + " (x" + cntOfStrings + ")");
+        } else if (!"".equals(tempStr)) {
+            print("string: " + tempStr);
+        }
+        cntOfStrings = 1;
+        tempStr = "";
 
     }
 
     private static boolean logOrCountAndReturn(String message) {
-        if (message.equals(temp)){
-            strCnt++;
+        if (message.equals(tempStr)){
+            cntOfStrings++;
             return true;
-        }
-        else if (strCnt==1)
-            print("string: " + temp);
-        else {
-            print("string: " + temp + " (x"+strCnt+")");
-            strCnt=1;
+        } else if (cntOfStrings == 1) {
+            print("string: " + tempStr);
+        } else {
+            print("string: " + tempStr + " (x" + cntOfStrings + ")");
+            cntOfStrings = 1;
         }
         return false;
     }
 
     private static void resetCounters() {
-        sum =0;
-        cnt=0;
+        sumOfInts = 0;
+        cntOfInts = 0;
     }
 
     private static void printArray(int[] message) {
         System.out.print("{");
-        for (int i = 0; i < message.length-1; i++){
+        for (int i = 0; i < message.length - 1; i++){
             System.out.print(message[i] + ", ");
         }
         System.out.println(message[message.length - 1] + "}");
