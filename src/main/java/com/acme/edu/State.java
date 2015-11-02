@@ -12,6 +12,11 @@ public abstract class State {
     public abstract void fflush();
     public abstract void log(String s);
 
+    public void close() {
+        fflush();
+        printer.close();
+    }
+
     protected Printer getPrinter() {
         return printer;
     }
