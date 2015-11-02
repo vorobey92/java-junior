@@ -10,7 +10,7 @@ public abstract class State {
     }
 
     public abstract void fflush();
-    public abstract void log(String s);
+    public abstract void log(String stringToBeLogged);
 
     public void close() {
         fflush();

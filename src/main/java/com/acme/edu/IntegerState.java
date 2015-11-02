@@ -23,10 +23,10 @@ public class IntegerState extends State {
     }
 
     @Override
-    public void log(String message) {
-        if (isSumOutOfRange(message)) {
+    public void log(String stringToBeLogged) {
+        if (isSumOutOfRange(stringToBeLogged)) {
             fflush();
-            buffer = message;
+            buffer = stringToBeLogged;
             fflush();
             buffer = null;
 
@@ -34,9 +34,9 @@ public class IntegerState extends State {
         }
 
         if (buffer != null) {
-            buffer = Integer.toString(Integer.parseInt(buffer) + Integer.parseInt(message));
+            buffer = Integer.toString(Integer.parseInt(buffer) + Integer.parseInt(stringToBeLogged));
         } else {
-            buffer = message;
+            buffer = stringToBeLogged;
         }
     }
 

@@ -13,7 +13,7 @@ public class UnaccumulatingState extends State {
     }
 
     @Override
-    public void log(String s) {
-        getPrinter().println(s);
+    public void log(String stringToBeLogged) {
+        getPrinter().println(stringToBeLogged);
     }
 }

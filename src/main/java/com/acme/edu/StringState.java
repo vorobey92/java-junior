@@ -21,18 +21,18 @@ public class StringState extends State {
     }
 
     @Override
-    public void log(String message) {
-        if (buffer != null && buffer.equals(message)) {
+    public void log(String stringToBeLogged) {
+        if (buffer != null && buffer.equals(stringToBeLogged)) {
             ++lengthOfStringsSequence;
             return;
         }
 
-        if (buffer != null && !buffer.equals(message)) {
+        if (buffer != null && !buffer.equals(stringToBeLogged)) {
             fflush();
         }
 
         lengthOfStringsSequence = 1;
-        buffer = message;
+        buffer = stringToBeLogged;
     }
 
     private String stringSuffix() {
