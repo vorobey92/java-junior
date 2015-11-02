@@ -8,16 +8,12 @@ public interface Printer {
      *
      * @param message
      */
-    public static void print(String message){
-
-    }
+    public void print(String message);
 
     /**
      *
      * @param message
      */
-    public static void println(String message){
-
-    }
+    public void println(String message);
 
 }

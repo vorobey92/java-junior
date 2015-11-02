@@ -9,7 +9,7 @@ public class ConsolePrinter implements Printer {
      *
      * @param message
      */
-    public static void print(String message) {
+    public void print(String message) {
         System.out.print(message);
     }
 
@@ -17,7 +17,7 @@ public class ConsolePrinter implements Printer {
      *
      * @param message
      */
-    public static void printer(String message){
+    public void println(String message){
         print(message + System.lineSeparator());
     }
 }

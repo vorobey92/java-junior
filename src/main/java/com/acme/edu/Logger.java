@@ -162,68 +162,7 @@ public class Logger {
 //        }
 //    }
 
-    /**
-     * Method for finishing logging. Prints the rest statement.
-     */
-//    public static void close(){
-//        checkAndPrintSum();
-//        releaseStringsFromTemp();
-//    }
-
- /*   private static void changeStateOrPrint(State param, String message){
-//        switch (param){
-//            case STRING :
-//                break;
-//            case INT_OR_BYTE :
-                if (printIfOverflof(Integer.parseInt(message))) {
-                    return;
-                }
-                if (!buffer.isEmpty()) {
-                    releaseStringsFromTemp();
-                }
-                bufferOfInts += Integer.parseInt(message);
-                cntOfInts++;
-//                break;
-//            case EMPTY :
-//                break;
-        }
-    }
-    */
-/*
-
-
-    private static void checkAndPrintSum() {
-        if (cntOfInts > 0) {
-            println(PRIMITIVE + bufferOfInts);
-            resetCounters();
-        }
-    }
-
-
-
-    private static boolean logOrCountAndReturn(String message) {
-        if (message == null) {
-            return false;
-        }
-        if (message.equals(buffer)){
-            cntOfStrings++;
-            return true;
-        } else if (cntOfStrings == 1) {
-            println(STRING + buffer);
-        } else {
-            println(STRING + buffer + " (x" + cntOfStrings + ")");
-            cntOfStrings = 1;
-        }
-        return false;
-    }
-
-    protected static void print(String message){
-        System.out.print(message);
-    }
-
-    protected static void println(String message){
-        print(message + System.lineSeparator());
-    }
+   /*
 
     private static void printArray(int[] message) {
         print("{");

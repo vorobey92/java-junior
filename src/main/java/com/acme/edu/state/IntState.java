@@ -40,7 +40,7 @@ public class IntState extends State {
         checkAndPrintSum();
     }
 
-    protected static void checkAndPrintSum() {
+    protected void checkAndPrintSum() {
         if (cntOfInts > 0) {
             println(PRIMITIVE + bufferOfInts);
             resetCounters();
@@ -52,7 +52,7 @@ public class IntState extends State {
         cntOfInts = 0;
     }
 
-    private static boolean printIfOverflof(int message) {
+    private boolean printIfOverflof(int message) {
         if (message + bufferOfInts < 0) {
             println(PRIMITIVE + bufferOfInts);
             println(PRIMITIVE + message);

@@ -7,7 +7,7 @@ import com.acme.edu.printer.Printer;
  */
 public abstract class State {
 
-    private Printer printer;
+    protected Printer printer;
 
     public State (Printer printer){
         this.printer = printer;
@@ -28,12 +28,12 @@ public abstract class State {
 
     }
 
-    protected static void print(String message){
-        System.out.print(message);
+    protected void print(String message){
+        printer.print(message);
     }
 
-    protected static void println(String message){
-        print(message + System.lineSeparator());
+    protected void println(String message){
+        printer.println(message);
     }
 
 
