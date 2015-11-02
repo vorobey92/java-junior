@@ -2,9 +2,9 @@ package com.acme.edu;
 
 import java.util.Arrays;
 
-class Helper {
+class ArrayUtils {
 
-    private Helper() {
+    private ArrayUtils() {
 
     }
 

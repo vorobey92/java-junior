@@ -142,7 +142,7 @@ public class Logger {
      * @param message a two-dimensional array of ints to be accumulated.
      */
     public static void log(int[][] message) {
-        log(Helper.multiDimIntArrayToOneDimIntArray(message));
+        log(ArrayUtils.multiDimIntArrayToOneDimIntArray(message));
     }
 
     /**
@@ -152,7 +152,7 @@ public class Logger {
      * @param message a four-dimensional array of ints to be accumulated.
      */
     public static void log(int[][][][] message) {
-        log(Helper.multiDimIntArrayToOneDimIntArray(message));
+        log(ArrayUtils.multiDimIntArrayToOneDimIntArray(message));
     }
 
     /**
