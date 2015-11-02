@@ -1,8 +1,18 @@
 package com.acme.edu;
 
-import java.io.OutputStream;
+import com.acme.edu.printers.Printer;
 
-public interface State {
-    void print();
-    void add(String s);
+public abstract class State {
+    private Printer printer;
+
+    public State(Printer printer) {
+        this.printer = printer;
+    }
+
+    public abstract void print();
+    public abstract void add(String s);
+
+    protected Printer getPrinter() {
+        return printer;
+    }
 }

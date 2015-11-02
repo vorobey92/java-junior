@@ -1,18 +1,15 @@
 package com.acme.edu;
 
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.io.PrintWriter;
+import com.acme.edu.printers.Printer;
 
-public class IntegerState implements State {
+public class IntegerState extends State {
     private String buffer;
-    private PrintStream printWriter;
     private int maxValue;
     private int minValue;
 
-    public IntegerState(int maxValue, int minValue, PrintStream outputStream) {
+    public IntegerState(int maxValue, int minValue, Printer printer) {
+        super(printer);
         buffer = null;
-        printWriter = outputStream;
         this.maxValue = maxValue;
         this.minValue = minValue;
     }
@@ -20,7 +17,7 @@ public class IntegerState implements State {
     @Override
     public void print() {
         if (buffer != null) {
-            printWriter.println("primitive: " + buffer);
+            getPrinter().println("primitive: " + buffer);
             buffer = null;
         }
     }
@@ -47,8 +44,10 @@ public class IntegerState implements State {
         if (buffer == null) {
             return false;
         }
+
         int sum = Integer.parseInt(buffer);
         int summand = Integer.parseInt(message);
+
         return (summand > 0 && maxValue - summand < sum)
                 || (summand < 0 && minValue - summand > sum);
     }

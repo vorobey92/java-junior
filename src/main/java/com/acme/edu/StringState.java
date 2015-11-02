@@ -1,24 +1,21 @@
 package com.acme.edu;
 
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.io.PrintWriter;
+import com.acme.edu.printers.Printer;
 
-public class StringState implements State {
+public class StringState extends State {
     private String buffer;
     private int lengthOfStringsSequence;
-    private PrintStream printWriter;
 
-    public StringState(PrintStream outputStream) {
+    public StringState(Printer printer) {
+        super(printer);
         buffer = null;
-        printWriter = outputStream;
         lengthOfStringsSequence = 0;
     }
 
     @Override
     public void print() {
         if (buffer != null) {
-            printWriter.println("string: " + buffer + stringSuffix());
+            getPrinter().println("string: " + buffer + stringSuffix());
             buffer = null;
         }
     }

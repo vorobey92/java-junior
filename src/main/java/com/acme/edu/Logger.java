@@ -1,10 +1,12 @@
 package com.acme.edu;
 
-import sun.rmi.runtime.Log;
+import com.acme.edu.printers.Printer;
 
-import java.io.OutputStream;
-import java.io.PrintStream;
-
+/**
+ * A Logger can be used to log different types of messages to the standard output stream. A Logger
+ * accumulates some types of messages before logging (see description in method-level documentation).
+ * The close() method is used to force the Logger to write an accumulated data to the standard output stream.
+ */
 public class Logger {
 
     private State currentState;
@@ -13,14 +15,26 @@ public class Logger {
     private State byteState;
     private State stringState;
 
-    public Logger(PrintStream outputStream) {
-        unaccumulatingState = new Unaccumulating(outputStream);
-        intState = new IntegerState(Integer.MAX_VALUE, Integer.MIN_VALUE, outputStream);
-        byteState = new IntegerState(Byte.MAX_VALUE, Byte.MIN_VALUE, outputStream);
-        stringState = new StringState(outputStream);
+    public Logger(Printer printer) {
+        unaccumulatingState = new Unaccumulating(printer);
+        intState = new IntegerState(Integer.MAX_VALUE, Integer.MIN_VALUE, printer);
+        byteState = new IntegerState(Byte.MAX_VALUE, Byte.MIN_VALUE, printer);
+        stringState = new StringState(printer);
         currentState = unaccumulatingState;
     }
 
+    /**
+     * Accumulates an integer. This is done by adding the passed integer to the sum. The sum is internally
+     * maintained through a continuous sequence of invocations of methods referred to int-family.
+     * If adding the integer comes to an integer overflow, the sum and the integer are logged respectively and
+     * the sum is set to zero. The accumulating is considered dropped.
+     * If the sequence of invocations of this method is discontinued by any method of Logger class not referred
+     * to int-family, the sum is logged and set to zero. The accumulating is considered dropped.
+     * This method also logs the currently accumulated data if it invokes after any other accumulated method of
+     * the Logger class.
+     *
+     * @param message The int to be accumulated.
+     */
     public void log(int message) {
         if (currentState == intState) {
             intState.add(String.valueOf(message));
@@ -162,6 +176,10 @@ public class Logger {
         }
     }
 
+    /**
+     * Closes the Logger. This is done by loging the accumulated data. The Logger still can be used
+     * after the close() method is invoked.
+     */
     public void close() {
         currentState.print();
     }

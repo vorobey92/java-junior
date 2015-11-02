@@ -1,14 +1,11 @@
 package com.acme.edu;
 
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.io.PrintWriter;
+import com.acme.edu.printers.Printer;
 
-public class Unaccumulating implements State {
-    private PrintStream printWriter;
+public class Unaccumulating extends State {
 
-    public Unaccumulating(PrintStream outputStream) {
-        printWriter = outputStream;
+    public Unaccumulating(Printer printer) {
+        super(printer);
     }
 
     @Override
@@ -17,6 +14,6 @@ public class Unaccumulating implements State {
 
     @Override
     public void add(String s) {
-        printWriter.println(s);
+        getPrinter().println(s);
     }
 }
