@@ -34,7 +34,7 @@ public class Logger {
      */
     public void log(int message) {
         State intState = new IntState();
-        intState.log(message+"");
+        intState.log(message + "");
         intState.close();
     }
 
@@ -45,20 +45,26 @@ public class Logger {
      *  Also it logs two numbers (sum and new byte) if type overflow while summing.
      * @param message  number (byte) that will be logged (or sum for sequence)
      */
-//    public static void log(byte message) {
+    public void log(byte message) {
+        State intState = new IntState();
+        intState.log(message + "");
+        intState.close();
 //        if (printIfOverflof(message)) {
 //            return;
 //        }
 //        log((int)message);
-//    }
+    }
 
     /**
      *  Method for logging bytes.
      * @param message  char that will be logged
      */
-//    public static void log(char message) {
+    public void log(char message) {
+        State stringState = new StringState();
+        stringState.log("char: " + message);
+        stringState.close();
 //        println("char: " + message);
-//    }
+    }
 
     /**
      *  Method for logging boolean.

@@ -43,11 +43,12 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         assertSysoutEquals("primitive: 1"+ SEP/*+"primitive: 0"+SEP+"primitive: -1"+SEP*/);
         //endregion
     }
-/*
+
     @Test
     public void shouldLogByte() throws IOException {
         //region when
-//        logger.log((byte)1);
+        Logger logger = new Logger();
+        logger.log((byte)1);
 //        Logger.close();
 //        Logger.log((byte)0);
 //        Logger.log((byte)-1);
@@ -63,12 +64,13 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
 
 
 //    TODO: implement Logger solution to match specification as tests
-/*
+
     @Test
     public void shouldLogChar() throws IOException {
         //region when
-        Logger.log('a');
-        Logger.log('b');
+        Logger logger = new Logger();
+        logger.log('a');
+        logger.log('b');
         //endregion
 
         //region then
@@ -77,7 +79,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         assertSysoutContains("b");
         //endregion
     }
-
+/*
     @Test
     public void shouldLogString() throws IOException {
 
