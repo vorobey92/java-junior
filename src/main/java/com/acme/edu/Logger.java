@@ -37,12 +37,12 @@ public class Logger {
      */
     public void log(int message) {
         if (currentState == intState) {
-            intState.add(String.valueOf(message));
+            intState.log(String.valueOf(message));
             return;
         }
 
-        currentState.print();
-        intState.add(String.valueOf(message));
+        currentState.fflush();
+        intState.log(String.valueOf(message));
         currentState = intState;
     }
 
@@ -60,12 +60,12 @@ public class Logger {
      */
     public void log(byte message) {
         if (currentState == byteState) {
-            byteState.add(String.valueOf(message));
+            byteState.log(String.valueOf(message));
             return;
         }
 
-        currentState.print();
-        byteState.add(String.valueOf(message));
+        currentState.fflush();
+        byteState.log(String.valueOf(message));
         currentState = byteState;
     }
 
@@ -77,8 +77,8 @@ public class Logger {
      * @param message The char to be logged.
      */
     public void log(char message) {
-        currentState.print();
-        unaccumulatingState.add(String.valueOf("char: " + message));
+        currentState.fflush();
+        unaccumulatingState.log(String.valueOf("char: " + message));
         currentState = unaccumulatingState;
     }
 
@@ -97,12 +97,12 @@ public class Logger {
      */
     public void log(String message) {
         if (currentState == stringState) {
-            stringState.add(String.valueOf(message));
+            stringState.log(String.valueOf(message));
             return;
         }
 
-        currentState.print();
-        stringState.add(message);
+        currentState.fflush();
+        stringState.log(message);
         currentState = stringState;
     }
 
@@ -114,8 +114,8 @@ public class Logger {
      * @param message The boolean to be logged.
      */
     public void log(boolean message) {
-        currentState.print();
-        unaccumulatingState.add(String.valueOf("primitive: " + message));
+        currentState.fflush();
+        unaccumulatingState.log(String.valueOf("primitive: " + message));
         currentState = unaccumulatingState;
     }
 
@@ -127,8 +127,8 @@ public class Logger {
      * @param message The Object to be logged.
      */
     public void log(Object message) {
-        currentState.print();
-        unaccumulatingState.add(String.valueOf("reference: " + message));
+        currentState.fflush();
+        unaccumulatingState.log(String.valueOf("reference: " + message));
         currentState = unaccumulatingState;
     }
 
@@ -181,6 +181,6 @@ public class Logger {
      * after the fflush() method is invoked.
      */
     public void fflush() {
-        currentState.print();
+        currentState.fflush();
     }
 }

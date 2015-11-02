@@ -9,8 +9,8 @@ public abstract class State {
         this.printer = printer;
     }
 
-    public abstract void print();
-    public abstract void add(String s);
+    public abstract void fflush();
+    public abstract void log(String s);
 
     protected Printer getPrinter() {
         return printer;

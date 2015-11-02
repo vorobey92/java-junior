@@ -13,7 +13,7 @@ public class StringState extends State {
     }
 
     @Override
-    public void print() {
+    public void fflush() {
         if (buffer != null) {
             getPrinter().println("string: " + buffer + stringSuffix());
             buffer = null;
@@ -21,14 +21,14 @@ public class StringState extends State {
     }
 
     @Override
-    public void add(String message) {
+    public void log(String message) {
         if (buffer != null && buffer.equals(message)) {
             ++lengthOfStringsSequence;
             return;
         }
 
         if (buffer != null && !buffer.equals(message)) {
-            print();
+            fflush();
         }
 
         lengthOfStringsSequence = 1;

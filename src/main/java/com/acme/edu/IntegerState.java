@@ -15,7 +15,7 @@ public class IntegerState extends State {
     }
 
     @Override
-    public void print() {
+    public void fflush() {
         if (buffer != null) {
             getPrinter().println("primitive: " + buffer);
             buffer = null;
@@ -23,11 +23,11 @@ public class IntegerState extends State {
     }
 
     @Override
-    public void add(String message) {
+    public void log(String message) {
         if (isSumOutOfRange(message)) {
-            print();
+            fflush();
             buffer = message;
-            print();
+            fflush();
             buffer = null;
 
             return;

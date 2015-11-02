@@ -9,11 +9,11 @@ public class UnaccumulatingState extends State {
     }
 
     @Override
-    public void print() {
+    public void fflush() {
     }
 
     @Override
-    public void add(String s) {
+    public void log(String s) {
         getPrinter().println(s);
     }
 }
