@@ -17,9 +17,7 @@ public class Logger {
         INT(new IntState(new ConsolePrinter())),
         STRING(new StringState(new ConsolePrinter())),
         BYTE(new ByteState(new ConsolePrinter())),
-        CHAR(new CharState(new ConsolePrinter())),
-        BOOL(new BooleanState(new ConsolePrinter())),
-        OBJ(new ObjectState(new ConsolePrinter()));
+        EMPTY_STATE(new EmptyState(new ConsolePrinter()));
 
         private State state;
 
@@ -27,7 +25,7 @@ public class Logger {
             this.state = state;
         }
 
-    }
+  }
 
     /**
      *  Method for logging ints.
@@ -62,8 +60,9 @@ public class Logger {
      * @param message  char that will be logged
      */
     public void log(char message) {
-        state = StateLoggerHolder.CHAR.state;
-        state.log("" + message);
+        state = StateLoggerHolder.EMPTY_STATE.state;
+        state.log("char: "+message);
+        lastState = StateLoggerHolder.EMPTY_STATE.state;
     }
 
     /**
@@ -71,8 +70,9 @@ public class Logger {
      * @param message  boolean that will be logged
      */
     public void log(boolean message) {
-        state = StateLoggerHolder.BOOL.state;
-        state.log("" + message);
+        state = StateLoggerHolder.EMPTY_STATE.state;
+        state.log("primitive: "+message);
+        lastState = StateLoggerHolder.EMPTY_STATE.state;
     }
 
     /**
@@ -94,8 +94,57 @@ public class Logger {
      * @param message object that will be logged
      */
     public void log(Object message) {
-        state = StateLoggerHolder.OBJ.state;
-        state.log(""+message);
+        state = StateLoggerHolder.EMPTY_STATE.state;
+        state.log("reference: "+message);
+        lastState = StateLoggerHolder.EMPTY_STATE.state;
+    }
+
+    /**
+     * Method for finishing logging. Prints the rest statement.
+     */
+    public void close(){
+        lastState.flush();
+    }
+
+    /**
+     *  Method for logging arrays of ints.
+     * @param message array of ints that will be loged
+     */
+    public void log(int... message){
+        state = StateLoggerHolder.EMPTY_STATE.state;
+        state.log(Mapper.fromArrayToString(message));
+        lastState = StateLoggerHolder.EMPTY_STATE.state;
+    }
+
+    /**
+     *
+     * @param message matrix of ints that will be loged
+     */
+    public void log(int[][] message){
+        state = StateLoggerHolder.EMPTY_STATE.state;
+        state.log(Mapper.fromMatrixToString(message));
+        lastState = StateLoggerHolder.EMPTY_STATE.state;
+    }
+
+    /**
+     *
+     * @param message multimatrix that will be loged
+     */
+    public void log(int[][][][] message){
+        state = StateLoggerHolder.EMPTY_STATE.state;
+        state.log(Mapper.fromMultiMatrixToString(message));
+        lastState = StateLoggerHolder.EMPTY_STATE.state;
+    }
+
+    /**
+     *
+     * @param message array of Strings that will be loged
+     */
+    public void log(String... message){
+        state = StateLoggerHolder.EMPTY_STATE.state;
+        for(String str : message) {
+            state.log(str + System.lineSeparator());
+        }
     }
 
     private void matchIntStateOrReleaseBuff(){
@@ -110,74 +159,4 @@ public class Logger {
         }
     }
 
-    /**
-     * Method for finishing logging. Prints the rest statement.
-     */
-    public void close(){
-        lastState.flush();
-    }
-
-    /**
-     *  Method for logging arrays of ints.
-     * @param message array of ints that will be loged
-     */
-//    public static void log(int... message){
-//        print("primitives array: ");
-//        printArray(message);
-//    }
-
-    /**
-     *
-     * @param message matrix of ints that will be loged
-     */
-//    public static void log(int[][] message){
-//        print("primitives matrix: ");
-//        printMatrix(message);
-//    }
-
-    /**
-     *
-     * @param message multimatrix that will be loged
-     */
-//    public static void log(int[][][][] message){
-//        println("primitives multimatrix: {");
-//
-//        for (int[][][] mes : message) {
-//            println("{");
-//            for (int[][] mes2 : mes) {
-//                printMatrix(mes2);
-//            }
-//            println("}");
-//        }
-//        println("}");
-//    }
-
-    /**
-     *
-     * @param message array of Strings that will be loged
-     */
-//    public static void log(String... message){
-//        for(String str : message) {
-//            println(str);
-//        }
-//    }
-
-   /*
-
-    private static void printArray(int[] message) {
-        print("{");
-        for (int i = 0; i < message.length - 1; i++){
-            print(message[i] + ", ");
-        }
-        println(message[message.length - 1] + "}");
-    }
-
-    private static void printMatrix(int[][] message) {
-        println("{");
-        for (int[] arr : message){
-            printArray(arr);
-        }
-        println("}");
-    }
-*/
 }

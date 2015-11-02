@@ -5,12 +5,13 @@ import com.acme.edu.printer.Printer;
 /**
  *
  */
-public class BooleanState extends State {
+public class EmptyState extends State {
+
     /**
      *
-     * @param printer ..
+     * @param printer
      */
-    public BooleanState(Printer printer) {
+    public EmptyState(Printer printer) {
         super(printer);
     }
 
@@ -19,14 +20,6 @@ public class BooleanState extends State {
      * @param message JavaDoc not ready
      */
     public void log(String message){
-        println("primitive: " + message);
+        print(message);
     }
-
-    @Override
-    /**
-     *
-     */
-    public void flush() {
-    }
-
 }
