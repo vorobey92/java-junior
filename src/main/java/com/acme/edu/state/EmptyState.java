@@ -19,6 +19,7 @@ public class EmptyState extends State {
      *
      * @param message JavaDoc not ready
      */
+    @Override
     public void log(String message){
         print(message);
     }

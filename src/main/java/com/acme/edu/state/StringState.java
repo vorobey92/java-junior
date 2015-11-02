@@ -23,6 +23,7 @@ public class StringState extends State {
      *
      * @param message javaDoc not ready
      */
+    @Override
     public void log(String message){
 
         if (buffer.isEmpty()){
@@ -40,6 +41,7 @@ public class StringState extends State {
     /**
      *
      */
+    @Override
     public void flush(){
         releaseStringsFromTemp();
     }

@@ -24,6 +24,7 @@ public class IntState extends State {
      *
      * @param message JavaDoc not ready
      */
+    @Override
     public void log(String message){
         if (printIfOverflof(Integer.parseInt(message))) {
             return;
@@ -36,6 +37,7 @@ public class IntState extends State {
     /**
      *
      */
+    @Override
     public void flush(){
         checkAndPrintSum();
     }

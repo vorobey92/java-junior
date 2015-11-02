@@ -5,6 +5,9 @@ package com.acme.edu;
  */
 public class Mapper {
 
+    private Mapper(){
+
+    }
 
     /**
      *
@@ -12,7 +15,7 @@ public class Mapper {
      * @return
      */
     public static String fromArrayToString(int... message){
-        StringBuffer str = new StringBuffer("primitives array: ");
+        StringBuilder str = new StringBuilder("primitives array: ");
         return str.append(printArray(message)).toString();
     }
 
@@ -22,7 +25,7 @@ public class Mapper {
      * @return
      */
     public static String fromMatrixToString(int[][] message){
-        StringBuffer str = new StringBuffer("primitives matrix: ");
+        StringBuilder str = new StringBuilder("primitives matrix: ");
         return str.append(printMatrix(message)).toString();
     }
 
@@ -32,7 +35,7 @@ public class Mapper {
      * @return
      */
     public static String fromMultiMatrixToString(int[][][][] message){
-        StringBuffer str = new StringBuffer("primitives multimatrix: {" + System.lineSeparator());
+        StringBuilder str = new StringBuilder("primitives multimatrix: {" + System.lineSeparator());
         for (int[][][] mes : message) {
             str.append("{" + System.lineSeparator());
             for (int[][] mes2 : mes) {
@@ -45,7 +48,7 @@ public class Mapper {
     }
 
     private static String printArray(int[] message) {
-        StringBuffer s = new StringBuffer("");
+        StringBuilder s = new StringBuilder("");
         s.append("{");
         for (int i = 0; i < message.length - 1; i++){
             s.append(message[i] + ", ");
@@ -55,7 +58,7 @@ public class Mapper {
     }
 
     private static String printMatrix(int[][] message) {
-        StringBuffer s = new StringBuffer("");
+        StringBuilder s = new StringBuilder("");
         s.append("{" + System.lineSeparator());
         for (int[] arr : message){
             s.append(printArray(arr));
