@@ -16,7 +16,7 @@ public class Logger {
     private State stringState;
 
     public Logger(Printer printer) {
-        unaccumulatingState = new Unaccumulating(printer);
+        unaccumulatingState = new UnaccumulatingState(printer);
         intState = new IntegerState(Integer.MAX_VALUE, Integer.MIN_VALUE, printer);
         byteState = new IntegerState(Byte.MAX_VALUE, Byte.MIN_VALUE, printer);
         stringState = new StringState(printer);

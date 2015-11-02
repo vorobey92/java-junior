@@ -2,9 +2,9 @@ package com.acme.edu;
 
 import com.acme.edu.printers.Printer;
 
-public class Unaccumulating extends State {
+public class UnaccumulatingState extends State {
 
-    public Unaccumulating(Printer printer) {
+    public UnaccumulatingState(Printer printer) {
         super(printer);
     }
 
