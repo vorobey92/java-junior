@@ -11,13 +11,18 @@ public class Logger {
     //endregion
     //region privateVars
     private static int cntOfInts = 0;
-    private static int sumOfInts = 0;
-    private static String tempStr = "";
+    private static int bufferOfInts = 0;
+    private static String buffer = "";
     private static int cntOfStrings = 1;
+//    private static String bufferOfInts = "0";
     //endregions
 
     private Logger(){
 
+    }
+
+    enum State {
+        STRING, INT_OR_BYTE, EMPTY;
     }
 
     /**
@@ -28,14 +33,7 @@ public class Logger {
      * @param message  number (int) that will be logged (or sum for sequence)
      */
     public static void log(int message) {
-        if (printIfOverflof(message)) {
-            return;
-        }
-        if (!tempStr.isEmpty()) {
-            releaseStringsFromTemp();
-        }
-        sumOfInts += message;
-        cntOfInts++;
+        changeStateOrPrint(State.INT_OR_BYTE, message+"");
 
     }
 
@@ -79,8 +77,8 @@ public class Logger {
     public static void log(String message) {
         checkAndPrintSum();
 
-        if (tempStr.isEmpty()){
-            tempStr = message;
+        if (buffer.isEmpty()){
+            buffer = message;
             return;
         }
 
@@ -88,7 +86,8 @@ public class Logger {
             return;
         }
 
-        tempStr = message;
+        buffer = message;
+        changeStateOrPrint(State.STRING, buffer);
     }
 
     /**
@@ -152,6 +151,25 @@ public class Logger {
         releaseStringsFromTemp();
     }
 
+    private static void changeStateOrPrint(State param, String message){
+        switch (param){
+            case STRING :
+                break;
+            case INT_OR_BYTE :
+                if (printIfOverflof(Integer.parseInt(message))) {
+                    return;
+                }
+                if (!buffer.isEmpty()) {
+                    releaseStringsFromTemp();
+                }
+                bufferOfInts += Integer.parseInt(message);
+                cntOfInts++;
+                break;
+            case EMPTY :
+                break;
+        }
+    }
+
     private static void print(String message){
         System.out.print(message);
     }
@@ -161,8 +179,8 @@ public class Logger {
     }
 
     private static boolean printIfOverflof(int message) {
-        if (message + sumOfInts < 0) {
-            println(PRIMITIVE + sumOfInts);
+        if (message + bufferOfInts < 0) {
+            println(PRIMITIVE + bufferOfInts);
             println(PRIMITIVE + message);
             resetCounters();
             return true;
@@ -171,8 +189,8 @@ public class Logger {
     }
 
     private static boolean printIfOverflof(byte message) {
-        if ((byte)(message + sumOfInts) < 0) {
-            println(PRIMITIVE + sumOfInts);
+        if ((byte)(message + bufferOfInts) < 0) {
+            println(PRIMITIVE + bufferOfInts);
             println(PRIMITIVE + message);
             resetCounters();
             return true;
@@ -182,19 +200,19 @@ public class Logger {
 
     private static void checkAndPrintSum() {
         if (cntOfInts > 0) {
-            println(PRIMITIVE + sumOfInts);
+            println(PRIMITIVE + bufferOfInts);
             resetCounters();
         }
     }
 
     private static void releaseStringsFromTemp() {
         if (cntOfStrings != 1) {
-            println(STRING + tempStr + " (x" + cntOfStrings + ")");
-        } else if (!tempStr.isEmpty()) {
-            println(STRING + tempStr);
+            println(STRING + buffer + " (x" + cntOfStrings + ")");
+        } else if (!buffer.isEmpty()) {
+            println(STRING + buffer);
         }
         cntOfStrings = 1;
-        tempStr = "";
+        buffer = "";
 
     }
 
@@ -202,20 +220,20 @@ public class Logger {
         if (message == null) {
             return false;
         }
-        if (message.equals(tempStr)){
+        if (message.equals(buffer)){
             cntOfStrings++;
             return true;
         } else if (cntOfStrings == 1) {
-            println(STRING + tempStr);
+            println(STRING + buffer);
         } else {
-            println(STRING + tempStr + " (x" + cntOfStrings + ")");
+            println(STRING + buffer + " (x" + cntOfStrings + ")");
             cntOfStrings = 1;
         }
         return false;
     }
 
     private static void resetCounters() {
-        sumOfInts = 0;
+        bufferOfInts = 0;
         cntOfInts = 0;
     }
 

@@ -89,7 +89,9 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         //endregion
 
         //region then
-        assertSysoutContains("3");
+        assertSysoutEquals(
+                "primitives array: {-1, 0, 1, 3}" + SEP
+        );
         //endregion
     }
 
