@@ -1,29 +1,29 @@
 package com.acme.edu;
-
+ import com.acme.edu.*;
 /**
  *  Class for logging messages.
  *  To use logging you need to use method Logger.close() to finish.
  */
 public class Logger {
     //region Constants
-    public static final String PRIMITIVE = "primitive: ";
-    public static final String STRING = "string: ";
+//    public static final String PRIMITIVE = "primitive: ";
+//    public static final String STRING = "string: ";
     //endregion
     //region privateVars
-    private static int cntOfInts = 0;
-    private static int bufferOfInts = 0;
-    private static String buffer = "";
-    private static int cntOfStrings = 1;
+//    private static int cntOfInts = 0;
+//    private static int bufferOfInts = 0;
+//    private static String buffer = "";
+//    private static int cntOfStrings = 1;
 //    private static String bufferOfInts = "0";
     //endregions
 
-    private Logger(){
+    public Logger(){
 
     }
 
-    enum State {
-        STRING, INT_OR_BYTE, EMPTY;
-    }
+//    enum State {
+//        STRING, INT_OR_BYTE, EMPTY;
+//    }
 
     /**
      *  Method for logging ints.
@@ -32,9 +32,10 @@ public class Logger {
      *  Also it logs two numbers (sum and new int) if type overflow while summing.
      * @param message  number (int) that will be logged (or sum for sequence)
      */
-    public static void log(int message) {
-        changeStateOrPrint(State.INT_OR_BYTE, message+"");
-
+    public void log(int message) {
+        State intState = new IntState();
+        intState.log(message+"");
+        intState.close();
     }
 
     /**
@@ -44,28 +45,28 @@ public class Logger {
      *  Also it logs two numbers (sum and new byte) if type overflow while summing.
      * @param message  number (byte) that will be logged (or sum for sequence)
      */
-    public static void log(byte message) {
-        if (printIfOverflof(message)) {
-            return;
-        }
-        log((int)message);
-    }
+//    public static void log(byte message) {
+//        if (printIfOverflof(message)) {
+//            return;
+//        }
+//        log((int)message);
+//    }
 
     /**
      *  Method for logging bytes.
      * @param message  char that will be logged
      */
-    public static void log(char message) {
-        println("char: " + message);
-    }
+//    public static void log(char message) {
+//        println("char: " + message);
+//    }
 
     /**
      *  Method for logging boolean.
      * @param message  boolean that will be logged
      */
-    public static void log(boolean message) {
-        println(PRIMITIVE + message);
-    }
+//    public static void log(boolean message) {
+//        println(PRIMITIVE + message);
+//    }
 
     /**
      * Method for logging Strings.
@@ -74,88 +75,88 @@ public class Logger {
      * method is called or any number is logged.
      * @param message string that will be logged
      */
-    public static void log(String message) {
-        checkAndPrintSum();
-
-        if (buffer.isEmpty()){
-            buffer = message;
-            return;
-        }
-
-        if (logOrCountAndReturn(message)) {
-            return;
-        }
-
-        buffer = message;
-        changeStateOrPrint(State.STRING, buffer);
-    }
+//    public static void log(String message) {
+//        checkAndPrintSum();
+//
+//        if (buffer.isEmpty()){
+//            buffer = message;
+//            return;
+//        }
+//
+//        if (logOrCountAndReturn(message)) {
+//            return;
+//        }
+//
+//        buffer = message;
+//        changeStateOrPrint(State.STRING, buffer);
+//    }
 
     /**
      *  Method for logging Object
      * @param message object that will be logged
      */
-    public static void log(Object message) {
-        println("reference: " + message.toString());
-    }
+//    public static void log(Object message) {
+//        println("reference: " + message.toString());
+//    }
 
     /**
      *  Method for logging arrays of ints.
      * @param message array of ints that will be loged
      */
-    public static void log(int... message){
-        print("primitives array: ");
-        printArray(message);
-    }
+//    public static void log(int... message){
+//        print("primitives array: ");
+//        printArray(message);
+//    }
 
     /**
      *
      * @param message matrix of ints that will be loged
      */
-    public static void log(int[][] message){
-        print("primitives matrix: ");
-        printMatrix(message);
-    }
+//    public static void log(int[][] message){
+//        print("primitives matrix: ");
+//        printMatrix(message);
+//    }
 
     /**
      *
      * @param message multimatrix that will be loged
      */
-    public static void log(int[][][][] message){
-        println("primitives multimatrix: {");
-
-        for (int[][][] mes : message) {
-            println("{");
-            for (int[][] mes2 : mes) {
-                printMatrix(mes2);
-            }
-            println("}");
-        }
-        println("}");
-    }
+//    public static void log(int[][][][] message){
+//        println("primitives multimatrix: {");
+//
+//        for (int[][][] mes : message) {
+//            println("{");
+//            for (int[][] mes2 : mes) {
+//                printMatrix(mes2);
+//            }
+//            println("}");
+//        }
+//        println("}");
+//    }
 
     /**
      *
      * @param message array of Strings that will be loged
      */
-    public static void log(String... message){
-        for(String str : message) {
-            println(str);
-        }
-    }
+//    public static void log(String... message){
+//        for(String str : message) {
+//            println(str);
+//        }
+//    }
 
     /**
      * Method for finishing logging. Prints the rest statement.
      */
-    public static void close(){
-        checkAndPrintSum();
-        releaseStringsFromTemp();
-    }
+//    public static void close(){
+//        checkAndPrintSum();
+//        releaseStringsFromTemp();
+//    }
 
-    private static void changeStateOrPrint(State param, String message){
-        switch (param){
-            case STRING :
-                break;
-            case INT_OR_BYTE :
+ /*   private static void changeStateOrPrint(State param, String message){
+//        switch (param){
+//            case STRING :
+//                break;
+//            case INT_OR_BYTE :
                 if (printIfOverflof(Integer.parseInt(message))) {
                     return;
                 }
@@ -164,39 +165,14 @@ public class Logger {
                 }
                 bufferOfInts += Integer.parseInt(message);
                 cntOfInts++;
-                break;
-            case EMPTY :
-                break;
+//                break;
+//            case EMPTY :
+//                break;
         }
     }
+    */
+/*
 
-    private static void print(String message){
-        System.out.print(message);
-    }
-
-    private static void println(String message){
-        print(message + System.lineSeparator());
-    }
-
-    private static boolean printIfOverflof(int message) {
-        if (message + bufferOfInts < 0) {
-            println(PRIMITIVE + bufferOfInts);
-            println(PRIMITIVE + message);
-            resetCounters();
-            return true;
-        }
-        return false;
-    }
-
-    private static boolean printIfOverflof(byte message) {
-        if ((byte)(message + bufferOfInts) < 0) {
-            println(PRIMITIVE + bufferOfInts);
-            println(PRIMITIVE + message);
-            resetCounters();
-            return true;
-        }
-        return false;
-    }
 
     private static void checkAndPrintSum() {
         if (cntOfInts > 0) {
@@ -205,16 +181,7 @@ public class Logger {
         }
     }
 
-    private static void releaseStringsFromTemp() {
-        if (cntOfStrings != 1) {
-            println(STRING + buffer + " (x" + cntOfStrings + ")");
-        } else if (!buffer.isEmpty()) {
-            println(STRING + buffer);
-        }
-        cntOfStrings = 1;
-        buffer = "";
 
-    }
 
     private static boolean logOrCountAndReturn(String message) {
         if (message == null) {
@@ -232,9 +199,12 @@ public class Logger {
         return false;
     }
 
-    private static void resetCounters() {
-        bufferOfInts = 0;
-        cntOfInts = 0;
+    protected static void print(String message){
+        System.out.print(message);
+    }
+
+    protected static void println(String message){
+        print(message + System.lineSeparator());
     }
 
     private static void printArray(int[] message) {
@@ -252,5 +222,5 @@ public class Logger {
         }
         println("}");
     }
-
+*/
 }
