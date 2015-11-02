@@ -31,7 +31,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     public void shouldLogIntegersArray() throws IOException {
         //region when
         logger.log(-1, 0, 1);
-        logger.close();
+        logger.fflush();
         //endregion
 
         //region then
@@ -45,7 +45,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     public void shouldLogIntegersMatrix() throws IOException {
         //region when
         logger.log(new int[][]{{-1, 0, 1}, {1, 2, 3}, {-1, -2, -3}});
-        logger.close();
+        logger.fflush();
         //endregion
 
         //region then
@@ -59,7 +59,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     public void shouldLogIntegersMulitidimentionalArray() throws IOException {
         //region when
         logger.log(new int[][][][]{{{{0}}}});
-        logger.close();
+        logger.fflush();
         //endregion
 
         //region then
@@ -73,7 +73,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     public void shouldLogStringsWithOneMethodCall() throws IOException {
         //region when
         logger.log("str1", "string 2", "str 3");
-        logger.close();
+        logger.fflush();
         //endregion
 
         //region then
@@ -85,7 +85,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     public void shouldLogIntegersWithOneMethodCall() throws IOException {
         //region when
         logger.log(-1, 0, 1, 3);
-        logger.close();
+        logger.fflush();
         //endregion
 
         //region then
@@ -100,7 +100,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         logger.log("str");
         logger.log(Integer.MAX_VALUE - 10);
         logger.log(11);
-        logger.close();
+        logger.fflush();
         //endregion
 
         //region then

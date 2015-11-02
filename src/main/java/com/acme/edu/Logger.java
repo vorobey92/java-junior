@@ -5,7 +5,7 @@ import com.acme.edu.printers.Printer;
 /**
  * A Logger can be used to log different types of messages to the standard output stream. A Logger
  * accumulates some types of messages before logging (see description in method-level documentation).
- * The close() method is used to force the Logger to write an accumulated data to the standard output stream.
+ * The fflush() method is used to force the Logger to write an accumulated data to the standard output stream.
  */
 public class Logger {
 
@@ -177,10 +177,10 @@ public class Logger {
     }
 
     /**
-     * Closes the Logger. This is done by loging the accumulated data. The Logger still can be used
-     * after the close() method is invoked.
+     * Flushes the Logger. This is done by loging the accumulated data. The Logger still can be used
+     * after the fflush() method is invoked.
      */
-    public void close() {
+    public void fflush() {
         currentState.print();
     }
 }

@@ -6,7 +6,6 @@ import com.acme.edu.printers.StdOutPrinter;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import sun.rmi.runtime.Log;
 
 import java.io.IOException;
 
@@ -30,7 +29,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         logger.log(2);
         logger.log("str 2");
         logger.log(0);
-        logger.close();
+        logger.fflush();
         //endregion
 
         //region then
@@ -51,7 +50,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         logger.log(Integer.MAX_VALUE);
         logger.log("str 2");
         logger.log(0);
-        logger.close();
+        logger.fflush();
         //endregion
 
         //region then
@@ -73,7 +72,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         logger.log(Byte.MAX_VALUE);
         logger.log("str 2");
         logger.log(0);
-        logger.close();
+        logger.fflush();
         //endregion
 
         //region then
@@ -98,7 +97,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         logger.log("str 3");
         logger.log("str 3");
         logger.log("str 3");
-        logger.close();
+        logger.fflush();
         //endregion
 
         //region then
