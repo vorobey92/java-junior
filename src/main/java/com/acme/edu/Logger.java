@@ -7,12 +7,11 @@ package com.acme.edu;
  */
 public class Logger {
 
-    private static final int UNACCUMULATING = 0;
-    private static final int INT_ACCUMULATING = 1;
-    private static final int BYTE_ACCUMULATING = 2;
-    private static final int STRING_ACCUMULATING = 3;
+    private enum State {
+        UNACCUMULATING, INT_ACCUMULATING, BYTE_ACCUMULATING, STRING_ACCUMULATING
+    }
 
-    private static int currentSate = UNACCUMULATING;
+    private static State currentState = State.UNACCUMULATING;
 
     private static final String PRIMITIVE_STRING = "primitive: ";
 
@@ -36,7 +35,7 @@ public class Logger {
      * @param message The int to be accumulated.
      */
     public static void log(int message) {
-        logIntegerMessage(INT_ACCUMULATING, message);
+        logIntegerMessage(State.INT_ACCUMULATING, message);
     }
 
     /**
@@ -52,7 +51,7 @@ public class Logger {
      * @param message The byte to be accumulated.
      */
     public static void log(byte message) {
-        logIntegerMessage(BYTE_ACCUMULATING, message);
+        logIntegerMessage(State.BYTE_ACCUMULATING, message);
     }
 
     /**
@@ -63,7 +62,7 @@ public class Logger {
      * @param message The char to be logged.
      */
     public static void log(char message) {
-        changeState(UNACCUMULATING);
+        changeState(State.UNACCUMULATING);
 
         println("char: " + message);
     }
@@ -82,7 +81,7 @@ public class Logger {
      * @param message The String to be accumulated.
      */
     public static void log(String message) {
-        changeState(STRING_ACCUMULATING);
+        changeState(State.STRING_ACCUMULATING);
 
         if (lastString != null && lastString.equals(message)) {
             ++lengthOfStringsSequence;
@@ -90,7 +89,7 @@ public class Logger {
         }
 
         if (lastString != null && !lastString.equals(message)) {
-            printlnAccumulatedData(currentSate);
+            printlnAccumulatedData(currentState);
         }
 
         lengthOfStringsSequence = 1;
@@ -105,7 +104,7 @@ public class Logger {
      * @param message The boolean to be logged.
      */
     public static void log(boolean message) {
-        changeState(UNACCUMULATING);
+        changeState(State.UNACCUMULATING);
 
         println(PRIMITIVE_STRING + message);
     }
@@ -118,7 +117,7 @@ public class Logger {
      * @param message The Object to be logged.
      */
     public static void log(Object message) {
-        changeState(UNACCUMULATING);
+        changeState(State.UNACCUMULATING);
 
         println("reference: " + message);
     }
@@ -172,29 +171,30 @@ public class Logger {
      * after the close() method is invoked.
      */
     public static void close() {
-        changeState(UNACCUMULATING);
+        changeState(State.UNACCUMULATING);
     }
 
-    private static void changeState(int state) {
-        if (currentSate != state) {
-            printlnAccumulatedData(currentSate);
+    private static void changeState(State state) {
+        if (currentState != state) {
+            printlnAccumulatedData(currentState);
         }
-        currentSate = state;
+        currentState = state;
     }
 
-    private static void logIntegerMessage(int state, int message) {
+    private static void logIntegerMessage(State state, int message) {
         changeState(state);
 
         if (isSumOutOfRange(state, message, sum)) {
-            changeState(UNACCUMULATING);
+            changeState(State.UNACCUMULATING);
             printlnInteger(message);
 
             return;
         }
+
         sum += message;
     }
 
-    private static boolean isSumOutOfRange(int state, int summand1, int summand2) {
+    private static boolean isSumOutOfRange(State state, int summand1, int summand2) {
         int positiveBoundary;
         int negativeBoundary;
 
@@ -215,7 +215,7 @@ public class Logger {
                 || (summand1 < 0 && negativeBoundary - summand1 > summand2);
     }
 
-    private static void printlnAccumulatedData(int state) {
+    private static void printlnAccumulatedData(State state) {
         switch (state) {
             case UNACCUMULATING:
                 break;
@@ -236,6 +236,10 @@ public class Logger {
     }
 
     private static void printlnInteger(int integer) {
+        println(PRIMITIVE_STRING + integer);
+    }
+
+    private static void printlnInteger(String integer) {
         println(PRIMITIVE_STRING + integer);
     }
 
