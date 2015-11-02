@@ -1,5 +1,7 @@
-package com.acme.edu;
+package com.acme.edu.state;
 
+
+import com.acme.edu.printer.Printer;
 
 /**
  *
@@ -8,6 +10,14 @@ public class StringState extends State {
 
     private String buffer="";
     private static int cntOfStrings = 1;
+
+    /**
+     *
+     * @param printer
+     */
+    public StringState(Printer printer) {
+        super(printer);
+    }
 
     /**
      *

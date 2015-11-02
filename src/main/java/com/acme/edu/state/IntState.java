@@ -1,4 +1,6 @@
-package com.acme.edu;
+package com.acme.edu.state;
+
+import com.acme.edu.printer.Printer;
 
 /**
  *
@@ -8,6 +10,15 @@ public class IntState extends State {
     private static final String PRIMITIVE = "primitive: ";
     protected static int cntOfInts = 0;
     protected static int bufferOfInts = 0;
+
+    /**
+     *
+     * @param printer ...
+     */
+    public IntState(Printer printer) {
+        super(printer);
+    }
+
 
     /**
      *

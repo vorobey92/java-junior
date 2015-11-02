@@ -1,8 +1,6 @@
 package com.acme.edu.iteration01;
 
-import com.acme.edu.IntState;
 import com.acme.edu.Logger;
-import com.acme.edu.State;
 import com.acme.edu.SysoutCaptureAndAssertionAbility;
 import org.junit.Before;
 import org.junit.Test;

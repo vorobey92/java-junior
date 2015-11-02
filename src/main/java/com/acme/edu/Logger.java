@@ -1,5 +1,8 @@
 package com.acme.edu;
 
+import com.acme.edu.printer.ConsolePrinter;
+import com.acme.edu.state.*;
+
 /**
  *  Class for logging messages.
  *  To use logging you need to use method Logger.close() to finish.
@@ -10,12 +13,13 @@ public class Logger {
     private State lastState;
 
   private enum StateLoggerHolder{
-        INT(new IntState()),
-        STRING(new StringState()),
-        BYTE(new ByteState()),
-        CHAR(new CharState()),
-        BOOL(new BooleanState()),
-        OBJ(new ObjectState());
+
+        INT(new IntState(new ConsolePrinter())),
+        STRING(new StringState(new ConsolePrinter())),
+        BYTE(new ByteState(new ConsolePrinter())),
+        CHAR(new CharState(new ConsolePrinter())),
+        BOOL(new BooleanState(new ConsolePrinter())),
+        OBJ(new ObjectState(new ConsolePrinter()));
 
         private State state;
 
@@ -48,7 +52,7 @@ public class Logger {
      */
     public void log(byte message) {
         matchIntStateOrReleaseBuff();
-        state = new ByteState();
+        state = StateLoggerHolder.BYTE.state;
         state.log(message + "");
         lastState = StateLoggerHolder.BYTE.state;
     }

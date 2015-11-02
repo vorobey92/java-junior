@@ -1,9 +1,18 @@
-package com.acme.edu;
+package com.acme.edu.state;
+
+import com.acme.edu.printer.Printer;
 
 /**
  *
  */
 public abstract class State {
+
+    private Printer printer;
+
+    public State (Printer printer){
+        this.printer = printer;
+    }
+
     /**
      *
      * @param message JavaDoc not ready
