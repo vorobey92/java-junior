@@ -1,9 +1,21 @@
 package com.acme.edu;
 
-
+/**
+ *
+ */
 public abstract class State {
-
+    /**
+     *
+     * @param message JavaDoc not ready
+     */
     public void log(String message){
+
+    }
+
+    /**
+     *
+     */
+    public void flush(){
 
     }
 
@@ -15,10 +27,6 @@ public abstract class State {
         print(message + System.lineSeparator());
     }
 
-
-    public void close(){
-
-    }
 
 
 

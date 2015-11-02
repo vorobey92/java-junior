@@ -31,16 +31,14 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     @Test
     public void shouldLogInteger() throws IOException {
         //region when
-        Logger logger = new Logger();
+          Logger logger = new Logger();
           logger.log(1);
-//        Logger.close();
-//        Logger.log(0);
-//        Logger.log(-1);
+          logger.close();
         //endregion
 
         //region then
         assertSysoutContains("primitive: ");
-        assertSysoutEquals("primitive: 1"+ SEP/*+"primitive: 0"+SEP+"primitive: -1"+SEP*/);
+        assertSysoutEquals("primitive: 1"+ SEP);
         //endregion
     }
 
@@ -49,16 +47,13 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         //region when
         Logger logger = new Logger();
         logger.log((byte)1);
-//        Logger.close();
-//        Logger.log((byte)0);
-//        Logger.log((byte)-1);
+        logger.close();
+
         //endregion
 
         //region then
         assertSysoutContains("primitive: ");
         assertSysoutContains("1");
-//        assertSysoutContains("0");
-//        assertSysoutContains("-1");
         //endregion
     }
 
@@ -79,15 +74,16 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         assertSysoutContains("b");
         //endregion
     }
-/*
+
     @Test
     public void shouldLogString() throws IOException {
 
 
         //region when
-        Logger.log("test string 1");
-        Logger.log("other str");
-        Logger.close();
+        Logger logger = new Logger();
+        logger.log("test string 1");
+        logger.log("other str");
+        logger.close();
         //endregion
 
         //region then
@@ -100,8 +96,9 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     @Test
     public void shouldLogBoolean() throws IOException {
         //region when
-        Logger.log(true);
-        Logger.log(false);
+        Logger logger = new Logger();
+        logger.log(true);
+        logger.log(false);
         //endregion
 
         //region then
@@ -114,7 +111,9 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     @Test
     public void shouldLogReference() throws IOException {
         //region when
-        Logger.log(new Object());
+        Logger logger = new Logger();
+        logger.log(new Object());
+
         //endregion
 
         //region then
@@ -122,6 +121,6 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         assertSysoutContains("@");
         //endregion
     }
-*/
+
 
 }
