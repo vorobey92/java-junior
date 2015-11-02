@@ -239,10 +239,6 @@ public class Logger {
         println(PRIMITIVE_STRING + integer);
     }
 
-    private static void printlnInteger(String integer) {
-        println(PRIMITIVE_STRING + integer);
-    }
-
     private static void printlnLastString() {
         println("string: " + lastString + stringSuffix());
     }
