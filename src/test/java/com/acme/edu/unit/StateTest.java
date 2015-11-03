@@ -12,7 +12,7 @@ import org.junit.Test;
 
 import static org.mockito.Mockito.*;
 
-public class LoggerTest {
+public class StateTest {
 
     private Printable mock;
     private State sut;

@@ -58,7 +58,7 @@ public class StateFactory {
     }
 
     /**
-     * 
+     *
      * @return empty state
      */
     public State getEmptyState(){
