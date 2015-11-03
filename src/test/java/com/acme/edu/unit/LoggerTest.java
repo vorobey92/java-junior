@@ -1,13 +1,13 @@
 package com.acme.edu.unit;
 
 
-import com.acme.edu.Logger;
 import com.acme.edu.printer.ConsolePrinter;
 import com.acme.edu.printer.Printable;
+import com.acme.edu.state.EmptyState;
 import com.acme.edu.state.IntState;
 import com.acme.edu.state.State;
 import com.acme.edu.state.StringState;
-import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.mockito.Mockito.*;
@@ -16,18 +16,6 @@ public class LoggerTest {
 
     private Printable mock;
     private State sut;
-
-
-    @Test
-    public void shouldPrintOnePrimitiveWhenYouTryingToLogOneNumber(){
-        mock = mock(ConsolePrinter.class);
-        sut = new IntState(mock);
-
-        sut.log("2");
-        sut.flush();
-
-        verify(mock).println("primitive: 2");
-    }
 
     @Test
     public void shouldLogSumOfPrimitivesWhenYouTryingToLogSequenceOfInts(){
@@ -56,15 +44,50 @@ public class LoggerTest {
     }
 
     @Test
-    public void shouldLogString(){
+    public void shouldLogStringAndStringWithCounter(){
         mock = mock(ConsolePrinter.class);
         sut = new StringState(mock);
 
         sut.log("Hello JUnit!");
+        sut.log("Hello JUnit!");
+        sut.log("Hello JUnit!");
+        sut.log("Bomb!");
+        sut.log("Batman");
+        sut.log("Batman");
+        sut.flush();
+        sut.log("and robin");
         sut.flush();
 
-        verify(mock).println("string: Hello JUnit!");
+        verify(mock).println("string: Hello JUnit! (x3)");
+        verify(mock).println("string: Bomb!");
+        verify(mock).println("string: Batman (x2)");
+        verify(mock).println("string: and robin");
+    }
+
+
+
+    @Test
+    public void shoudLogThatWeWillGiveToThatEmptyState(){
+        mock = mock(ConsolePrinter.class);
+        sut = new EmptyState(mock);
+
+        sut.log("primitive: boolean");
+        sut.log("char: a");
+        sut.flush();
+
+        verify(mock).println("primitive: boolean");
+        verify(mock).println("char: a");
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldThrowNullPointerExceptionWhenNullStringIsFirst(){
+        mock = mock(ConsolePrinter.class);
+        sut = new StringState(mock);
+
+        sut.log(null);
+        sut.flush();
 
     }
+
 
 }

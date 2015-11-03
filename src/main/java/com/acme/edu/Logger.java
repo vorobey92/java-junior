@@ -25,7 +25,6 @@ public class Logger {
 
         INT(new IntState(printer)),
         STRING(new StringState(printer)),
-        BYTE(new ByteState(printer)),
         EMPTY_STATE(new EmptyState(printer));
 
         private State state;
@@ -59,9 +58,9 @@ public class Logger {
      */
     public void log(byte message) {
         matchIntStateOrReleaseBuff();
-        state = StateLoggerHolder.BYTE.state;
+        state = StateLoggerHolder.INT.state;
         state.log(message + "");
-        lastState = StateLoggerHolder.BYTE.state;
+        lastState = StateLoggerHolder.INT.state;
     }
 
     /**
