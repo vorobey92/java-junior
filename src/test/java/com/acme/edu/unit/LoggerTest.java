@@ -75,8 +75,8 @@ public class LoggerTest {
         sut.log("char: a");
         sut.flush();
 
-        verify(mock).println("primitive: boolean");
-        verify(mock).println("char: a");
+        verify(mock).print("primitive: boolean");
+        verify(mock).print("char: a");
     }
 
     @Test(expected = NullPointerException.class)

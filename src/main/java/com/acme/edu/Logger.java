@@ -9,6 +9,7 @@ import com.acme.edu.state.*;
  */
 public class Logger {
 
+    private static final String SEP = System.lineSeparator();
     private State state;
     private State lastState;
     private static Printable printer;
@@ -69,7 +70,7 @@ public class Logger {
      */
     public void log(char message) {
         state = StateLoggerHolder.EMPTY_STATE.state;
-        state.log("char: "+message);
+        state.log("char: " + message + SEP);
         lastState = StateLoggerHolder.EMPTY_STATE.state;
     }
 
@@ -79,7 +80,7 @@ public class Logger {
      */
     public void log(boolean message) {
         state = StateLoggerHolder.EMPTY_STATE.state;
-        state.log("primitive: "+message);
+        state.log("primitive: " + message + SEP);
         lastState = StateLoggerHolder.EMPTY_STATE.state;
     }
 
@@ -103,7 +104,7 @@ public class Logger {
      */
     public void log(Object message) {
         state = StateLoggerHolder.EMPTY_STATE.state;
-        state.log("reference: "+message);
+        state.log("reference: " + message + SEP);
         lastState = StateLoggerHolder.EMPTY_STATE.state;
     }
 
@@ -151,7 +152,7 @@ public class Logger {
     public void log(String... message){
         state = StateLoggerHolder.EMPTY_STATE.state;
         for(String str : message) {
-            state.log(str + System.lineSeparator());
+            state.log(str + SEP);
         }
     }
 

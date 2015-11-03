@@ -5,6 +5,8 @@ package com.acme.edu;
  */
 public class Mapper {
 
+    public static final String SEP = System.lineSeparator();
+
     private Mapper(){
 
     }
@@ -35,35 +37,36 @@ public class Mapper {
      * @return
      */
     public static String fromMultiMatrixToString(int[][][][] message){
-        StringBuilder str = new StringBuilder("primitives multimatrix: {" + System.lineSeparator());
+        StringBuilder str = new StringBuilder("primitives multimatrix: {" + SEP);
         for (int[][][] mes : message) {
-            str.append("{" + System.lineSeparator());
+            str.append("{" + SEP);
             for (int[][] mes2 : mes) {
                 str.append(printMatrix(mes2));
             }
-            str.append("}" + System.lineSeparator());
+            str.append("}" + SEP);
         }
-        return  (str.append("}" + System.lineSeparator())).toString();
+        return  (str.append("}" + SEP)).toString();
 
     }
 
     private static String printArray(int[] message) {
+        if (message.length == 0) return "{}" + SEP;
         StringBuilder s = new StringBuilder("");
         s.append("{");
         for (int i = 0; i < message.length - 1; i++){
             s.append(message[i] + ", ");
         }
-        s.append(message[message.length - 1] + "}" + System.lineSeparator());
+        s.append(message[message.length - 1] + "}" + SEP);
         return s.toString();
     }
 
     private static String printMatrix(int[][] message) {
         StringBuilder s = new StringBuilder("");
-        s.append("{" + System.lineSeparator());
+        s.append("{" + SEP);
         for (int[] arr : message){
             s.append(printArray(arr));
         }
-        return (s.append("}" + System.lineSeparator())).toString();
+        return (s.append("}" + SEP)).toString();
     }
 
 }

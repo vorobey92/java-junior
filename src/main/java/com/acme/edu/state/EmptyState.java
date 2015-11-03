@@ -21,7 +21,7 @@ public class EmptyState extends State {
      */
     @Override
     public void log(String message){
-        println(message);
+        print(message);
     }
 
     @Override
