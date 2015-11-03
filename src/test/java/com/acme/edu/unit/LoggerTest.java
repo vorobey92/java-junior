@@ -6,6 +6,7 @@ import com.acme.edu.printer.ConsolePrinter;
 import com.acme.edu.printer.Printable;
 import com.acme.edu.state.IntState;
 import com.acme.edu.state.State;
+import com.acme.edu.state.StringState;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -52,6 +53,18 @@ public class LoggerTest {
 
         verify(mock).println("primitive: 3");
         verify(mock).println("primitive: " + (Integer.MAX_VALUE-1));
+    }
+
+    @Test
+    public void shouldLogString(){
+        mock = mock(ConsolePrinter.class);
+        sut = new StringState(mock);
+
+        sut.log("Hello JUnit!");
+        sut.flush();
+
+        verify(mock).println("string: Hello JUnit!");
+
     }
 
 }
