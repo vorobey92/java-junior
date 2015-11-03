@@ -1,5 +1,7 @@
 package com.acme.edu;
 
+import com.acme.edu.commands.Command;
+import com.acme.edu.commands.CommandFactory;
 import com.acme.edu.printers.Printer;
 
 /**
@@ -14,12 +16,14 @@ public class Logger {
     private State intState;
     private State byteState;
     private State stringState;
+    private Printer printer;
 
     public Logger(Printer printer) {
-        unaccumulatingState = new UnaccumulatingState(printer);
-        intState = new IntegerState(Integer.MAX_VALUE, Integer.MIN_VALUE, printer);
-        byteState = new IntegerState(Byte.MAX_VALUE, Byte.MIN_VALUE, printer);
-        stringState = new StringState(printer);
+        this.printer = printer;
+        unaccumulatingState = new State();
+        intState = new State();
+        byteState = new State();
+        stringState = new State();
         currentState = unaccumulatingState;
     }
 
@@ -36,13 +40,16 @@ public class Logger {
      * @param message The int to be accumulated.
      */
     public void log(int message) {
+        Command command = CommandFactory.createCommand(CommandFactory.Command.INT, printer);
+        command.setMessage("" + message);
+
         if (currentState == intState) {
-            intState.log(String.valueOf(message));
+            intState.log(command);
             return;
         }
 
         currentState.fflush();
-        intState.log(String.valueOf(message));
+        intState.log(command);
         currentState = intState;
     }
 
@@ -59,13 +66,16 @@ public class Logger {
      * @param message The byte to be accumulated.
      */
     public void log(byte message) {
+        Command command = CommandFactory.createCommand(CommandFactory.Command.BYTE, printer);
+        command.setMessage("" + message);
+
         if (currentState == byteState) {
-            byteState.log(String.valueOf(message));
+            byteState.log(command);
             return;
         }
 
         currentState.fflush();
-        byteState.log(String.valueOf(message));
+        byteState.log(command);
         currentState = byteState;
     }
 
@@ -77,8 +87,11 @@ public class Logger {
      * @param message The char to be logged.
      */
     public void log(char message) {
+        Command command = CommandFactory.createCommand(CommandFactory.Command.CHAR, printer);
+        command.setMessage("" + message);
+
         currentState.fflush();
-        unaccumulatingState.log(String.valueOf("char: " + message));
+        unaccumulatingState.log(command);
         currentState = unaccumulatingState;
     }
 
@@ -96,13 +109,16 @@ public class Logger {
      * @param message The String to be accumulated.
      */
     public void log(String message) {
+        Command command = CommandFactory.createCommand(CommandFactory.Command.STRING, printer);
+        command.setMessage("" + message);
+
         if (currentState == stringState) {
-            stringState.log(String.valueOf(message));
+            stringState.log(command);
             return;
         }
 
         currentState.fflush();
-        stringState.log(message);
+        stringState.log(command);
         currentState = stringState;
     }
 
@@ -114,8 +130,11 @@ public class Logger {
      * @param message The boolean to be logged.
      */
     public void log(boolean message) {
+        Command command = CommandFactory.createCommand(CommandFactory.Command.BOOLEAN, printer);
+        command.setMessage("" + message);
+
         currentState.fflush();
-        unaccumulatingState.log(String.valueOf("primitive: " + message));
+        unaccumulatingState.log(command);
         currentState = unaccumulatingState;
     }
 
@@ -127,8 +146,11 @@ public class Logger {
      * @param message The Object to be logged.
      */
     public void log(Object message) {
+        Command command = CommandFactory.createCommand(CommandFactory.Command.OBJECT, printer);
+        command.setMessage("" + message);
+
         currentState.fflush();
-        unaccumulatingState.log(String.valueOf("reference: " + message));
+        unaccumulatingState.log(command);
         currentState = unaccumulatingState;
     }
 

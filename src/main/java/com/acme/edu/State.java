@@ -1,23 +1,17 @@
 package com.acme.edu;
 
-import com.acme.edu.printers.Printer;
+import com.acme.edu.commands.Command;
 
-public abstract class State {
-    private Printer printer;
+public class State {
+    private Command command;
 
-    public State(Printer printer) {
-        this.printer = printer;
+    public void fflush() {
+        if (command != null) {
+            command.execute();
+        }
     }
 
-    public abstract void fflush();
-    public abstract void log(String stringToBeLogged);
-
-    public void close() {
-        fflush();
-        printer.close();
-    }
-
-    protected Printer getPrinter() {
-        return printer;
+    public void log(Command newCommand) {
+        command = newCommand.merge(command);
     }
 }
