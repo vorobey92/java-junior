@@ -1,6 +1,5 @@
 package com.acme.edu;
 
-import com.acme.edu.printer.ConsolePrinter;
 import com.acme.edu.printer.Printable;
 import com.acme.edu.state.EmptyState;
 import com.acme.edu.state.IntState;
