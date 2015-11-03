@@ -3,7 +3,7 @@ package com.acme.edu.state;
 import com.acme.edu.printer.Printable;
 
 /**
- *
+ * State class for Int
  */
 public class IntState extends State {
 
@@ -12,8 +12,8 @@ public class IntState extends State {
     protected static int bufferOfInts = 0;
 
     /**
-     *
-     * @param printer ...
+     * Creates IntState object
+     * @param printer determines stream for logging
      */
     public IntState(Printable printer) {
         super(printer);
@@ -21,8 +21,10 @@ public class IntState extends State {
 
 
     /**
-     *
-     * @param message JavaDoc not ready
+     *  Method for logging ints.
+     *  For sequence of ints This method will log sum of ints when
+     *  Also it logs two numbers (sum and new int) if type overflow while summing.
+     * @param message number (int) that will be logged (or sum for sequence)
      */
     @Override
     public void log(String message){
@@ -35,7 +37,7 @@ public class IntState extends State {
     }
 
     /**
-     *
+     * Method to release buffer into log.
      */
     @Override
     public void flush(){

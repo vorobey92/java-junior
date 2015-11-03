@@ -4,7 +4,7 @@ package com.acme.edu.state;
 import com.acme.edu.printer.Printable;
 
 /**
- *
+ * Class of String state.
  */
 public class StringState extends State {
 
@@ -13,16 +13,17 @@ public class StringState extends State {
     private static int cntOfStrings = 1;
 
     /**
-     *
-     * @param printer
+     *  Creating StringState object
+     * @param printer determines stream for logging
      */
     public StringState(Printable printer) {
         super(printer);
     }
 
     /**
-     *
-     * @param message javaDoc not ready
+     * Method for logging Strings.
+     *  If message matches last logged String, method will count it before new String is came or Logger.flush() is called
+     * @param message string that will be logged
      */
     @Override
     public void log(String message){
@@ -40,7 +41,7 @@ public class StringState extends State {
     }
 
     /**
-     *
+     * Method to release buffer into log.
      */
     @Override
     public void flush(){

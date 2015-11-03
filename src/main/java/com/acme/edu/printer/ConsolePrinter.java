@@ -1,13 +1,15 @@
 package com.acme.edu.printer;
 
 /**
- *
+ * Realisation of Printable interface.
+ * ConsolePrinter logs messages into System.out.
  */
 public class ConsolePrinter implements Printable {
 
     /**
      *
-     * @param message
+     * Prints a string.
+     * @param  message   The <code>String</code> to be printed
      */
     @Override
     public void print(String message) {
@@ -15,8 +17,8 @@ public class ConsolePrinter implements Printable {
     }
 
     /**
-     *
-     * @param message
+     * Prints a String and then terminate the line.
+     * @param message The <code>String</code> to be printed
      */
     @Override
     public void println(String message){

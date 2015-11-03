@@ -38,7 +38,7 @@ public class Logger {
 
     /**
      *  Method for logging ints.
-     *  Tip: For sequence of ints This method will log sum of ints when
+     *  For sequence of ints This method will log sum of ints when
      *  Stirng log is came or logging is completed.
      *  Also it logs two numbers (sum and new int) if type overflow while summing.
      * @param message  number (int) that will be logged (or sum for sequence)
@@ -52,7 +52,7 @@ public class Logger {
 
     /**
      *  Method for logging bytes.
-     *  Tip: For sequence of bytes This method will log sum of bytes when
+     *  For sequence of bytes This method will log sum of bytes when
      *  String log is came or logging is completed.
      *  Also it logs two numbers (sum and new byte) if type overflow while summing.
      * @param message  number (byte) that will be logged (or sum for sequence)
