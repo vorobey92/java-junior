@@ -2,7 +2,7 @@ package com.acme.edu.printers;
 
 import java.io.PrintStream;
 
-public class StdOutPrinter implements Printer {
+public class ConsolePrinter implements Printer {
 
     private static final PrintStream OUT = System.out;
 
