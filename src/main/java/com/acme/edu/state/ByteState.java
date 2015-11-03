@@ -1,16 +1,16 @@
 package com.acme.edu.state;
 
-import com.acme.edu.printer.Printer;
+import com.acme.edu.printer.Printable;
 
 /**
  *
  */
 public class ByteState extends IntState {
     /**
-     * @param printer ...
+     * @param printable ...
      */
-    public ByteState(Printer printer) {
-        super(printer);
+    public ByteState(Printable printable) {
+        super(printable);
     }
 
 

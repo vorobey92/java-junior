@@ -1,6 +1,6 @@
 package com.acme.edu;
 
-import com.acme.edu.printer.ConsolePrinter;
+import com.acme.edu.printer.Printable;
 import com.acme.edu.state.*;
 
 /**
@@ -11,13 +11,18 @@ public class Logger {
 
     private State state;
     private State lastState;
+    private static Printable printable;
+
+    public Logger (Printable printable) {
+        this.printable = printable;
+    }
 
   private enum StateLoggerHolder{
 
-        INT(new IntState(new ConsolePrinter())),
-        STRING(new StringState(new ConsolePrinter())),
-        BYTE(new ByteState(new ConsolePrinter())),
-        EMPTY_STATE(new EmptyState(new ConsolePrinter()));
+        INT(new IntState(printable)),
+        STRING(new StringState(printable)),
+        BYTE(new ByteState(printable)),
+        EMPTY_STATE(new EmptyState(printable));
 
         private State state;
 

@@ -1,6 +1,6 @@
 package com.acme.edu.state;
 
-import com.acme.edu.printer.Printer;
+import com.acme.edu.printer.Printable;
 
 /**
  *
@@ -13,10 +13,10 @@ public class IntState extends State {
 
     /**
      *
-     * @param printer ...
+     * @param printable ...
      */
-    public IntState(Printer printer) {
-        super(printer);
+    public IntState(Printable printable) {
+        super(printable);
     }
 
 

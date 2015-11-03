@@ -1,6 +1,6 @@
 package com.acme.edu.state;
 
-import com.acme.edu.printer.Printer;
+import com.acme.edu.printer.Printable;
 
 /**
  *
@@ -9,10 +9,10 @@ public class EmptyState extends State {
 
     /**
      *
-     * @param printer
+     * @param printable
      */
-    public EmptyState(Printer printer) {
-        super(printer);
+    public EmptyState(Printable printable) {
+        super(printable);
     }
 
     /**
@@ -22,5 +22,10 @@ public class EmptyState extends State {
     @Override
     public void log(String message){
         print(message);
+    }
+
+    @Override
+    public void flush() {
+
     }
 }

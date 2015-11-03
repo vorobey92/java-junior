@@ -1,22 +1,23 @@
 package com.acme.edu.state;
 
 
-import com.acme.edu.printer.Printer;
+import com.acme.edu.printer.Printable;
 
 /**
  *
  */
 public class StringState extends State {
 
+    private static final String STRING = "string: ";
     private String buffer="";
     private static int cntOfStrings = 1;
 
     /**
      *
-     * @param printer
+     * @param printable
      */
-    public StringState(Printer printer) {
-        super(printer);
+    public StringState(Printable printable) {
+        super(printable);
     }
 
     /**
@@ -48,9 +49,9 @@ public class StringState extends State {
 
     private void releaseStringsFromTemp() {
         if (cntOfStrings != 1) {
-            println("string: " + buffer + " (x" + cntOfStrings + ")");
+            println(STRING + buffer + " (x" + cntOfStrings + ")");
         } else if (!buffer.isEmpty()) {
-            println("string: " + buffer);
+            println(STRING + buffer);
         }
         cntOfStrings = 1;
         buffer = "";
@@ -64,9 +65,9 @@ public class StringState extends State {
             cntOfStrings++;
             return true;
         } else if (cntOfStrings == 1) {
-            println("string: " + buffer);
+            println(STRING + buffer);
         } else {
-            println("string: " + buffer + " (x" + cntOfStrings + ")");
+            println(STRING + buffer + " (x" + cntOfStrings + ")");
             cntOfStrings = 1;
         }
         return false;

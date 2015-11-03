@@ -3,7 +3,7 @@ package com.acme.edu.printer;
 /**
  *
  */
-public class ConsolePrinter implements Printer {
+public class ConsolePrinter implements Printable {
 
     /**
      *

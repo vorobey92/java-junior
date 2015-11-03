@@ -1,42 +1,36 @@
 package com.acme.edu.state;
 
-import com.acme.edu.printer.Printer;
+import com.acme.edu.printer.Printable;
 
 /**
  *
  */
 public abstract class State {
 
-    protected Printer printer;
+    protected Printable printable;
 
-    public State (Printer printer){
-        this.printer = printer;
+    public State (Printable printable){
+        this.printable = printable;
     }
 
     /**
      *
      * @param message JavaDoc not ready
      */
-    public void log(String message){
-
-    }
+    public abstract void log(String message);
 
     /**
      *
      */
-    public void flush(){
-
-    }
+    public abstract void flush();
 
     protected void print(String message){
-        printer.print(message);
+        printable.print(message);
     }
 
     protected void println(String message){
-        printer.println(message);
+        printable.println(message);
     }
-
-
 
 
 }

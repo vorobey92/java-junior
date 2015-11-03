@@ -2,6 +2,7 @@ package com.acme.edu.iteration02;
 
 import com.acme.edu.Logger;
 import com.acme.edu.SysoutCaptureAndAssertionAbility;
+import com.acme.edu.printer.ConsolePrinter;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.After;
@@ -9,6 +10,7 @@ import org.junit.After;
 import java.io.IOException;
 
 public class LoggerTest implements SysoutCaptureAndAssertionAbility {
+    private Logger logger;
     private static final String SEP = System.lineSeparator();
 
     //region given
@@ -16,6 +18,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     public void setUpSystemOut() throws IOException {
         resetOut();
         captureSysout();
+        logger = new Logger(new ConsolePrinter());
     }
     //endregion
 
@@ -28,7 +31,6 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     @Test
     public void shouldLogSequentIntegersAsSum() throws IOException {
         //region when
-        Logger logger = new Logger();
         logger.log("str 1");
         logger.log(1);
         logger.log(2);
@@ -50,7 +52,6 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     @Test
     public void shouldLogCorrectlyIntegerOverflowWhenSequentIntegers() {
         //region when
-        Logger logger = new Logger();
         logger.log("str 1");
         logger.log(10);
         logger.log(Integer.MAX_VALUE);
@@ -73,7 +74,6 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     @Test
     public void shouldLogCorrectlyByteOverflowWhenSequentBytes() {
         //region when
-        Logger logger = new Logger();
         logger.log("str 1");
         logger.log((byte)10);
         logger.log((byte)Byte.MAX_VALUE);
@@ -96,7 +96,6 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     @Test
     public void shouldLogSameSubsequentStringsWithoutRepeat() throws IOException {
         //region when
-        Logger logger = new Logger();
         logger.log("str 1");
         logger.log("str 2");
         logger.log("str 2");
