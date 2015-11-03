@@ -12,6 +12,7 @@ public class Logger {
     private static final String SEP = System.lineSeparator();
     private State state;
     private State lastState;
+    private StateFactory factory;
     private static Printable printer;
 
     /**
@@ -20,21 +21,10 @@ public class Logger {
      */
     public Logger (Printable printer) {
         this.printer = printer;
+        factory = new StateFactory(printer);
+        state = factory.getEmptyState();
     }
 
-  private enum StateLoggerHolder{
-
-        INT(new IntState(printer)),
-        STRING(new StringState(printer)),
-        EMPTY_STATE(new EmptyState(printer));
-
-        private State state;
-
-        StateLoggerHolder(State state){
-            this.state = state;
-        }
-
-  }
 
     /**
      *  Method for logging ints.
@@ -44,10 +34,10 @@ public class Logger {
      * @param message  number (int) that will be logged (or sum for sequence)
      */
     public void log(int message) {
-        matchIntStateOrReleaseBuff();
-        state = StateLoggerHolder.INT.state;
+//        matchIntStateOrReleaseBuff();
+        state = factory.getIntState(lastState);
         state.log(message + "");
-        lastState = StateLoggerHolder.INT.state;
+        lastState = state;
     }
 
     /**
@@ -58,10 +48,10 @@ public class Logger {
      * @param message  number (byte) that will be logged (or sum for sequence)
      */
     public void log(byte message) {
-        matchIntStateOrReleaseBuff();
-        state = StateLoggerHolder.INT.state;
+//        matchIntStateOrReleaseBuff();
+        state = factory.getIntState(lastState);
         state.log(message + "");
-        lastState = StateLoggerHolder.INT.state;
+        lastState = state;
     }
 
     /**
@@ -69,9 +59,9 @@ public class Logger {
      * @param message  char that will be logged
      */
     public void log(char message) {
-        state = StateLoggerHolder.EMPTY_STATE.state;
+        state = factory.getEmptyState();
         state.log("char: " + message + SEP);
-        lastState = StateLoggerHolder.EMPTY_STATE.state;
+        lastState = state;
     }
 
     /**
@@ -79,9 +69,9 @@ public class Logger {
      * @param message  boolean that will be logged
      */
     public void log(boolean message) {
-        state = StateLoggerHolder.EMPTY_STATE.state;
+        state = factory.getEmptyState();
         state.log("primitive: " + message + SEP);
-        lastState = StateLoggerHolder.EMPTY_STATE.state;
+        lastState = state;
     }
 
     /**
@@ -92,10 +82,10 @@ public class Logger {
      * @param message string that will be logged
      */
     public void log(String message) {
-        matchStringStateOrReleaseBuff();
-        state = StateLoggerHolder.STRING.state;
+//        matchStringStateOrReleaseBuff();
+        state = factory.getStringState(lastState);
         state.log(message);
-        lastState = StateLoggerHolder.STRING.state;
+        lastState = state;
     }
 
     /**
@@ -103,9 +93,9 @@ public class Logger {
      * @param message object that will be logged
      */
     public void log(Object message) {
-        state = StateLoggerHolder.EMPTY_STATE.state;
+        state = factory.getEmptyState();
         state.log("reference: " + message + SEP);
-        lastState = StateLoggerHolder.EMPTY_STATE.state;
+        lastState = state;
     }
 
     /**
@@ -120,9 +110,9 @@ public class Logger {
      * @param message array of ints that will be loged
      */
     public void log(int... message){
-        state = StateLoggerHolder.EMPTY_STATE.state;
+        state = factory.getEmptyState();
         state.log(Mapper.fromArrayToString(message));
-        lastState = StateLoggerHolder.EMPTY_STATE.state;
+        lastState = state;
     }
 
     /**
@@ -130,9 +120,9 @@ public class Logger {
      * @param message matrix of ints that will be loged
      */
     public void log(int[][] message){
-        state = StateLoggerHolder.EMPTY_STATE.state;
+        state = factory.getEmptyState();
         state.log(Mapper.fromMatrixToString(message));
-        lastState = StateLoggerHolder.EMPTY_STATE.state;
+        lastState = state;
     }
 
     /**
@@ -140,9 +130,9 @@ public class Logger {
      * @param message multimatrix that will be loged
      */
     public void log(int[][][][] message){
-        state = StateLoggerHolder.EMPTY_STATE.state;
+        state = factory.getEmptyState();
         state.log(Mapper.fromMultiMatrixToString(message));
-        lastState = StateLoggerHolder.EMPTY_STATE.state;
+        lastState = state;
     }
 
     /**
@@ -150,22 +140,12 @@ public class Logger {
      * @param message array of Strings that will be loged
      */
     public void log(String... message){
-        state = StateLoggerHolder.EMPTY_STATE.state;
+        state = factory.getEmptyState();
         for(String str : message) {
             state.log(str + SEP);
         }
+        lastState = state;
     }
 
-    private void matchIntStateOrReleaseBuff(){
-        if (lastState != null && lastState != StateLoggerHolder.INT.state ){
-            lastState.flush();
-        }
-    }
-
-    private void matchStringStateOrReleaseBuff(){
-        if (lastState != null && lastState != StateLoggerHolder.STRING.state ){
-            lastState.flush();
-        }
-    }
 
 }
