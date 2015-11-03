@@ -13,14 +13,12 @@ public class Logger {
     private State state;
     private State lastState;
     private StateFactory factory;
-    private static Printable printer;
 
     /**
      *
      * @param printer realization of Printable interface
      */
     public Logger (Printable printer) {
-        this.printer = printer;
         factory = new StateFactory(printer);
         state = factory.getEmptyState();
     }
@@ -34,7 +32,6 @@ public class Logger {
      * @param message  number (int) that will be logged (or sum for sequence)
      */
     public void log(int message) {
-//        matchIntStateOrReleaseBuff();
         state = factory.getIntState(lastState);
         state.log(message + "");
         lastState = state;
@@ -48,7 +45,6 @@ public class Logger {
      * @param message  number (byte) that will be logged (or sum for sequence)
      */
     public void log(byte message) {
-//        matchIntStateOrReleaseBuff();
         state = factory.getIntState(lastState);
         state.log(message + "");
         lastState = state;
@@ -82,7 +78,6 @@ public class Logger {
      * @param message string that will be logged
      */
     public void log(String message) {
-//        matchStringStateOrReleaseBuff();
         state = factory.getStringState(lastState);
         state.log(message);
         lastState = state;

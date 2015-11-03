@@ -15,14 +15,12 @@ public class StateFactory {
     private State intState;
     private State stringState;
     private State emptyState;
-    private Printable printer;
 
     /**
      * Creating objects for all states.
      * @param printer determines stream for output
      */
     public StateFactory(Printable printer) {
-        printer = new ConsolePrinter();
         intState = new IntState(printer);
         stringState = new StringState(printer);
         emptyState = new EmptyState(printer);
