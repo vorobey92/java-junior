@@ -7,10 +7,10 @@ import com.acme.edu.printer.Printable;
  */
 public abstract class State {
 
-    protected Printable printable;
+    protected Printable printer;
 
-    public State (Printable printable){
-        this.printable = printable;
+    public State (Printable printer){
+        this.printer = printer;
     }
 
     /**
@@ -25,11 +25,11 @@ public abstract class State {
     public abstract void flush();
 
     protected void print(String message){
-        printable.print(message);
+        printer.print(message);
     }
 
     protected void println(String message){
-        printable.println(message);
+        printer.println(message);
     }
 
 

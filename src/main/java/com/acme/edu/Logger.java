@@ -11,18 +11,22 @@ public class Logger {
 
     private State state;
     private State lastState;
-    private static Printable printable;
+    private static Printable printer;
 
-    public Logger (Printable printable) {
-        this.printable = printable;
+    /**
+     *
+     * @param printer realization of Printable interface
+     */
+    public Logger (Printable printer) {
+        this.printer = printer;
     }
 
   private enum StateLoggerHolder{
 
-        INT(new IntState(printable)),
-        STRING(new StringState(printable)),
-        BYTE(new ByteState(printable)),
-        EMPTY_STATE(new EmptyState(printable));
+        INT(new IntState(printer)),
+        STRING(new StringState(printer)),
+        BYTE(new ByteState(printer)),
+        EMPTY_STATE(new EmptyState(printer));
 
         private State state;
 

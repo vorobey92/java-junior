@@ -13,10 +13,10 @@ public class IntState extends State {
 
     /**
      *
-     * @param printable ...
+     * @param printer ...
      */
-    public IntState(Printable printable) {
-        super(printable);
+    public IntState(Printable printer) {
+        super(printer);
     }
 
 

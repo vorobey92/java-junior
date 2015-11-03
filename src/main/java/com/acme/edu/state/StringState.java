@@ -14,10 +14,10 @@ public class StringState extends State {
 
     /**
      *
-     * @param printable
+     * @param printer
      */
-    public StringState(Printable printable) {
-        super(printable);
+    public StringState(Printable printer) {
+        super(printer);
     }
 
     /**

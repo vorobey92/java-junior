@@ -9,10 +9,10 @@ public class EmptyState extends State {
 
     /**
      *
-     * @param printable
+     * @param printer
      */
-    public EmptyState(Printable printable) {
-        super(printable);
+    public EmptyState(Printable printer) {
+        super(printer);
     }
 
     /**

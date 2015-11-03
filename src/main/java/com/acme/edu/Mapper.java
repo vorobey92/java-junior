@@ -1,7 +1,7 @@
 package com.acme.edu;
 
 /**
- *
+ *  Class for
  */
 public class Mapper {
 

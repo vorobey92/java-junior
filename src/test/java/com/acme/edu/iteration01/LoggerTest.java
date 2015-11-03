@@ -4,11 +4,12 @@ import com.acme.edu.Logger;
 import com.acme.edu.SysoutCaptureAndAssertionAbility;
 import com.acme.edu.printer.ConsolePrinter;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.After;
 
 import java.io.*;
-
+@Ignore
 public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     private static final String SEP = System.lineSeparator();
     private Logger logger;

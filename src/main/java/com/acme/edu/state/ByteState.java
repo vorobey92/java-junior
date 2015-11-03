@@ -7,10 +7,10 @@ import com.acme.edu.printer.Printable;
  */
 public class ByteState extends IntState {
     /**
-     * @param printable ...
+     * @param printer ...
      */
-    public ByteState(Printable printable) {
-        super(printable);
+    public ByteState(Printable printer) {
+        super(printer);
     }
 
 
