@@ -7,7 +7,7 @@ import com.acme.edu.printers.Printer;
 /**
  * A Logger can be used to apply different types of messages to the standard output stream. A Logger
  * accumulates some types of messages before logging (see description in method-level documentation).
- * The fflush() method is used to force the Logger to write an accumulated data to the standard output stream.
+ * The flush() method is used to force the Logger to write an accumulated data to the standard output stream.
  */
 public class Logger {
 
@@ -48,7 +48,7 @@ public class Logger {
             return;
         }
 
-        currentState.fflush();
+        currentState.flush();
         intState.apply(command);
         currentState = intState;
     }
@@ -74,7 +74,7 @@ public class Logger {
             return;
         }
 
-        currentState.fflush();
+        currentState.flush();
         byteState.apply(command);
         currentState = byteState;
     }
@@ -90,7 +90,7 @@ public class Logger {
         Command command = CommandFactory.createCommand(CommandFactory.Type.CHAR, printer);
         command.setMessage("" + message);
 
-        currentState.fflush();
+        currentState.flush();
         unaccumulatingState.apply(command);
         currentState = unaccumulatingState;
     }
@@ -117,7 +117,7 @@ public class Logger {
             return;
         }
 
-        currentState.fflush();
+        currentState.flush();
         stringState.apply(command);
         currentState = stringState;
     }
@@ -133,7 +133,7 @@ public class Logger {
         Command command = CommandFactory.createCommand(CommandFactory.Type.BOOLEAN, printer);
         command.setMessage("" + message);
 
-        currentState.fflush();
+        currentState.flush();
         unaccumulatingState.apply(command);
         currentState = unaccumulatingState;
     }
@@ -149,7 +149,7 @@ public class Logger {
         Command command = CommandFactory.createCommand(CommandFactory.Type.OBJECT, printer);
         command.setMessage("" + message);
 
-        currentState.fflush();
+        currentState.flush();
         unaccumulatingState.apply(command);
         currentState = unaccumulatingState;
     }
@@ -200,9 +200,9 @@ public class Logger {
 
     /**
      * Flushes the Logger. This is done by loging the accumulated data. The Logger still can be used
-     * after the fflush() method is invoked.
+     * after the flush() method is invoked.
      */
-    public void fflush() {
-        currentState.fflush();
+    public void flush() {
+        currentState.flush();
     }
 }

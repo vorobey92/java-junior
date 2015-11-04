@@ -5,7 +5,7 @@ import com.acme.edu.commands.Command;
 public class State {
     private Command bufferedCommand;
 
-    public void fflush() {
+    public void flush() {
         if (bufferedCommand != null) {
             bufferedCommand.execute();
         }
