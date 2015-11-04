@@ -4,6 +4,7 @@ import com.acme.edu.commands.Command;
 import com.acme.edu.commands.CommandFactory;
 import com.acme.edu.printers.Printer;
 import com.acme.edu.states.State;
+import com.acme.edu.states.StateFactory;
 
 /**
  * A Logger can be used to apply different types of messages to the standard output stream. A Logger
@@ -20,14 +21,14 @@ public class Logger {
     private Printer printer;
     private CommandFactory commandFactory;
 
-    public Logger(Printer printer, CommandFactory commandFactory) {
+    public Logger(Printer printer, CommandFactory commandFactory, StateFactory stateFactory) {
         this.printer = printer;
-        unaccumulatingState = new State();
-        intState = new State();
-        byteState = new State();
-        stringState = new State();
-        currentState = unaccumulatingState;
         this.commandFactory = commandFactory;
+        unaccumulatingState = stateFactory.createState();
+        intState = stateFactory.createState();
+        byteState = stateFactory.createState();
+        stringState = stateFactory.createState();
+        currentState = unaccumulatingState;
     }
 
     /**

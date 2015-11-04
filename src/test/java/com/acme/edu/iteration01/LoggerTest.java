@@ -4,6 +4,7 @@ import com.acme.edu.Logger;
 import com.acme.edu.SysoutCaptureAndAssertionAbility;
 import com.acme.edu.commands.CommandFactory;
 import com.acme.edu.printers.ConsolePrinter;
+import com.acme.edu.states.StateFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +20,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     public void setUpSystemOut() throws IOException {
         resetOut();
         captureSysout();
-        logger = new Logger(new ConsolePrinter(), new CommandFactory());
+        logger = new Logger(new ConsolePrinter(), new CommandFactory(), new StateFactory());
     }
 
     @After
