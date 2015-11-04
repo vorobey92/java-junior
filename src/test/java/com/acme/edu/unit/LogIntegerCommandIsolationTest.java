@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.mockito.Mockito.*;
+import static org.fest.assertions.Assertions.*;
 
 public class LogIntegerCommandIsolationTest {
     private Printer mockPrinter;
@@ -35,6 +36,14 @@ public class LogIntegerCommandIsolationTest {
     }
 
     @Test
+    public void shouldSetMessageToNullAfterLogging() {
+        sut.setMessage(message);
+        sut.execute();
+
+        assertThat(sut.getMessage()).isEqualTo(null);
+    }
+
+    @Test
     public void shouldNotLogWhenHasNullMessage() {
         when(stubDecorator.decorate(any())).thenReturn(decoratedString);
 
@@ -45,11 +54,7 @@ public class LogIntegerCommandIsolationTest {
     }
 
     @Test
-    public void shouldNotLogWhenDoesNotHaveMessage() {
-        when(stubDecorator.decorate(any())).thenReturn(decoratedString);
-
-        sut.execute();
-
-        verify(mockPrinter, times(0)).println(anyString());
+    public void shouldHaveNullMessageRightAfterCreation() {
+        assertThat(sut.getMessage()).isEqualTo(null);
     }
 }
