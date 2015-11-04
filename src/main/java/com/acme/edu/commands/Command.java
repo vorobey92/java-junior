@@ -2,7 +2,7 @@ package com.acme.edu.commands;
 
 import com.acme.edu.printers.Printer;
 
-public abstract class Command<T extends Command<T>> {
+public abstract class Command<T> {
     private Printer printer;
     private String message;
 
@@ -10,7 +10,7 @@ public abstract class Command<T extends Command<T>> {
         this.printer = printer;
     }
 
-    abstract public T merge(T oldCommand);
+    abstract public Command merge(T oldCommand);
 
     public void execute() {
         if (message != null) {
