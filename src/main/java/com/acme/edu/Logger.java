@@ -5,7 +5,7 @@ import com.acme.edu.commands.CommandFactory;
 import com.acme.edu.printers.Printer;
 
 /**
- * A Logger can be used to log different types of messages to the standard output stream. A Logger
+ * A Logger can be used to apply different types of messages to the standard output stream. A Logger
  * accumulates some types of messages before logging (see description in method-level documentation).
  * The fflush() method is used to force the Logger to write an accumulated data to the standard output stream.
  */
@@ -44,12 +44,12 @@ public class Logger {
         command.setMessage("" + message);
 
         if (currentState == intState) {
-            intState.log(command);
+            intState.apply(command);
             return;
         }
 
         currentState.fflush();
-        intState.log(command);
+        intState.apply(command);
         currentState = intState;
     }
 
@@ -70,12 +70,12 @@ public class Logger {
         command.setMessage("" + message);
 
         if (currentState == byteState) {
-            byteState.log(command);
+            byteState.apply(command);
             return;
         }
 
         currentState.fflush();
-        byteState.log(command);
+        byteState.apply(command);
         currentState = byteState;
     }
 
@@ -91,7 +91,7 @@ public class Logger {
         command.setMessage("" + message);
 
         currentState.fflush();
-        unaccumulatingState.log(command);
+        unaccumulatingState.apply(command);
         currentState = unaccumulatingState;
     }
 
@@ -113,12 +113,12 @@ public class Logger {
         command.setMessage("" + message);
 
         if (currentState == stringState) {
-            stringState.log(command);
+            stringState.apply(command);
             return;
         }
 
         currentState.fflush();
-        stringState.log(command);
+        stringState.apply(command);
         currentState = stringState;
     }
 
@@ -134,7 +134,7 @@ public class Logger {
         command.setMessage("" + message);
 
         currentState.fflush();
-        unaccumulatingState.log(command);
+        unaccumulatingState.apply(command);
         currentState = unaccumulatingState;
     }
 
@@ -150,7 +150,7 @@ public class Logger {
         command.setMessage("" + message);
 
         currentState.fflush();
-        unaccumulatingState.log(command);
+        unaccumulatingState.apply(command);
         currentState = unaccumulatingState;
     }
 
