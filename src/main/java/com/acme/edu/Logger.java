@@ -40,17 +40,7 @@ public class Logger {
      * @param message The int to be accumulated.
      */
     public void log(int message) {
-        Command command = CommandFactory.createCommand(CommandFactory.Type.INT, printer);
-        command.setMessage("" + message);
-
-        if (currentState == intState) {
-            intState.apply(command);
-            return;
-        }
-
-        currentState.flush();
-        intState.apply(command);
-        currentState = intState;
+        changeState(CommandFactory.Type.INT, intState, message);
     }
 
     /**
@@ -66,17 +56,7 @@ public class Logger {
      * @param message The byte to be accumulated.
      */
     public void log(byte message) {
-        Command command = CommandFactory.createCommand(CommandFactory.Type.BYTE, printer);
-        command.setMessage("" + message);
-
-        if (currentState == byteState) {
-            byteState.apply(command);
-            return;
-        }
-
-        currentState.flush();
-        byteState.apply(command);
-        currentState = byteState;
+        changeState(CommandFactory.Type.BYTE, byteState, message);
     }
 
     /**
@@ -87,12 +67,7 @@ public class Logger {
      * @param message The char to be logged.
      */
     public void log(char message) {
-        Command command = CommandFactory.createCommand(CommandFactory.Type.CHAR, printer);
-        command.setMessage("" + message);
-
-        currentState.flush();
-        unaccumulatingState.apply(command);
-        currentState = unaccumulatingState;
+        changeState(CommandFactory.Type.CHAR, unaccumulatingState, message);
     }
 
     /**
@@ -109,17 +84,7 @@ public class Logger {
      * @param message The String to be accumulated.
      */
     public void log(String message) {
-        Command command = CommandFactory.createCommand(CommandFactory.Type.STRING, printer);
-        command.setMessage("" + message);
-
-        if (currentState == stringState) {
-            stringState.apply(command);
-            return;
-        }
-
-        currentState.flush();
-        stringState.apply(command);
-        currentState = stringState;
+        changeState(CommandFactory.Type.STRING, stringState, message);
     }
 
     /**
@@ -130,12 +95,7 @@ public class Logger {
      * @param message The boolean to be logged.
      */
     public void log(boolean message) {
-        Command command = CommandFactory.createCommand(CommandFactory.Type.BOOLEAN, printer);
-        command.setMessage("" + message);
-
-        currentState.flush();
-        unaccumulatingState.apply(command);
-        currentState = unaccumulatingState;
+        changeState(CommandFactory.Type.BOOLEAN, unaccumulatingState, message);
     }
 
     /**
@@ -146,12 +106,7 @@ public class Logger {
      * @param message The Object to be logged.
      */
     public void log(Object message) {
-        Command command = CommandFactory.createCommand(CommandFactory.Type.OBJECT, printer);
-        command.setMessage("" + message);
-
-        currentState.flush();
-        unaccumulatingState.apply(command);
-        currentState = unaccumulatingState;
+        changeState(CommandFactory.Type.OBJECT, unaccumulatingState, message);
     }
 
     /**
@@ -204,5 +159,16 @@ public class Logger {
      */
     public void flush() {
         currentState.flush();
+    }
+
+    private void changeState(CommandFactory.Type type, State nextState, Object message) {
+        if (currentState != nextState) {
+            currentState.flush();
+        }
+
+        Command command = CommandFactory.createCommand(type, printer);
+        command.setMessage(message.toString());
+        nextState.apply(command);
+        currentState = nextState;
     }
 }
