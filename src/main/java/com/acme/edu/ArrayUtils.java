@@ -11,8 +11,8 @@ class ArrayUtils {
     static int[] multiDimIntArrayToOneDimIntArray(Object[] multiDimArray) {
         int[] intArray = new int[0];
 
-        for (int i = 0; i < multiDimArray.length; ++i) {
-            intArray = merge(intArray, elementToIntArray(i, multiDimArray));
+        for (Object element : multiDimArray) {
+            intArray = merge(intArray, elementToIntArray(element));
         }
 
         return intArray;
@@ -25,14 +25,14 @@ class ArrayUtils {
         return newArray;
     }
 
-    private static int[] elementToIntArray(int index, Object[] array) {
-        if (array[index] == null) {
+    private static int[] elementToIntArray(Object element) {
+        if (element == null) {
             return new int[0];
         }
-        if (array[index] instanceof int[]) {
-            return (int[]) array[index];
+        if (element instanceof int[]) {
+            return (int[]) element;
         }
 
-        return multiDimIntArrayToOneDimIntArray((Object[]) array[index]);
+        return multiDimIntArrayToOneDimIntArray((Object[]) element);
     }
 }
