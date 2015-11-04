@@ -6,7 +6,7 @@ public class CommandFactory {
 
     public enum Type {INT, BYTE, STRING, CHAR, BOOLEAN, OBJECT}
 
-    public static com.acme.edu.commands.Command createCommand(Type type, Printer printer) {
+    public Command createCommand(Type type, Printer printer) {
         switch (type) {
             case INT:
                 return new LogIntegerCommand(printer, "primitive: %s", Integer.MAX_VALUE, Integer.MIN_VALUE);
@@ -24,10 +24,4 @@ public class CommandFactory {
                 throw new IllegalArgumentException("Unexpected type: " + type);
         }
     }
-
-    private CommandFactory() {
-
-    }
-
-
 }

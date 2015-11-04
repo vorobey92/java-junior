@@ -18,14 +18,16 @@ public class Logger {
     private State byteState;
     private State stringState;
     private Printer printer;
+    private CommandFactory commandFactory;
 
-    public Logger(Printer printer) {
+    public Logger(Printer printer, CommandFactory commandFactory) {
         this.printer = printer;
         unaccumulatingState = new State();
         intState = new State();
         byteState = new State();
         stringState = new State();
         currentState = unaccumulatingState;
+        this.commandFactory = commandFactory;
     }
 
     /**
@@ -167,7 +169,7 @@ public class Logger {
             currentState.flush();
         }
 
-        Command command = CommandFactory.createCommand(type, printer);
+        Command command = commandFactory.createCommand(type, printer);
         command.setMessage(message.toString());
         nextState.apply(command);
         currentState = nextState;
