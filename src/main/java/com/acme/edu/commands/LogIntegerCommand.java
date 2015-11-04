@@ -1,17 +1,18 @@
 package com.acme.edu.commands;
 
+import com.acme.edu.decorators.Decorator;
 import com.acme.edu.printers.Printer;
 
 public class LogIntegerCommand extends Command<LogIntegerCommand> {
     private int maxValue;
     private int minValue;
-    private String format;
+    private Decorator decorator;
 
-    public LogIntegerCommand(Printer printer, String format, int maxValue, int minValue) {
+    public LogIntegerCommand(Printer printer, Decorator decorator, int maxValue, int minValue) {
         super(printer);
         this.maxValue = maxValue;
         this.minValue = minValue;
-        this.format = format;
+        this.decorator = decorator;
     }
 
     @Override
@@ -37,7 +38,7 @@ public class LogIntegerCommand extends Command<LogIntegerCommand> {
 
     @Override
     protected String getFormattedString() {
-        return String.format(format, getMessage());
+        return decorator.decorate(getMessage());
     }
 
     private boolean isSumOutOfRange(String oldMessage) {

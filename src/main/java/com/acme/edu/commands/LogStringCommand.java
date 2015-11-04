@@ -1,17 +1,20 @@
 package com.acme.edu.commands;
 
+import com.acme.edu.decorators.Decorator;
 import com.acme.edu.printers.Printer;
 
 public class LogStringCommand extends Command<LogStringCommand> {
     private int lengthOfStringsSequence;
-    private String oneStringSequenceFormat;
-    private String mulitpleStringSequenceFormat;
+    private Decorator oneStringSequenceDecorator;
+    private Decorator mulitpleStringSequenceDecorator;
     
-    public LogStringCommand(Printer printer, String oneStringSequenceFormat, String mulitpleStringSequenceFormat) {
+    public LogStringCommand(Printer printer,
+                            Decorator oneStringSequenceDecorator,
+                            Decorator mulitpleStringSequenceDecorator) {
         super(printer);
         lengthOfStringsSequence = 0;
-        this.oneStringSequenceFormat = oneStringSequenceFormat;
-        this.mulitpleStringSequenceFormat = mulitpleStringSequenceFormat;
+        this.oneStringSequenceDecorator = oneStringSequenceDecorator;
+        this.mulitpleStringSequenceDecorator = mulitpleStringSequenceDecorator;
     }
 
     @Override
@@ -37,8 +40,10 @@ public class LogStringCommand extends Command<LogStringCommand> {
 
     @Override
     protected String getFormattedString() {
-        String format = lengthOfStringsSequence > 1 ? mulitpleStringSequenceFormat : oneStringSequenceFormat;
+        Decorator decorator = lengthOfStringsSequence > 1
+                ? mulitpleStringSequenceDecorator
+                : oneStringSequenceDecorator;
 
-        return String.format(format, getMessage(), lengthOfStringsSequence);
+        return decorator.decorate(getMessage(), lengthOfStringsSequence);
     }
 }

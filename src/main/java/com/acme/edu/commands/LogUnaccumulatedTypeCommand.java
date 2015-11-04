@@ -1,13 +1,14 @@
 package com.acme.edu.commands;
 
+import com.acme.edu.decorators.Decorator;
 import com.acme.edu.printers.Printer;
 
 public class LogUnaccumulatedTypeCommand extends Command<LogUnaccumulatedTypeCommand> {
-    private String format;
+    private Decorator decorator;
 
-    public LogUnaccumulatedTypeCommand(Printer printer, String format) {
+    public LogUnaccumulatedTypeCommand(Printer printer, Decorator decorator) {
         super(printer);
-        this.format = format;
+        this.decorator = decorator;
     }
 
     @Override
@@ -20,6 +21,6 @@ public class LogUnaccumulatedTypeCommand extends Command<LogUnaccumulatedTypeCom
 
     @Override
     protected String getFormattedString() {
-        return String.format(format, getMessage());
+        return decorator.decorate(getMessage());
     }
 }
