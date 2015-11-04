@@ -22,12 +22,14 @@ public class StateFactoryTest {
         assertEquals(EmptyState.class,factory.getEmptyState().getClass());
         assertEquals(IntState.class, factory.getIntState(intStub).getClass());
         assertEquals(IntState.class, factory.getIntState(stringStub).getClass());
+        assertEquals(IntState.class, factory.getIntState(null).getClass());
         assertEquals(StringState.class, factory.getStringState(intStub).getClass());
         assertEquals(StringState.class, factory.getStringState(stringStub).getClass());
+        assertEquals(StringState.class, factory.getStringState(null).getClass());
     }
 
     @Test
-    public void shouldFlushWhenGetStateNotEqualLastState() {
+    public void shouldFlushWhenNewStateNotEqualPreviousState() {
         Printable mock = mock(Printable.class);
         StateFactory factory = new StateFactory(mock);
         State intStub = mock(IntState.class);
