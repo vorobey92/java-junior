@@ -3,11 +3,10 @@ package com.acme.edu.unit;
 
 import com.acme.edu.printer.ConsolePrinter;
 import com.acme.edu.printer.Printable;
-import com.acme.edu.state.EmptyState;
+import com.acme.edu.state.DefaultState;
 import com.acme.edu.state.IntState;
 import com.acme.edu.state.State;
 import com.acme.edu.state.StringState;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.mockito.Mockito.*;
@@ -67,9 +66,9 @@ public class StateTest {
 
 
     @Test
-    public void shoudLogThatWeWillGiveToThatEmptyState(){
+    public void shoudLogThatWeWillGiveToThatDefaultState(){
         mock = mock(ConsolePrinter.class);
-        sut = new EmptyState(mock);
+        sut = new DefaultState(mock);
 
         sut.log("primitive: boolean");
         sut.log("char: a");
@@ -79,7 +78,7 @@ public class StateTest {
         verify(mock).print("char: a");
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldThrowNullPointerExceptionWhenNullStringIsFirst(){
         mock = mock(ConsolePrinter.class);
         sut = new StringState(mock);
@@ -87,6 +86,7 @@ public class StateTest {
         sut.log(null);
         sut.flush();
 
+        verify(mock, times(0)).println("");
     }
 
 

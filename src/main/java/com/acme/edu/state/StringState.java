@@ -8,7 +8,7 @@ import com.acme.edu.printer.Printable;
  */
 public class StringState extends State {
 
-    private static final String STRING = "string: ";
+    private static final String PREFIX = "string: ";
     private String buffer="";
     private static int cntOfStrings = 1;
 
@@ -27,14 +27,24 @@ public class StringState extends State {
      */
     @Override
     public void log(String message){
+        if (message == null) {
+            return;
+        }
 
         if (buffer.isEmpty()){
             buffer = message;
             return;
         }
 
-        if (logOrCountAndReturn(message)) {
+        if (message.equals(buffer)) {
+            cntOfStrings++;
             return;
+
+        } else if (cntOfStrings == 1) {
+            println(PREFIX + buffer);
+        } else {
+            println(PREFIX + buffer + " (x" + cntOfStrings + ")");
+            cntOfStrings = 1;
         }
 
         buffer = message;
@@ -45,33 +55,13 @@ public class StringState extends State {
      */
     @Override
     public void flush(){
-        releaseStringsFromTemp();
-    }
-
-    private void releaseStringsFromTemp() {
         if (cntOfStrings != 1) {
-            println(STRING + buffer + " (x" + cntOfStrings + ")");
+            println(PREFIX + buffer + " (x" + cntOfStrings + ")");
         } else if (!buffer.isEmpty()) {
-            println(STRING + buffer);
+            println(PREFIX + buffer);
         }
         cntOfStrings = 1;
         buffer = "";
-    }
-
-    private boolean logOrCountAndReturn(String message) {
-        if (message == null) {
-            return false;
-        }
-        if (message.equals(buffer)){
-            cntOfStrings++;
-            return true;
-        } else if (cntOfStrings == 1) {
-            println(STRING + buffer);
-        } else {
-            println(STRING + buffer + " (x" + cntOfStrings + ")");
-            cntOfStrings = 1;
-        }
-        return false;
     }
 
 }

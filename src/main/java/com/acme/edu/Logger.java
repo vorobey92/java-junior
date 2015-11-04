@@ -20,7 +20,7 @@ public class Logger {
      */
     public Logger (Printable printer) {
         factory = new StateFactory(printer);
-        state = factory.getEmptyState();
+        state = factory.getDefaultState();
     }
 
 
@@ -55,7 +55,7 @@ public class Logger {
      * @param message  char that will be logged
      */
     public void log(char message) {
-        state = factory.getEmptyState();
+        state = factory.getDefaultState();
         state.log("char: " + message + SEP);
         lastState = state;
     }
@@ -65,7 +65,7 @@ public class Logger {
      * @param message  boolean that will be logged
      */
     public void log(boolean message) {
-        state = factory.getEmptyState();
+        state = factory.getDefaultState();
         state.log("primitive: " + message + SEP);
         lastState = state;
     }
@@ -88,7 +88,7 @@ public class Logger {
      * @param message object that will be logged
      */
     public void log(Object message) {
-        state = factory.getEmptyState();
+        state = factory.getDefaultState();
         state.log("reference: " + message + SEP);
         lastState = state;
     }
@@ -105,7 +105,7 @@ public class Logger {
      * @param message array of ints that will be loged
      */
     public void log(int... message){
-        state = factory.getEmptyState();
+        state = factory.getDefaultState();
         state.log(Mapper.fromArrayToString(message));
         lastState = state;
     }
@@ -115,7 +115,7 @@ public class Logger {
      * @param message matrix of ints that will be loged
      */
     public void log(int[][] message){
-        state = factory.getEmptyState();
+        state = factory.getDefaultState();
         state.log(Mapper.fromMatrixToString(message));
         lastState = state;
     }
@@ -125,7 +125,7 @@ public class Logger {
      * @param message multimatrix that will be loged
      */
     public void log(int[][][][] message){
-        state = factory.getEmptyState();
+        state = factory.getDefaultState();
         state.log(Mapper.fromMultiMatrixToString(message));
         lastState = state;
     }
@@ -135,7 +135,7 @@ public class Logger {
      * @param message array of Strings that will be loged
      */
     public void log(String... message){
-        state = factory.getEmptyState();
+        state = factory.getDefaultState();
         for(String str : message) {
             state.log(str + SEP);
         }

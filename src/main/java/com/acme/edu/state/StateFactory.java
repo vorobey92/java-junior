@@ -1,10 +1,6 @@
-package com.acme.edu;
+package com.acme.edu.state;
 
 import com.acme.edu.printer.Printable;
-import com.acme.edu.state.EmptyState;
-import com.acme.edu.state.IntState;
-import com.acme.edu.state.State;
-import com.acme.edu.state.StringState;
 
 /**
  * Factory for states
@@ -13,7 +9,7 @@ public class StateFactory {
 
     private State intState;
     private State stringState;
-    private State emptyState;
+    private State defaultState;
 
     /**
      * Creating objects for all states.
@@ -22,7 +18,7 @@ public class StateFactory {
     public StateFactory(Printable printer) {
         intState = new IntState(printer);
         stringState = new StringState(printer);
-        emptyState = new EmptyState(printer);
+        defaultState = new DefaultState(printer);
     }
 
 
@@ -58,8 +54,8 @@ public class StateFactory {
      *
      * @return empty state
      */
-    public State getEmptyState(){
-        return emptyState;
+    public State getDefaultState(){
+        return defaultState;
     }
 
 }

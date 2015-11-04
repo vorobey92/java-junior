@@ -7,7 +7,7 @@ import com.acme.edu.printer.Printable;
  */
 public class IntState extends State {
 
-    private static final String PRIMITIVE = "primitive: ";
+    private static final String PREFIX = "primitive: ";
     protected static int cntOfInts = 0;
     protected static int bufferOfInts = 0;
 
@@ -28,7 +28,12 @@ public class IntState extends State {
      */
     @Override
     public void log(String message){
-        if (printIfOverflof(Integer.parseInt(message))) {
+        // Checking overflow
+        if (Integer.parseInt(message) + bufferOfInts < 0) {
+            println(PREFIX + bufferOfInts);
+            println(PREFIX + message);
+            bufferOfInts = 0;
+            cntOfInts = 0;
             return;
         }
 
@@ -41,29 +46,11 @@ public class IntState extends State {
      */
     @Override
     public void flush(){
-        checkAndPrintSum();
-    }
-
-    protected void checkAndPrintSum() {
         if (cntOfInts > 0) {
-            println(PRIMITIVE + bufferOfInts);
-            resetCounters();
+            println(PREFIX + bufferOfInts);
+            bufferOfInts = 0;
+            cntOfInts = 0;
         }
-    }
-
-    protected static void resetCounters() {
-        bufferOfInts = 0;
-        cntOfInts = 0;
-    }
-
-    private boolean printIfOverflof(int message) {
-        if (message + bufferOfInts < 0) {
-            println(PRIMITIVE + bufferOfInts);
-            println(PRIMITIVE + message);
-            resetCounters();
-            return true;
-        }
-        return false;
     }
 
 }

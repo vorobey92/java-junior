@@ -5,13 +5,13 @@ import com.acme.edu.printer.Printable;
 /**
  * Default state for not Int(Byte) or String state.
  */
-public class EmptyState extends State {
+public class DefaultState extends State {
 
     /**
      *
      * @param printer determines stream for logging
      */
-    public EmptyState(Printable printer) {
+    public DefaultState(Printable printer) {
         super(printer);
     }
 
@@ -25,7 +25,7 @@ public class EmptyState extends State {
     }
 
     /**
-     * Release buffers, but for EmptyState nothing to log.
+     * Release buffers, but for DefaultState nothing to log.
      */
     @Override
     public void flush() {
