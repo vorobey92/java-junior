@@ -13,9 +13,9 @@ public abstract class Command<T> {
     abstract public Command merge(T oldCommand);
 
     public void execute() {
-        if (message != null) {
+        if (getMessage() != null) {
             printer.println(getFormattedString());
-            message = null;
+            setMessage(null);
         }
     }
 
@@ -23,9 +23,9 @@ public abstract class Command<T> {
         this.message = message;
     }
 
-    abstract protected String getFormattedString();
-
-    protected String getMessage() {
+    public String getMessage() {
         return message;
     }
+
+    abstract protected String getFormattedString();
 }
