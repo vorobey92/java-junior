@@ -1,4 +1,4 @@
-package com.acme.edu;
+package com.acme.edu.states;
 
 import com.acme.edu.commands.Command;
 

@@ -3,6 +3,7 @@ package com.acme.edu;
 import com.acme.edu.commands.Command;
 import com.acme.edu.commands.CommandFactory;
 import com.acme.edu.printers.Printer;
+import com.acme.edu.states.State;
 
 /**
  * A Logger can be used to apply different types of messages to the standard output stream. A Logger
