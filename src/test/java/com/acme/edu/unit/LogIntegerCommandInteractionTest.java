@@ -84,6 +84,8 @@ public class LogIntegerCommandInteractionTest {
     public void shouldLogTwoIntegersWhenPositiveOverflowOccurs() {
         String message = "" + maxValue;
         LogIntegerCommand mockCommand = mock(LogIntegerCommand.class);
+
+        when(stubDecorator.decorate(message)).thenReturn(decoratedString);
         when(mockCommand.getMessage()).thenReturn("1");
 
         sut.setMessage(message);
