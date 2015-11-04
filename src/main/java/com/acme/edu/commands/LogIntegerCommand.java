@@ -2,12 +2,12 @@ package com.acme.edu.commands;
 
 import com.acme.edu.printers.Printer;
 
-public class IntegerCommand extends Command<IntegerCommand> {
+public class LogIntegerCommand extends Command<LogIntegerCommand> {
     private int maxValue;
     private int minValue;
     private String format;
 
-    public IntegerCommand(Printer printer, String format, int maxValue, int minValue) {
+    public LogIntegerCommand(Printer printer, String format, int maxValue, int minValue) {
         super(printer);
         this.maxValue = maxValue;
         this.minValue = minValue;
@@ -15,7 +15,7 @@ public class IntegerCommand extends Command<IntegerCommand> {
     }
 
     @Override
-    public IntegerCommand merge(IntegerCommand oldCommand) {
+    public LogIntegerCommand merge(LogIntegerCommand oldCommand) {
         if (oldCommand == null || oldCommand.getMessage() == null) {
             return this;
         }

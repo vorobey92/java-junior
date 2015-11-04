@@ -2,12 +2,12 @@ package com.acme.edu.commands;
 
 import com.acme.edu.printers.Printer;
 
-public class StringCommand extends Command<StringCommand> {
+public class LogStringCommand extends Command<LogStringCommand> {
     private int lengthOfStringsSequence;
     private String oneStringSequenceFormat;
     private String mulitpleStringSequenceFormat;
     
-    public StringCommand(Printer printer, String oneStringSequenceFormat, String mulitpleStringSequenceFormat) {
+    public LogStringCommand(Printer printer, String oneStringSequenceFormat, String mulitpleStringSequenceFormat) {
         super(printer);
         lengthOfStringsSequence = 0;
         this.oneStringSequenceFormat = oneStringSequenceFormat;
@@ -21,7 +21,7 @@ public class StringCommand extends Command<StringCommand> {
     }
 
     @Override
-    public StringCommand merge(StringCommand oldCommand) {
+    public LogStringCommand merge(LogStringCommand oldCommand) {
         if (oldCommand == null || oldCommand.getMessage() == null) {
             return this;
         }

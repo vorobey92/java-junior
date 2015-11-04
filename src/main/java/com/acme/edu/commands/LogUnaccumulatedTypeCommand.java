@@ -2,16 +2,16 @@ package com.acme.edu.commands;
 
 import com.acme.edu.printers.Printer;
 
-public class UnaccumulatingCommand extends Command<UnaccumulatingCommand> {
+public class LogUnaccumulatedTypeCommand extends Command<LogUnaccumulatedTypeCommand> {
     private String format;
 
-    public UnaccumulatingCommand(Printer printer, String format) {
+    public LogUnaccumulatedTypeCommand(Printer printer, String format) {
         super(printer);
         this.format = format;
     }
 
     @Override
-    public UnaccumulatingCommand merge(UnaccumulatingCommand oldCommand) {
+    public LogUnaccumulatedTypeCommand merge(LogUnaccumulatedTypeCommand oldCommand) {
         execute();
         setMessage(null);
 
