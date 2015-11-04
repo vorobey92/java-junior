@@ -4,10 +4,10 @@ import com.acme.edu.printers.Printer;
 
 public class CommandFactory {
 
-    public enum Command {INT, BYTE, STRING, CHAR, BOOLEAN, OBJECT}
+    public enum Type {INT, BYTE, STRING, CHAR, BOOLEAN, OBJECT}
 
-    public static com.acme.edu.commands.Command createCommand(Command command, Printer printer) {
-        switch (command) {
+    public static com.acme.edu.commands.Command createCommand(Type type, Printer printer) {
+        switch (type) {
             case INT:
                 return new LogIntegerCommand(printer, "primitive: %s", Integer.MAX_VALUE, Integer.MIN_VALUE);
             case BYTE:
@@ -21,7 +21,7 @@ public class CommandFactory {
             case OBJECT:
                 return new LogUnaccumulatedTypeCommand(printer, "reference: %s");
             default:
-                throw new IllegalArgumentException("Unexpected type: " + command);
+                throw new IllegalArgumentException("Unexpected type: " + type);
         }
     }
 

@@ -40,7 +40,7 @@ public class Logger {
      * @param message The int to be accumulated.
      */
     public void log(int message) {
-        Command command = CommandFactory.createCommand(CommandFactory.Command.INT, printer);
+        Command command = CommandFactory.createCommand(CommandFactory.Type.INT, printer);
         command.setMessage("" + message);
 
         if (currentState == intState) {
@@ -66,7 +66,7 @@ public class Logger {
      * @param message The byte to be accumulated.
      */
     public void log(byte message) {
-        Command command = CommandFactory.createCommand(CommandFactory.Command.BYTE, printer);
+        Command command = CommandFactory.createCommand(CommandFactory.Type.BYTE, printer);
         command.setMessage("" + message);
 
         if (currentState == byteState) {
@@ -87,7 +87,7 @@ public class Logger {
      * @param message The char to be logged.
      */
     public void log(char message) {
-        Command command = CommandFactory.createCommand(CommandFactory.Command.CHAR, printer);
+        Command command = CommandFactory.createCommand(CommandFactory.Type.CHAR, printer);
         command.setMessage("" + message);
 
         currentState.fflush();
@@ -109,7 +109,7 @@ public class Logger {
      * @param message The String to be accumulated.
      */
     public void log(String message) {
-        Command command = CommandFactory.createCommand(CommandFactory.Command.STRING, printer);
+        Command command = CommandFactory.createCommand(CommandFactory.Type.STRING, printer);
         command.setMessage("" + message);
 
         if (currentState == stringState) {
@@ -130,7 +130,7 @@ public class Logger {
      * @param message The boolean to be logged.
      */
     public void log(boolean message) {
-        Command command = CommandFactory.createCommand(CommandFactory.Command.BOOLEAN, printer);
+        Command command = CommandFactory.createCommand(CommandFactory.Type.BOOLEAN, printer);
         command.setMessage("" + message);
 
         currentState.fflush();
@@ -146,7 +146,7 @@ public class Logger {
      * @param message The Object to be logged.
      */
     public void log(Object message) {
-        Command command = CommandFactory.createCommand(CommandFactory.Command.OBJECT, printer);
+        Command command = CommandFactory.createCommand(CommandFactory.Type.OBJECT, printer);
         command.setMessage("" + message);
 
         currentState.fflush();
