@@ -5,10 +5,10 @@ import com.acme.edu.SysoutCaptureAndAssertionAbility;
 import com.acme.edu.commands.CommandFactory;
 import com.acme.edu.printers.ConsolePrinter;
 import com.acme.edu.states.StateFactory;
-import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.Ignore;
 
 import java.io.IOException;
 
