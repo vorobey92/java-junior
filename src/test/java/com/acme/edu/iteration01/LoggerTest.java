@@ -2,6 +2,8 @@ package com.acme.edu.iteration01;
 
 import com.acme.edu.Logger;
 import com.acme.edu.SysoutCaptureAndAssertionAbility;
+import com.acme.edu.exception.NullMessageException;
+import com.acme.edu.exception.PreviousStateIsNullException;
 import com.acme.edu.printer.ConsolePrinter;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -30,7 +32,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     //endregion
 
     @Test
-    public void shouldLogInteger() throws IOException {
+    public void shouldLogInteger() throws IOException, PreviousStateIsNullException {
         //region when
           logger.log(1);
           logger.close();
@@ -43,7 +45,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldLogByte() throws IOException {
+    public void shouldLogByte() throws IOException, PreviousStateIsNullException {
         //region when
         logger.log((byte)1);
         logger.close();
@@ -74,7 +76,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldLogString() throws IOException {
+    public void shouldLogString() throws IOException, PreviousStateIsNullException, NullMessageException {
 
 
         //region when
@@ -105,7 +107,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldLogReference() throws IOException {
+    public void shouldLogReference() throws IOException, NullMessageException {
         //region when
         logger.log(new Object());
 

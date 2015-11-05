@@ -1,6 +1,7 @@
 package com.acme.edu.unit;
 
 
+import com.acme.edu.exception.CanNotPrintException;
 import com.acme.edu.printer.ConsolePrinter;
 import com.acme.edu.printer.Printable;
 import com.acme.edu.state.DefaultState;
@@ -17,7 +18,7 @@ public class StateTest {
     private State sut;
 
     @Test
-    public void shouldLogSumOfPrimitivesWhenYouTryingToLogSequenceOfInts(){
+    public void shouldLogSumOfPrimitivesWhenYouTryingToLogSequenceOfInts() throws CanNotPrintException {
         mock = mock(ConsolePrinter.class);
         sut = new IntState(mock);
 
@@ -30,7 +31,7 @@ public class StateTest {
     }
 
     @Test
-    public void shouldLogTwoPrimitivesWhenAppearsTypeOverflowWhileSumming(){
+    public void shouldLogTwoPrimitivesWhenAppearsTypeOverflowWhileSumming() throws CanNotPrintException {
         mock = mock(ConsolePrinter.class);
         sut = new IntState(mock);
 
@@ -43,7 +44,7 @@ public class StateTest {
     }
 
     @Test
-    public void shouldLogStringAndStringWithCounter(){
+    public void shouldLogStringAndStringWithCounter() throws CanNotPrintException {
         mock = mock(ConsolePrinter.class);
         sut = new StringState(mock);
 
@@ -66,7 +67,7 @@ public class StateTest {
 
 
     @Test
-    public void shoudLogThatWeWillGiveToThatDefaultState(){
+    public void shoudLogThatWeWillGiveToThatDefaultState() throws CanNotPrintException {
         mock = mock(ConsolePrinter.class);
         sut = new DefaultState(mock);
 
@@ -79,7 +80,7 @@ public class StateTest {
     }
 
     @Test
-    public void shouldThrowNullPointerExceptionWhenNullStringIsFirst(){
+    public void shouldThrowNullPointerExceptionWhenNullStringIsFirst() throws CanNotPrintException {
         mock = mock(ConsolePrinter.class);
         sut = new StringState(mock);
 

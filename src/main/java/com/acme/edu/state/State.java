@@ -1,5 +1,6 @@
 package com.acme.edu.state;
 
+import com.acme.edu.exception.CanNotPrintException;
 import com.acme.edu.printer.Printable;
 
 /**
@@ -29,11 +30,19 @@ public abstract class State {
     public abstract void flush();
 
     protected void print(String message){
-        printer.print(message);
+        try {
+            printer.print(message);
+        } catch (CanNotPrintException e) {
+            e.printStackTrace();
+        }
     }
 
     protected void println(String message){
-        printer.println(message);
+        try {
+            printer.println(message);
+        } catch (CanNotPrintException e) {
+            e.printStackTrace();
+        }
     }
 
 

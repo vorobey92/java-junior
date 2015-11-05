@@ -1,5 +1,7 @@
 package com.acme.edu;
 
+import com.acme.edu.exception.NullMessageException;
+import com.acme.edu.exception.PreviousStateIsNullException;
 import com.acme.edu.printer.Printable;
 import com.acme.edu.state.*;
 
@@ -10,6 +12,9 @@ import com.acme.edu.state.*;
 public class Logger {
 
     private static final String SEP = System.lineSeparator();
+    private static final String PREFIX_FOR_CHAR_MESSAGES = "char: ";
+    private static final String PREFIX_FOR_PRIMITIVE_MESSAGES = "primitive: ";
+    private static final String PREFIX_FOR_REFERENCE_MESSAGES = "reference: ";
     private State state;
     private State lastState;
     private StateFactory factory;
@@ -56,7 +61,7 @@ public class Logger {
      */
     public void log(char message) {
         state = factory.getDefaultState();
-        state.log("char: " + message + SEP);
+        state.log(PREFIX_FOR_CHAR_MESSAGES + message + SEP);
         lastState = state;
     }
 
@@ -66,7 +71,7 @@ public class Logger {
      */
     public void log(boolean message) {
         state = factory.getDefaultState();
-        state.log("primitive: " + message + SEP);
+        state.log(PREFIX_FOR_PRIMITIVE_MESSAGES + message + SEP);
         lastState = state;
     }
 
@@ -77,7 +82,10 @@ public class Logger {
      * method is called or any number is logged.
      * @param message string that will be logged
      */
-    public void log(String message) {
+    public void log(String message) throws NullMessageException {
+        if (message == null){
+            throw new NullMessageException("String is null");
+        }
         state = factory.getStringState(lastState);
         state.log(message);
         lastState = state;
@@ -87,16 +95,22 @@ public class Logger {
      *  Method for logging Object
      * @param message object that will be logged
      */
-    public void log(Object message) {
+    public void log(Object message) throws NullMessageException {
+        if (message == null){
+            throw new NullMessageException("Object is null");
+        }
         state = factory.getDefaultState();
-        state.log("reference: " + message + SEP);
+        state.log(PREFIX_FOR_REFERENCE_MESSAGES + message + SEP);
         lastState = state;
     }
 
     /**
      * Method for finishing logging. Prints the rest statement.
      */
-    public void close(){
+    public void close() throws PreviousStateIsNullException {
+        if (lastState == null){
+            throw new PreviousStateIsNullException();
+        }
         lastState.flush();
     }
 
@@ -104,7 +118,10 @@ public class Logger {
      *  Method for logging arrays of ints.
      * @param message array of ints that will be loged
      */
-    public void log(int... message){
+    public void log(int... message) throws NullMessageException {
+        if (message == null){
+            throw new NullMessageException("Array is null");
+        }
         state = factory.getDefaultState();
         state.log(Mapper.fromArrayToString(message));
         lastState = state;
@@ -114,7 +131,10 @@ public class Logger {
      *
      * @param message matrix of ints that will be loged
      */
-    public void log(int[][] message){
+    public void log(int[][] message) throws NullMessageException {
+        if (message == null){
+            throw new NullMessageException("Matrix is null");
+        }
         state = factory.getDefaultState();
         state.log(Mapper.fromMatrixToString(message));
         lastState = state;
@@ -124,7 +144,10 @@ public class Logger {
      *
      * @param message multimatrix that will be loged
      */
-    public void log(int[][][][] message){
+    public void log(int[][][][] message) throws NullMessageException {
+        if (message == null){
+            throw new NullMessageException("Multimatrix is null");
+        }
         state = factory.getDefaultState();
         state.log(Mapper.fromMultiMatrixToString(message));
         lastState = state;
@@ -134,7 +157,10 @@ public class Logger {
      *
      * @param message array of Strings that will be loged
      */
-    public void log(String... message){
+    public void log(String... message) throws NullMessageException {
+        if (message == null){
+            throw new NullMessageException("Array of strings is null");
+        }
         state = factory.getDefaultState();
         for(String str : message) {
             state.log(str + SEP);

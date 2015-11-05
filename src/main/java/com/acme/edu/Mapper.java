@@ -5,7 +5,12 @@ package com.acme.edu;
  */
 public class Mapper {
 
+    //region constants
     private static final String SEP = System.lineSeparator();
+    private static final String PREFIX_FOR_PRIMITIVES_ARRAY = "primitives array: ";
+    private static final String PREFIX_FOR_PRIMITIVES_MATRIX = "primitives matrix: ";
+    private static final String PREFIX_FOR_PRIMITIVES_MULTIMATRIX = "primitives multimatrix: {";
+    //endregion
 
     private Mapper(){
 
@@ -17,7 +22,7 @@ public class Mapper {
      * @return string like "primitives array: {...}"
      */
     public static String fromArrayToString(int... message){
-        StringBuilder str = new StringBuilder("primitives array: ");
+        StringBuilder str = new StringBuilder(PREFIX_FOR_PRIMITIVES_ARRAY);
         return str.append(printArray(message)).toString();
     }
 
@@ -27,7 +32,7 @@ public class Mapper {
      * @return string like "primitives matrix: { {}, {} }"
      */
     public static String fromMatrixToString(int[][] message){
-        StringBuilder str = new StringBuilder("primitives matrix: ");
+        StringBuilder str = new StringBuilder(PREFIX_FOR_PRIMITIVES_MATRIX);
         return str.append(printMatrix(message)).toString();
     }
 
@@ -37,7 +42,7 @@ public class Mapper {
      * @return "primitives multimatrix: {{{{}}}"
      */
     public static String fromMultiMatrixToString(int[][][][] message){
-        StringBuilder str = new StringBuilder("primitives multimatrix: {" + SEP);
+        StringBuilder str = new StringBuilder(PREFIX_FOR_PRIMITIVES_MULTIMATRIX + SEP);
         for (int[][][] mes : message) {
             str.append("{" + SEP);
             for (int[][] mes2 : mes) {
