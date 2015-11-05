@@ -1,6 +1,7 @@
 package com.acme.edu.state;
 
 
+import com.acme.edu.exception.LogException;
 import com.acme.edu.printer.Printable;
 
 /**
@@ -26,7 +27,7 @@ public class StringState extends State {
      * @param message string that will be logged
      */
     @Override
-    public void log(String message){
+    public void log(String message) throws LogException {
         if (message == null) {
             return;
         }
@@ -54,7 +55,7 @@ public class StringState extends State {
      * Method to release buffer into log.
      */
     @Override
-    public void flush(){
+    public void flush() throws LogException {
         if (cntOfStrings != 1) {
             println(PREFIX + buffer + " (x" + cntOfStrings + ")");
         } else if (!buffer.isEmpty()) {

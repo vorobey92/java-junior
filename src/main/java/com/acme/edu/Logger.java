@@ -1,5 +1,6 @@
 package com.acme.edu;
 
+import com.acme.edu.exception.LogException;
 import com.acme.edu.exception.NullMessageException;
 import com.acme.edu.exception.PreviousStateIsNullException;
 import com.acme.edu.printer.Printable;
@@ -21,11 +22,13 @@ public class Logger {
 
     /**
      *
-     * @param printer realization of Printable interface
+     * @param factory factory of states
+     *
      */
-    public Logger (Printable printer) {
-        factory = new StateFactory(printer);
+    public Logger (StateFactory factory) {
+        this.factory = factory;
         state = factory.getDefaultState();
+        lastState = factory.getDefaultState();
     }
 
 
@@ -36,7 +39,7 @@ public class Logger {
      *  Also it logs two numbers (sum and new int) if type overflow while summing.
      * @param message  number (int) that will be logged (or sum for sequence)
      */
-    public void log(int message) {
+    public void log(int message) throws LogException {
         state = factory.getIntState(lastState);
         state.log(message + "");
         lastState = state;
@@ -49,7 +52,7 @@ public class Logger {
      *  Also it logs two numbers (sum and new byte) if type overflow while summing.
      * @param message  number (byte) that will be logged (or sum for sequence)
      */
-    public void log(byte message) {
+    public void log(byte message) throws LogException {
         state = factory.getIntState(lastState);
         state.log(message + "");
         lastState = state;
@@ -59,7 +62,7 @@ public class Logger {
      *  Method for logging bytes.
      * @param message  char that will be logged
      */
-    public void log(char message) {
+    public void log(char message) throws LogException {
         state = factory.getDefaultState();
         state.log(PREFIX_FOR_CHAR_MESSAGES + message + SEP);
         lastState = state;
@@ -69,7 +72,7 @@ public class Logger {
      *  Method for logging boolean.
      * @param message  boolean that will be logged
      */
-    public void log(boolean message) {
+    public void log(boolean message) throws LogException {
         state = factory.getDefaultState();
         state.log(PREFIX_FOR_PRIMITIVE_MESSAGES + message + SEP);
         lastState = state;
@@ -82,7 +85,7 @@ public class Logger {
      * method is called or any number is logged.
      * @param message string that will be logged
      */
-    public void log(String message) throws NullMessageException {
+    public void log(String message) throws NullMessageException, LogException {
         if (message == null){
             throw new NullMessageException("String is null");
         }
@@ -95,7 +98,7 @@ public class Logger {
      *  Method for logging Object
      * @param message object that will be logged
      */
-    public void log(Object message) throws NullMessageException {
+    public void log(Object message) throws NullMessageException, LogException {
         if (message == null){
             throw new NullMessageException("Object is null");
         }
@@ -107,7 +110,7 @@ public class Logger {
     /**
      * Method for finishing logging. Prints the rest statement.
      */
-    public void close() throws PreviousStateIsNullException {
+    public void close() throws PreviousStateIsNullException, LogException {
         if (lastState == null){
             throw new PreviousStateIsNullException();
         }
@@ -118,7 +121,7 @@ public class Logger {
      *  Method for logging arrays of ints.
      * @param message array of ints that will be loged
      */
-    public void log(int... message) throws NullMessageException {
+    public void log(int... message) throws NullMessageException, LogException {
         if (message == null){
             throw new NullMessageException("Array is null");
         }
@@ -131,7 +134,7 @@ public class Logger {
      *
      * @param message matrix of ints that will be loged
      */
-    public void log(int[][] message) throws NullMessageException {
+    public void log(int[][] message) throws NullMessageException, LogException {
         if (message == null){
             throw new NullMessageException("Matrix is null");
         }
@@ -144,7 +147,7 @@ public class Logger {
      *
      * @param message multimatrix that will be loged
      */
-    public void log(int[][][][] message) throws NullMessageException {
+    public void log(int[][][][] message) throws NullMessageException, LogException {
         if (message == null){
             throw new NullMessageException("Multimatrix is null");
         }
@@ -157,7 +160,7 @@ public class Logger {
      *
      * @param message array of Strings that will be loged
      */
-    public void log(String... message) throws NullMessageException {
+    public void log(String... message) throws NullMessageException, LogException {
         if (message == null){
             throw new NullMessageException("Array of strings is null");
         }

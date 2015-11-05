@@ -1,5 +1,6 @@
 package com.acme.edu.unit;
 
+import com.acme.edu.exception.LogException;
 import com.acme.edu.state.StateFactory;
 import com.acme.edu.printer.Printable;
 import com.acme.edu.state.DefaultState;
@@ -21,7 +22,7 @@ public class StateFactoryTest {
     }
 
     @Test
-    public void shouldReturnIntStateWhenTryingToGetIntStateWithAFactoryGetMethodWithParameterIntState(){
+    public void shouldReturnIntStateWhenTryingToGetIntStateWithAFactoryGetMethodWithParameterIntState() throws LogException {
         Printable mock = mock(Printable.class);
         StateFactory factory = new StateFactory(mock);
         State intStub = mock(IntState.class);
@@ -30,7 +31,7 @@ public class StateFactoryTest {
     }
 
     @Test
-    public void shouldReturnIntStateWhenTryingToGetIntStateWithAFactoryGetMethodWithParameterNull(){
+    public void shouldReturnIntStateWhenTryingToGetIntStateWithAFactoryGetMethodWithParameterNull() throws LogException {
         Printable mock = mock(Printable.class);
         StateFactory factory = new StateFactory(mock);
 
@@ -38,7 +39,7 @@ public class StateFactoryTest {
     }
 
     @Test
-    public void shouldReturnIntStateWhenTryingToGetIntStateWithAFactoryGetMethodWithParameterStringState(){
+    public void shouldReturnIntStateWhenTryingToGetIntStateWithAFactoryGetMethodWithParameterStringState() throws LogException {
         Printable mock = mock(Printable.class);
         StateFactory factory = new StateFactory(mock);
         State stringStub = mock(StringState.class);
@@ -47,7 +48,7 @@ public class StateFactoryTest {
     }
 
     @Test
-    public void shouldReturnStringStateWhenTryingToGetStringStateWithAFactoryGetMethodWithParameterIntState(){
+    public void shouldReturnStringStateWhenTryingToGetStringStateWithAFactoryGetMethodWithParameterIntState() throws LogException {
         Printable mock = mock(Printable.class);
         StateFactory factory = new StateFactory(mock);
         State intStub = mock(IntState.class);
@@ -56,7 +57,7 @@ public class StateFactoryTest {
     }
 
     @Test
-    public void shouldReturnStringStateWhenTryingToGetStringStateWithAFactoryGetMethodWithParameterNull(){
+    public void shouldReturnStringStateWhenTryingToGetStringStateWithAFactoryGetMethodWithParameterNull() throws LogException {
         Printable mock = mock(Printable.class);
         StateFactory factory = new StateFactory(mock);
 
@@ -64,7 +65,7 @@ public class StateFactoryTest {
     }
 
     @Test
-    public void shouldReturnStringStateWhenTryingToGetStringStateWithAFactoryGetMethodWithParameterStringState(){
+    public void shouldReturnStringStateWhenTryingToGetStringStateWithAFactoryGetMethodWithParameterStringState() throws LogException {
         Printable mock = mock(Printable.class);
         StateFactory factory = new StateFactory(mock);
         State stringStub = mock(StringState.class);
@@ -74,7 +75,7 @@ public class StateFactoryTest {
 
 
     @Test
-    public void shouldFlushWhenIntStateNotEqualPreviousDefaultState() {
+    public void shouldFlushWhenIntStateNotEqualPreviousDefaultState() throws LogException {
         Printable mock = mock(Printable.class);
         StateFactory factory = new StateFactory(mock);
         State intStub = mock(IntState.class);
@@ -85,7 +86,7 @@ public class StateFactoryTest {
     }
 
     @Test
-    public void shouldFlushWhenStringStateNotEqualPreviousDefaultState() {
+    public void shouldFlushWhenStringStateNotEqualPreviousDefaultState() throws LogException {
         Printable mock = mock(Printable.class);
         StateFactory factory = new StateFactory(mock);
         State stringStub = mock(StringState.class);

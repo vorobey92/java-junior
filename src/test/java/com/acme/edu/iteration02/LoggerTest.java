@@ -2,9 +2,11 @@ package com.acme.edu.iteration02;
 
 import com.acme.edu.Logger;
 import com.acme.edu.SysoutCaptureAndAssertionAbility;
+import com.acme.edu.exception.LogException;
 import com.acme.edu.exception.NullMessageException;
 import com.acme.edu.exception.PreviousStateIsNullException;
 import com.acme.edu.printer.ConsolePrinter;
+import com.acme.edu.state.StateFactory;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -21,7 +23,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     public void setUpSystemOut() throws IOException {
         resetOut();
         captureSysout();
-        logger = new Logger(new ConsolePrinter());
+        logger = new Logger(new StateFactory(new ConsolePrinter()));
     }
     //endregion
 
@@ -32,7 +34,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
 
 
     @Test
-    public void shouldLogSequentIntegersAsSum() throws IOException, PreviousStateIsNullException, NullMessageException {
+    public void shouldLogSequentIntegersAsSum() throws IOException, PreviousStateIsNullException, NullMessageException, LogException {
         //region when
         logger.log("str 1");
         logger.log(1);
@@ -53,7 +55,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldLogCorrectlyIntegerOverflowWhenSequentIntegers() throws PreviousStateIsNullException, NullMessageException {
+    public void shouldLogCorrectlyIntegerOverflowWhenSequentIntegers() throws PreviousStateIsNullException, NullMessageException, LogException {
         //region when
         logger.log("str 1");
         logger.log(10);
@@ -75,7 +77,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldLogCorrectlyByteOverflowWhenSequentBytes() throws PreviousStateIsNullException, NullMessageException {
+    public void shouldLogCorrectlyByteOverflowWhenSequentBytes() throws PreviousStateIsNullException, NullMessageException, LogException {
         //region when
         logger.log("str 1");
         logger.log((byte)10);
@@ -96,7 +98,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldLogSameSubsequentStringsWithoutRepeat() throws IOException, PreviousStateIsNullException, NullMessageException {
+    public void shouldLogSameSubsequentStringsWithoutRepeat() throws IOException, PreviousStateIsNullException, NullMessageException, LogException {
         //region when
         logger.log("str 1");
         logger.log("str 2");

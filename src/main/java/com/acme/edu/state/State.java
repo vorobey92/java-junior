@@ -1,6 +1,7 @@
 package com.acme.edu.state;
 
 import com.acme.edu.exception.CanNotPrintException;
+import com.acme.edu.exception.LogException;
 import com.acme.edu.printer.Printable;
 
 /**
@@ -22,26 +23,26 @@ public abstract class State {
      *
      * @param message string thar will be loged
      */
-    public abstract void log(String message);
+    public abstract void log(String message) throws LogException;
 
     /**
      * Method for releasing buffer
      */
-    public abstract void flush();
+    public abstract void flush() throws LogException;
 
-    protected void print(String message){
+    protected void print(String message) throws LogException {
         try {
             printer.print(message);
         } catch (CanNotPrintException e) {
-            e.printStackTrace();
+            throw new LogException(e);
         }
     }
 
-    protected void println(String message){
+    protected void println(String message) throws LogException {
         try {
             printer.println(message);
         } catch (CanNotPrintException e) {
-            e.printStackTrace();
+            throw new LogException(e);
         }
     }
 

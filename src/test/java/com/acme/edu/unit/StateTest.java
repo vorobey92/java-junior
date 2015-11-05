@@ -2,6 +2,7 @@ package com.acme.edu.unit;
 
 
 import com.acme.edu.exception.CanNotPrintException;
+import com.acme.edu.exception.LogException;
 import com.acme.edu.printer.ConsolePrinter;
 import com.acme.edu.printer.Printable;
 import com.acme.edu.state.DefaultState;
@@ -18,7 +19,7 @@ public class StateTest {
     private State sut;
 
     @Test
-    public void shouldLogSumOfPrimitivesWhenYouTryingToLogSequenceOfInts() throws CanNotPrintException {
+    public void shouldLogSumOfPrimitivesWhenYouTryingToLogSequenceOfInts() throws CanNotPrintException, LogException {
         mock = mock(ConsolePrinter.class);
         sut = new IntState(mock);
 
@@ -31,7 +32,7 @@ public class StateTest {
     }
 
     @Test
-    public void shouldLogTwoPrimitivesWhenAppearsTypeOverflowWhileSumming() throws CanNotPrintException {
+    public void shouldLogTwoPrimitivesWhenAppearsTypeOverflowWhileSumming() throws CanNotPrintException, LogException {
         mock = mock(ConsolePrinter.class);
         sut = new IntState(mock);
 
@@ -44,7 +45,7 @@ public class StateTest {
     }
 
     @Test
-    public void shouldLogStringAndStringWithCounter() throws CanNotPrintException {
+    public void shouldLogStringAndStringWithCounter() throws CanNotPrintException, LogException {
         mock = mock(ConsolePrinter.class);
         sut = new StringState(mock);
 
@@ -67,7 +68,7 @@ public class StateTest {
 
 
     @Test
-    public void shoudLogThatWeWillGiveToThatDefaultState() throws CanNotPrintException {
+    public void shoudLogThatWeWillGiveToThatDefaultState() throws CanNotPrintException, LogException {
         mock = mock(ConsolePrinter.class);
         sut = new DefaultState(mock);
 
@@ -80,7 +81,7 @@ public class StateTest {
     }
 
     @Test
-    public void shouldThrowNullPointerExceptionWhenNullStringIsFirst() throws CanNotPrintException {
+    public void shouldThrowNullPointerExceptionWhenNullStringIsFirst() throws CanNotPrintException, LogException {
         mock = mock(ConsolePrinter.class);
         sut = new StringState(mock);
 
