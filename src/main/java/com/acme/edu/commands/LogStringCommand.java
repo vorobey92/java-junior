@@ -2,6 +2,7 @@ package com.acme.edu.commands;
 
 import com.acme.edu.decorators.Decorator;
 import com.acme.edu.printers.Printer;
+import com.acme.edu.printers.PrinterException;
 
 public class LogStringCommand extends Command<LogStringCommand> {
     private int lengthOfStringsSequence;
@@ -24,7 +25,7 @@ public class LogStringCommand extends Command<LogStringCommand> {
     }
 
     @Override
-    public LogStringCommand merge(LogStringCommand oldCommand) {
+    public LogStringCommand merge(LogStringCommand oldCommand) throws PrinterException {
         if (oldCommand == null || oldCommand.getMessage() == null) {
             return this;
         }

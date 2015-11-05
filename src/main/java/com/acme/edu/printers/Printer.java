@@ -1,6 +1,7 @@
 package com.acme.edu.printers;
 
 public interface Printer {
-    void println(String stringToPrint);
-    void close();
+    void print(String stringToPrint) throws PrinterException;
+    void println(String stringToPrint) throws PrinterException;
+    void close() throws PrinterException;
 }

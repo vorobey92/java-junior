@@ -1,6 +1,7 @@
 package com.acme.edu.commands;
 
 import com.acme.edu.printers.Printer;
+import com.acme.edu.printers.PrinterException;
 
 public abstract class Command<T> {
     private Printer printer;
@@ -10,9 +11,9 @@ public abstract class Command<T> {
         this.printer = printer;
     }
 
-    abstract public Command merge(T oldCommand);
+    abstract public Command merge (T oldCommand) throws PrinterException;
 
-    public void execute() {
+    public void execute() throws PrinterException{
         if (getMessage() != null) {
             printer.println(getFormattedString());
             setMessage(null);

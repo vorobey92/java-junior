@@ -2,7 +2,10 @@ package com.acme.edu;
 
 import com.acme.edu.commands.Command;
 import com.acme.edu.commands.CommandFactory;
+import com.acme.edu.businessexceptions.IllegalArgumentException;
+import com.acme.edu.businessexceptions.LogException;
 import com.acme.edu.printers.Printer;
+import com.acme.edu.printers.PrinterException;
 import com.acme.edu.states.State;
 import com.acme.edu.states.StateFactory;
 
@@ -43,7 +46,7 @@ public class Logger {
      *
      * @param message The int to be accumulated.
      */
-    public void log(int message) {
+    public void log(int message) throws LogException {
         changeState(CommandFactory.Type.INT, intState, message);
     }
 
@@ -59,7 +62,7 @@ public class Logger {
      *
      * @param message The byte to be accumulated.
      */
-    public void log(byte message) {
+    public void log(byte message) throws LogException {
         changeState(CommandFactory.Type.BYTE, byteState, message);
     }
 
@@ -70,7 +73,7 @@ public class Logger {
      *
      * @param message The char to be logged.
      */
-    public void log(char message) {
+    public void log(char message) throws LogException {
         changeState(CommandFactory.Type.CHAR, unaccumulatingState, message);
     }
 
@@ -87,7 +90,10 @@ public class Logger {
      *
      * @param message The String to be accumulated.
      */
-    public void log(String message) {
+    public void log(String message) throws IllegalArgumentException, LogException {
+        if (message == null) {
+            throw new IllegalArgumentException();
+        }
         changeState(CommandFactory.Type.STRING, stringState, message);
     }
 
@@ -98,7 +104,7 @@ public class Logger {
      *
      * @param message The boolean to be logged.
      */
-    public void log(boolean message) {
+    public void log(boolean message) throws LogException {
         changeState(CommandFactory.Type.BOOLEAN, unaccumulatingState, message);
     }
 
@@ -109,7 +115,10 @@ public class Logger {
      *
      * @param message The Object to be logged.
      */
-    public void log(Object message) {
+    public void log(Object message) throws IllegalArgumentException, LogException {
+        if (message == null) {
+            throw new IllegalArgumentException();
+        }
         changeState(CommandFactory.Type.OBJECT, unaccumulatingState, message);
     }
 
@@ -119,7 +128,11 @@ public class Logger {
      *
      * @param message an array of ints to be accumulated.
      */
-    public void log(int... message) {
+    public void log(int... message) throws IllegalArgumentException, LogException {
+        if (message == null) {
+            throw new IllegalArgumentException();
+        }
+
         for (int intMessage : message) {
             log(intMessage);
         }
@@ -131,7 +144,7 @@ public class Logger {
      *
      * @param message a two-dimensional array of ints to be accumulated.
      */
-    public void log(int[][] message) {
+    public void log(int[][] message) throws IllegalArgumentException, LogException {
         log(ArrayUtils.multiDimIntArrayToOneDimIntArray(message));
     }
 
@@ -141,7 +154,7 @@ public class Logger {
      *
      * @param message a four-dimensional array of ints to be accumulated.
      */
-    public void log(int[][][][] message) {
+    public void log(int[][][][] message) throws IllegalArgumentException, LogException {
         log(ArrayUtils.multiDimIntArrayToOneDimIntArray(message));
     }
 
@@ -151,28 +164,40 @@ public class Logger {
      *
      * @param messages an array of Strings to be accumulated.
      */
-    public void log(String... messages) {
+    public void log(String... messages) throws IllegalArgumentException, LogException {
         for (String string : messages) {
             log(string);
         }
     }
 
     /**
-     * Flushes the Logger. This is done by loging the accumulated data. The Logger still can be used
+     * Flushes the Logger. This is done by logging the accumulated data. The Logger still can be used
      * after the flush() method is invoked.
      */
-    public void flush() {
-        currentState.flush();
+    public void flush() throws LogException {
+        try {
+            currentState.flush();
+        } catch (PrinterException e) {
+            LogException logException = new LogException();
+            logException.initCause(e);
+            throw logException;
+        }
     }
 
-    private void changeState(CommandFactory.Type type, State nextState, Object message) {
+    private void changeState(CommandFactory.Type type, State nextState, Object message) throws LogException {
         if (currentState != nextState) {
-            currentState.flush();
+            flush();
         }
 
         Command command = commandFactory.createCommand(type, printer);
         command.setMessage(message.toString());
-        nextState.apply(command);
         currentState = nextState;
+        try {
+            currentState.apply(command);
+        } catch (PrinterException e) {
+            LogException logException = new LogException();
+            logException.initCause(e);
+            throw logException;
+        }
     }
 }

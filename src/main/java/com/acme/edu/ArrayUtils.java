@@ -1,5 +1,7 @@
 package com.acme.edu;
 
+import com.acme.edu.businessexceptions.IllegalArgumentException;
+
 import java.util.Arrays;
 
 class ArrayUtils {
@@ -8,14 +10,26 @@ class ArrayUtils {
 
     }
 
-    static int[] multiDimIntArrayToOneDimIntArray(Object[] multiDimArray) {
-        int[] intArray = new int[0];
-
-        for (Object element : multiDimArray) {
-            intArray = merge(intArray, elementToIntArray(element));
+    static int[] multiDimIntArrayToOneDimIntArray(Object[] multiDimArray) throws IllegalArgumentException {
+        if (multiDimArray == null) {
+            throw new IllegalArgumentException();
         }
 
-        return intArray;
+        int[] resultArray = new int[0];
+
+        for (Object element : multiDimArray) {
+            int[] intArray;
+
+            if (element instanceof int[]) {
+                intArray = (int[]) element;
+            } else {
+                intArray = multiDimIntArrayToOneDimIntArray((Object[]) element);
+            }
+
+            resultArray = merge(resultArray, intArray);
+        }
+
+        return resultArray;
     }
 
     private static int[] merge(int[] array1, int[] array2) {
@@ -23,16 +37,5 @@ class ArrayUtils {
         System.arraycopy(array2, 0, newArray, array1.length, array2.length);
 
         return newArray;
-    }
-
-    private static int[] elementToIntArray(Object element) {
-        if (element == null) {
-            return new int[0];
-        }
-        if (element instanceof int[]) {
-            return (int[]) element;
-        }
-
-        return multiDimIntArrayToOneDimIntArray((Object[]) element);
     }
 }

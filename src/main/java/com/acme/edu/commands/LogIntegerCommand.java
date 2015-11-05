@@ -2,6 +2,7 @@ package com.acme.edu.commands;
 
 import com.acme.edu.decorators.Decorator;
 import com.acme.edu.printers.Printer;
+import com.acme.edu.printers.PrinterException;
 
 public class LogIntegerCommand extends Command<LogIntegerCommand> {
     private int maxValue;
@@ -16,7 +17,7 @@ public class LogIntegerCommand extends Command<LogIntegerCommand> {
     }
 
     @Override
-    public LogIntegerCommand merge(LogIntegerCommand oldCommand) {
+    public LogIntegerCommand merge(LogIntegerCommand oldCommand) throws PrinterException{
         if (oldCommand == null || oldCommand.getMessage() == null) {
             return this;
         }

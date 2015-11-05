@@ -3,6 +3,7 @@ package com.acme.edu.unit;
 import com.acme.edu.commands.LogIntegerCommand;
 import com.acme.edu.decorators.Decorator;
 import com.acme.edu.printers.Printer;
+import com.acme.edu.printers.PrinterException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,7 +27,7 @@ public class LogIntegerCommandIsolationTest {
     }
 
     @Test
-    public void shouldLogWhenHasMessage() {
+    public void shouldLogWhenHasMessage() throws PrinterException {
         when(stubDecorator.decorate(message)).thenReturn(decoratedString);
 
         sut.setMessage(message);
@@ -36,7 +37,7 @@ public class LogIntegerCommandIsolationTest {
     }
 
     @Test
-    public void shouldSetMessageToNullAfterLogging() {
+    public void shouldSetMessageToNullAfterLogging() throws PrinterException {
         sut.setMessage(message);
         sut.execute();
 
@@ -44,7 +45,7 @@ public class LogIntegerCommandIsolationTest {
     }
 
     @Test
-    public void shouldNotLogWhenHasNullMessage() {
+    public void shouldNotLogWhenHasNullMessage() throws PrinterException {
         when(stubDecorator.decorate(any())).thenReturn(decoratedString);
 
         sut.setMessage(null);
