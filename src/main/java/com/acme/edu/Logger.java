@@ -2,7 +2,7 @@ package com.acme.edu;
 
 import com.acme.edu.exception.LogException;
 import com.acme.edu.exception.NullMessageException;
-import com.acme.edu.exception.PreviousStateIsNullException;
+import com.acme.edu.exception.StateIsNullException;
 import com.acme.edu.state.*;
 
 /**
@@ -111,7 +111,7 @@ public class Logger {
      */
     public void close() throws  LogException {
         if (lastState == null){
-            throw new LogException( new PreviousStateIsNullException());
+            throw new LogException( new StateIsNullException());
         }
         lastState.flush();
     }

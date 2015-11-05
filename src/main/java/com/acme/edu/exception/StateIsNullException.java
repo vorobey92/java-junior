@@ -1,23 +1,23 @@
 package com.acme.edu.exception;
 
 /**
- * This exception throws when Printer have a problems with logging.
+ * This exception throws when client trying to communicate with a State
+ * object, but it's null.
  *
  * This exceptions need to be declared in a
  * method or constructor's {@code throws} clause if it can be thrown
  * by the execution of the method or constructor and propagate outside
  * the method or constructor boundary.
  */
-public class CanNotPrintException extends Exception {
+public class StateIsNullException extends Exception {
 
     /**
      * Constructs a new exception with {@code null} as its detail message.
      * The cause is not initialized, and may subsequently be initialized by a
      * call to {@link #initCause}.
      */
-    public CanNotPrintException() {
+    public StateIsNullException() {
     }
-
     /**
      * Constructs a new exception with the specified detail message.  The
      * cause is not initialized, and may subsequently be initialized by
@@ -26,7 +26,7 @@ public class CanNotPrintException extends Exception {
      * @param   message   the detail message. The detail message is saved for
      *          later retrieval by the {@link #getMessage()} method.
      */
-    public CanNotPrintException(String message) {
+    public StateIsNullException(String message) {
         super(message);
     }
 
@@ -43,7 +43,7 @@ public class CanNotPrintException extends Exception {
      *         permitted, and indicates that the cause is nonexistent or
      *         unknown.)
      */
-    public CanNotPrintException(String message, Throwable cause) {
+    public StateIsNullException(String message, Throwable cause) {
         super(message, cause);
     }
 
@@ -57,7 +57,7 @@ public class CanNotPrintException extends Exception {
      *         permitted, and indicates that the cause is nonexistent or
      *         unknown.)
      */
-    public CanNotPrintException(Throwable cause) {
+    public StateIsNullException(Throwable cause) {
         super(cause);
     }
 
@@ -74,7 +74,7 @@ public class CanNotPrintException extends Exception {
      * @param writableStackTrace whether or not the stack trace should
      *                           be writable
      */
-    public CanNotPrintException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public StateIsNullException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

@@ -1,26 +1,16 @@
 package com.acme.edu.unit;
 
 import com.acme.edu.Logger;
-import com.acme.edu.Mapper;
 import com.acme.edu.exception.LogException;
 import com.acme.edu.exception.NullMessageException;
-import com.acme.edu.exception.PreviousStateIsNullException;
-import com.acme.edu.printer.ConsolePrinter;
+import com.acme.edu.exception.StateIsNullException;
 import com.acme.edu.state.StateFactory;
-import com.acme.edu.printer.Printable;
-import com.acme.edu.state.DefaultState;
 import com.acme.edu.state.IntState;
 import com.acme.edu.state.State;
-import com.acme.edu.state.StringState;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import static  org.mockito.Mockito.*;
-import static org.junit.Assert.*;
 
 //@RunWith(PowerMockRunner.class)
 //@PrepareForTest(Mapper.class)
@@ -31,7 +21,7 @@ public class LoggerTest {
 
     @Test
     @Ignore
-    public void shouldReturnDefaultStateWhenTryingToGetDefaultState() throws NullMessageException, LogException, PreviousStateIsNullException {
+    public void shouldReturnDefaultStateWhenTryingToGetDefaultState() throws NullMessageException, LogException, StateIsNullException {
         StateFactory factoryMock = mock(StateFactory.class);
         State state = mock(IntState.class);
         Logger sut = new Logger(factoryMock);

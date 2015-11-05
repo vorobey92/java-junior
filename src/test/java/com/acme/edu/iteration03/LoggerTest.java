@@ -4,7 +4,7 @@ import com.acme.edu.Logger;
 import com.acme.edu.SysoutCaptureAndAssertionAbility;
 import com.acme.edu.exception.LogException;
 import com.acme.edu.exception.NullMessageException;
-import com.acme.edu.exception.PreviousStateIsNullException;
+import com.acme.edu.exception.StateIsNullException;
 import com.acme.edu.printer.ConsolePrinter;
 import com.acme.edu.state.StateFactory;
 import org.junit.After;
@@ -33,7 +33,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
 
 
     @Test
-    public void shouldLogIntegersArray() throws IOException, PreviousStateIsNullException, NullMessageException, LogException {
+    public void shouldLogIntegersArray() throws IOException, StateIsNullException, NullMessageException, LogException {
         //region when
         logger.log(new int[]{-1, 0, 1});
         logger.close();
