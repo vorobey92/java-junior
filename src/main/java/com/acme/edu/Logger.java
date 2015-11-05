@@ -3,8 +3,6 @@ package com.acme.edu;
 import com.acme.edu.exception.LogException;
 import com.acme.edu.exception.NullMessageException;
 import com.acme.edu.exception.PreviousStateIsNullException;
-import com.acme.edu.printer.ConsolePrinter;
-import com.acme.edu.printer.Printable;
 import com.acme.edu.state.*;
 
 /**
@@ -170,17 +168,6 @@ public class Logger {
             state.log(str + SEP);
         }
         lastState = state;
-    }
-
-    public static void main(String[] args) {
-        Logger logger = new Logger(new StateFactory(new ConsolePrinter()));
-        String[] str = null;
-
-        try {
-            logger.log(str);
-        }catch (LogException e){
-            e.printStackTrace();
-        }
     }
 
 }
