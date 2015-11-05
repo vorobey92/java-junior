@@ -3,6 +3,7 @@ package com.acme.edu;
 import com.acme.edu.exception.LogException;
 import com.acme.edu.exception.NullMessageException;
 import com.acme.edu.exception.PreviousStateIsNullException;
+import com.acme.edu.printer.ConsolePrinter;
 import com.acme.edu.printer.Printable;
 import com.acme.edu.state.*;
 
@@ -85,9 +86,9 @@ public class Logger {
      * method is called or any number is logged.
      * @param message string that will be logged
      */
-    public void log(String message) throws NullMessageException, LogException {
+    public void log(String message) throws LogException {
         if (message == null){
-            throw new NullMessageException("String is null");
+            throw new LogException( new NullMessageException("String is null"));
         }
         state = factory.getStringState(lastState);
         state.log(message);
@@ -98,9 +99,9 @@ public class Logger {
      *  Method for logging Object
      * @param message object that will be logged
      */
-    public void log(Object message) throws NullMessageException, LogException {
+    public void log(Object message) throws LogException {
         if (message == null){
-            throw new NullMessageException("Object is null");
+            throw new LogException( new NullMessageException("Object is null"));
         }
         state = factory.getDefaultState();
         state.log(PREFIX_FOR_REFERENCE_MESSAGES + message + SEP);
@@ -110,9 +111,9 @@ public class Logger {
     /**
      * Method for finishing logging. Prints the rest statement.
      */
-    public void close() throws PreviousStateIsNullException, LogException {
+    public void close() throws  LogException {
         if (lastState == null){
-            throw new PreviousStateIsNullException();
+            throw new LogException( new PreviousStateIsNullException());
         }
         lastState.flush();
     }
@@ -121,9 +122,9 @@ public class Logger {
      *  Method for logging arrays of ints.
      * @param message array of ints that will be loged
      */
-    public void log(int... message) throws NullMessageException, LogException {
+    public void log(int... message) throws LogException {
         if (message == null){
-            throw new NullMessageException("Array is null");
+            throw new LogException( new NullMessageException("Array is null"));
         }
         state = factory.getDefaultState();
         state.log(Mapper.fromArrayToString(message));
@@ -134,9 +135,9 @@ public class Logger {
      *
      * @param message matrix of ints that will be loged
      */
-    public void log(int[][] message) throws NullMessageException, LogException {
+    public void log(int[][] message) throws LogException {
         if (message == null){
-            throw new NullMessageException("Matrix is null");
+            throw new LogException( new NullMessageException("Matrix is null"));
         }
         state = factory.getDefaultState();
         state.log(Mapper.fromMatrixToString(message));
@@ -147,9 +148,9 @@ public class Logger {
      *
      * @param message multimatrix that will be loged
      */
-    public void log(int[][][][] message) throws NullMessageException, LogException {
+    public void log(int[][][][] message) throws LogException {
         if (message == null){
-            throw new NullMessageException("Multimatrix is null");
+            throw new LogException( new NullMessageException("Multimatrix is null"));
         }
         state = factory.getDefaultState();
         state.log(Mapper.fromMultiMatrixToString(message));
@@ -160,9 +161,9 @@ public class Logger {
      *
      * @param message array of Strings that will be loged
      */
-    public void log(String... message) throws NullMessageException, LogException {
+    public void log(String... message) throws LogException {
         if (message == null){
-            throw new NullMessageException("Array of strings is null");
+                throw new LogException(new NullMessageException("Array of strings is null"));
         }
         state = factory.getDefaultState();
         for(String str : message) {
@@ -171,5 +172,15 @@ public class Logger {
         lastState = state;
     }
 
+    public static void main(String[] args) {
+        Logger logger = new Logger(new StateFactory(new ConsolePrinter()));
+        String[] str = null;
+
+        try {
+            logger.log(str);
+        }catch (LogException e){
+            e.printStackTrace();
+        }
+    }
 
 }
