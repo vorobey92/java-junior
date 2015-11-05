@@ -13,7 +13,7 @@ public class LogStringCommand extends Command<LogStringCommand> {
                             Decorator oneStringSequenceDecorator,
                             Decorator mulitpleStringSequenceDecorator) {
         super(printer);
-        lengthOfStringsSequence = 0;
+        setLengthOfStringsSequence(0);
         this.oneStringSequenceDecorator = oneStringSequenceDecorator;
         this.mulitpleStringSequenceDecorator = mulitpleStringSequenceDecorator;
     }
@@ -21,7 +21,13 @@ public class LogStringCommand extends Command<LogStringCommand> {
     @Override
     public void setMessage(String message) {
         super.setMessage(message);
-        lengthOfStringsSequence = 1;
+
+        if (getMessage() == null) {
+            setLengthOfStringsSequence(0);
+            return;
+        }
+
+        setLengthOfStringsSequence(1);
     }
 
     @Override
@@ -31,7 +37,7 @@ public class LogStringCommand extends Command<LogStringCommand> {
         }
 
         if (oldCommand.getMessage().equals(getMessage())) {
-            lengthOfStringsSequence += oldCommand.lengthOfStringsSequence;
+            setLengthOfStringsSequence(getLengthOfStringsSequence() + oldCommand.getLengthOfStringsSequence());
         } else {
             oldCommand.execute();
         }
@@ -39,12 +45,20 @@ public class LogStringCommand extends Command<LogStringCommand> {
         return this;
     }
 
+    public int getLengthOfStringsSequence() {
+        return lengthOfStringsSequence;
+    }
+
+    public void setLengthOfStringsSequence(int lengthOfStringsSequence) {
+        this.lengthOfStringsSequence = lengthOfStringsSequence;
+    }
+
     @Override
     protected String getFormattedString() {
-        Decorator decorator = lengthOfStringsSequence > 1
+        Decorator decorator = getLengthOfStringsSequence() > 1
                 ? mulitpleStringSequenceDecorator
                 : oneStringSequenceDecorator;
 
-        return decorator.decorate(getMessage(), lengthOfStringsSequence);
+        return decorator.decorate(getMessage(), getLengthOfStringsSequence());
     }
 }
