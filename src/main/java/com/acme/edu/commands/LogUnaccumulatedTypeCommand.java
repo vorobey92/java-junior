@@ -15,7 +15,6 @@ public class LogUnaccumulatedTypeCommand extends Command<LogUnaccumulatedTypeCom
     @Override
     public LogUnaccumulatedTypeCommand merge(LogUnaccumulatedTypeCommand oldCommand) throws PrinterException {
         execute();
-        setMessage(null);
 
         return this;
     }
