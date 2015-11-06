@@ -29,7 +29,7 @@ public class LogStringCommandIsolationTest {
         mockPrinter = mock(Printer.class);
         stubOneStringSequenceDecorator = mock(Decorator.class);
         stubMultipleStringSequenceDecorator = mock(Decorator.class);
-        sut = new LogStringCommand(mockPrinter, stubOneStringSequenceDecorator, stubMultipleStringSequenceDecorator);
+        sut = new LogStringCommand(stubOneStringSequenceDecorator, stubMultipleStringSequenceDecorator, mockPrinter);
     }
 
     @Test

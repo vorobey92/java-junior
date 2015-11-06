@@ -26,7 +26,7 @@ public class LogUnaccumulatedTypeCommandIsolationTest {
     public void setUp() {
         mockPrinter = mock(Printer.class);
         stubDecorator = mock(Decorator.class);
-        sut = new LogUnaccumulatedTypeCommand(mockPrinter, stubDecorator);
+        sut = new LogUnaccumulatedTypeCommand(stubDecorator, mockPrinter);
     }
 
     @Test

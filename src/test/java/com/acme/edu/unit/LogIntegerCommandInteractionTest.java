@@ -31,7 +31,7 @@ public class LogIntegerCommandInteractionTest {
         decoratedString = "decorated string ";
         mockPrinter = mock(Printer.class);
         stubDecorator = mock(Decorator.class);
-        sut = new LogIntegerCommand(mockPrinter, stubDecorator, maxValue, minValue);
+        sut = new LogIntegerCommand(stubDecorator, maxValue, minValue, mockPrinter);
     }
 
     @Test

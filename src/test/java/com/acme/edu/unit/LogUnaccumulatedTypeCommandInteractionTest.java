@@ -1,6 +1,5 @@
 package com.acme.edu.unit;
 
-import com.acme.edu.commands.LogStringCommand;
 import com.acme.edu.commands.LogUnaccumulatedTypeCommand;
 import com.acme.edu.decorators.Decorator;
 import com.acme.edu.printers.Printer;
@@ -8,9 +7,6 @@ import com.acme.edu.printers.PrinterException;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.fest.assertions.Assertions.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -27,7 +23,7 @@ public class LogUnaccumulatedTypeCommandInteractionTest {
     public void setUp() {
         mockPrinter = mock(Printer.class);
         stubDecorator = mock(Decorator.class);
-        sut = new LogUnaccumulatedTypeCommand(mockPrinter, stubDecorator);
+        sut = new LogUnaccumulatedTypeCommand(stubDecorator, mockPrinter);
     }
 
     @Test

@@ -23,7 +23,7 @@ public class LogIntegerCommandIsolationTest {
         decoratedString = "decorated string ";
         mockPrinter = mock(Printer.class);
         stubDecorator = mock(Decorator.class);
-        sut = new LogIntegerCommand(mockPrinter, stubDecorator, Integer.MAX_VALUE, Integer.MIN_VALUE);
+        sut = new LogIntegerCommand(stubDecorator, Integer.MAX_VALUE, Integer.MIN_VALUE, mockPrinter);
     }
 
     @Test
