@@ -1,22 +1,21 @@
 package com.acme.edu.exception;
 
 /**
- * This exception throws when client trying to communicate with a State
- * object, but it's null.
+ * This exception throws when there are have any problem in State's logic.
  *
  * This exceptions need to be declared in a
  * method or constructor's {@code throws} clause if it can be thrown
  * by the execution of the method or constructor and propagate outside
  * the method or constructor boundary.
  */
-public class StateIsNullException extends Exception {
+public class StateException extends LogException {
 
     /**
      * Constructs a new exception with {@code null} as its detail message.
      * The cause is not initialized, and may subsequently be initialized by a
      * call to {@link #initCause}.
      */
-    public StateIsNullException() {
+    public StateException() {
     }
     /**
      * Constructs a new exception with the specified detail message.  The
@@ -26,7 +25,7 @@ public class StateIsNullException extends Exception {
      * @param   message   the detail message. The detail message is saved for
      *          later retrieval by the {@link #getMessage()} method.
      */
-    public StateIsNullException(String message) {
+    public StateException(String message) {
         super(message);
     }
 
@@ -43,7 +42,7 @@ public class StateIsNullException extends Exception {
      *         permitted, and indicates that the cause is nonexistent or
      *         unknown.)
      */
-    public StateIsNullException(String message, Throwable cause) {
+    public StateException(String message, Throwable cause) {
         super(message, cause);
     }
 
@@ -57,7 +56,7 @@ public class StateIsNullException extends Exception {
      *         permitted, and indicates that the cause is nonexistent or
      *         unknown.)
      */
-    public StateIsNullException(Throwable cause) {
+    public StateException(Throwable cause) {
         super(cause);
     }
 
@@ -74,7 +73,7 @@ public class StateIsNullException extends Exception {
      * @param writableStackTrace whether or not the stack trace should
      *                           be writable
      */
-    public StateIsNullException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public StateException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

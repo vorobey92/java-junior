@@ -8,7 +8,7 @@ package com.acme.edu.exception;
  * by the execution of the method or constructor and propagate outside
  * the method or constructor boundary.
  */
-public class NullMessageException extends Exception {
+public class NullMessageException extends LogException {
 
     /**
      * Constructs a new exception with {@code null} as its detail message.

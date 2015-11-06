@@ -1,6 +1,6 @@
 package com.acme.edu.state;
 
-import com.acme.edu.exception.LogException;
+import com.acme.edu.exception.StateException;
 import com.acme.edu.printer.Printable;
 
 /**
@@ -21,7 +21,7 @@ public class DefaultState extends State {
      * @param message String that will be logged
      */
     @Override
-    public void log(String message) throws LogException {
+    public void log(String message) throws StateException {
         print(message);
     }
 

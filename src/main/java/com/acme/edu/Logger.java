@@ -2,7 +2,7 @@ package com.acme.edu;
 
 import com.acme.edu.exception.LogException;
 import com.acme.edu.exception.NullMessageException;
-import com.acme.edu.exception.StateIsNullException;
+import com.acme.edu.exception.StateException;
 import com.acme.edu.state.*;
 
 /**
@@ -86,7 +86,7 @@ public class Logger {
      */
     public void log(String message) throws LogException {
         if (message == null){
-            throw new LogException( new NullMessageException("String is null"));
+            throw new NullMessageException("String is null");
         }
         state = factory.getStringState(lastState);
         state.log(message);
@@ -99,7 +99,7 @@ public class Logger {
      */
     public void log(Object message) throws LogException {
         if (message == null){
-            throw new LogException( new NullMessageException("Object is null"));
+            throw new NullMessageException("Object is null");
         }
         state = factory.getDefaultState();
         state.log(PREFIX_FOR_REFERENCE_MESSAGES + message + SEP);
@@ -111,7 +111,7 @@ public class Logger {
      */
     public void close() throws  LogException {
         if (lastState == null){
-            throw new LogException( new StateIsNullException());
+            throw  new StateException("Trying to close null State");
         }
         lastState.flush();
     }
@@ -122,7 +122,7 @@ public class Logger {
      */
     public void log(int... message) throws LogException {
         if (message == null){
-            throw new LogException( new NullMessageException("Array is null"));
+            throw  new NullMessageException("Array is null");
         }
         state = factory.getDefaultState();
         state.log(Mapper.fromArrayToString(message));
@@ -135,7 +135,7 @@ public class Logger {
      */
     public void log(int[][] message) throws LogException {
         if (message == null){
-            throw new LogException( new NullMessageException("Matrix is null"));
+            throw new NullMessageException("Matrix is null");
         }
         state = factory.getDefaultState();
         state.log(Mapper.fromMatrixToString(message));
@@ -148,7 +148,7 @@ public class Logger {
      */
     public void log(int[][][][] message) throws LogException {
         if (message == null){
-            throw new LogException( new NullMessageException("Multimatrix is null"));
+            throw  new NullMessageException("Multimatrix is null");
         }
         state = factory.getDefaultState();
         state.log(Mapper.fromMultiMatrixToString(message));
@@ -161,7 +161,7 @@ public class Logger {
      */
     public void log(String... message) throws LogException {
         if (message == null){
-                throw new LogException(new NullMessageException("Array of strings is null"));
+                throw new NullMessageException("Array of strings is null");
         }
         state = factory.getDefaultState();
         for(String str : message) {

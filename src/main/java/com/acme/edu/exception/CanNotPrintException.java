@@ -1,14 +1,14 @@
 package com.acme.edu.exception;
 
 /**
- * This exception throws when Printer have a problems with logging.
+ * This exception throws when Printer have a problems with writing log.
  *
  * This exceptions need to be declared in a
  * method or constructor's {@code throws} clause if it can be thrown
  * by the execution of the method or constructor and propagate outside
  * the method or constructor boundary.
  */
-public class CanNotPrintException extends Exception {
+public class CanNotPrintException extends StateException {
 
     /**
      * Constructs a new exception with {@code null} as its detail message.
