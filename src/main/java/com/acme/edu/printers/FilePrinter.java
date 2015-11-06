@@ -24,6 +24,7 @@ public class FilePrinter implements Printer {
                                     new OutputStreamWriter(
                                             new FileOutputStream(file), charSet)))) {
             printWriter.print(stringToPrint);
+            printWriter.flush();
         } catch (IOException e) {
             throw new PrinterException(e);
         }
@@ -38,6 +39,7 @@ public class FilePrinter implements Printer {
                                     new OutputStreamWriter(
                                             new FileOutputStream(file), charSet)))) {
             printWriter.println(stringToPrint);
+            printWriter.flush();
         } catch (IOException e) {
             throw new PrinterException(e);
         }
