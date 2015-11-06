@@ -1,11 +1,10 @@
 package com.acme.edu;
 
+import com.acme.edu.businessexceptions.LoggerException;
 import com.acme.edu.commands.Command;
 import com.acme.edu.commands.CommandFactory;
 import com.acme.edu.businessexceptions.IllegalArgumentException;
-import com.acme.edu.businessexceptions.LogException;
 import com.acme.edu.printers.Printer;
-import com.acme.edu.printers.PrinterException;
 import com.acme.edu.states.State;
 import com.acme.edu.states.StateFactory;
 
@@ -26,14 +25,16 @@ public class Logger {
     private Printer[] printers;
     private CommandFactory commandFactory;
 
-    public Logger(CommandFactory commandFactory, StateFactory stateFactory, Printer... printers) {
+    public Logger(CommandFactory commandFactory, StateFactory stateFactory, Printer... printers) throws LoggerException {
+        checkPrintersArgument(printers);
+
         this.commandFactory = commandFactory;
+        this.printers = Arrays.copyOf(printers, printers.length);
         unaccumulatingState = stateFactory.createState();
         intState = stateFactory.createState();
         byteState = stateFactory.createState();
         stringState = stateFactory.createState();
         currentState = unaccumulatingState;
-        this.printers = Arrays.copyOf(printers, printers.length);
     }
 
     /**
@@ -48,7 +49,7 @@ public class Logger {
      *
      * @param message The int to be accumulated.
      */
-    public void log(int message) throws LogException {
+    public void log(int message) throws LoggerException {
         changeState(CommandFactory.Type.INT, intState, message);
     }
 
@@ -64,7 +65,7 @@ public class Logger {
      *
      * @param message The byte to be accumulated.
      */
-    public void log(byte message) throws LogException {
+    public void log(byte message) throws LoggerException {
         changeState(CommandFactory.Type.BYTE, byteState, message);
     }
 
@@ -75,7 +76,7 @@ public class Logger {
      *
      * @param message The char to be logged.
      */
-    public void log(char message) throws LogException {
+    public void log(char message) throws LoggerException {
         changeState(CommandFactory.Type.CHAR, unaccumulatingState, message);
     }
 
@@ -92,10 +93,8 @@ public class Logger {
      *
      * @param message The String to be accumulated.
      */
-    public void log(String message) throws IllegalArgumentException, LogException {
-        if (message == null) {
-            throw new IllegalArgumentException();
-        }
+    public void log(String message) throws LoggerException {
+        checkMessageArgument(message);
         changeState(CommandFactory.Type.STRING, stringState, message);
     }
 
@@ -106,7 +105,7 @@ public class Logger {
      *
      * @param message The boolean to be logged.
      */
-    public void log(boolean message) throws LogException {
+    public void log(boolean message) throws LoggerException {
         changeState(CommandFactory.Type.BOOLEAN, unaccumulatingState, message);
     }
 
@@ -117,10 +116,8 @@ public class Logger {
      *
      * @param message The Object to be logged.
      */
-    public void log(Object message) throws IllegalArgumentException, LogException {
-        if (message == null) {
-            throw new IllegalArgumentException();
-        }
+    public void log(Object message) throws LoggerException {
+        checkMessageArgument(message);
         changeState(CommandFactory.Type.OBJECT, unaccumulatingState, message);
     }
 
@@ -130,10 +127,8 @@ public class Logger {
      *
      * @param message an array of ints to be accumulated.
      */
-    public void log(int... message) throws IllegalArgumentException, LogException {
-        if (message == null) {
-            throw new IllegalArgumentException();
-        }
+    public void log(int... message) throws LoggerException {
+        checkMessageArgument(message);
 
         for (int intMessage : message) {
             log(intMessage);
@@ -146,7 +141,7 @@ public class Logger {
      *
      * @param message a two-dimensional array of ints to be accumulated.
      */
-    public void log(int[][] message) throws IllegalArgumentException, LogException {
+    public void log(int[][] message) throws LoggerException {
         log(ArrayUtils.multiDimIntArrayToOneDimIntArray(message));
     }
 
@@ -156,7 +151,7 @@ public class Logger {
      *
      * @param message a four-dimensional array of ints to be accumulated.
      */
-    public void log(int[][][][] message) throws IllegalArgumentException, LogException {
+    public void log(int[][][][] message) throws LoggerException {
         log(ArrayUtils.multiDimIntArrayToOneDimIntArray(message));
     }
 
@@ -166,7 +161,9 @@ public class Logger {
      *
      * @param messages an array of Strings to be accumulated.
      */
-    public void log(String... messages) throws IllegalArgumentException, LogException {
+    public void log(String... messages) throws LoggerException {
+        checkMessageArgument(messages);
+
         for (String string : messages) {
             log(string);
         }
@@ -176,17 +173,29 @@ public class Logger {
      * Flushes the Logger. This is done by logging the accumulated data. The Logger still can be used
      * after the flush() method is invoked.
      */
-    public void flush() throws LogException {
-        try {
+    public void flush() throws LoggerException {
             currentState.flush();
-        } catch (PrinterException e) {
-            LogException logException = new LogException();
-            logException.initCause(e);
-            throw logException;
+    }
+
+    private static void checkPrintersArgument(Printer... printers) throws IllegalArgumentException {
+        if (printers == null || printers.length == 0) {
+            throw new IllegalArgumentException("Not a single one printer was passed");
+        }
+
+        for (Printer printer : printers) {
+            if (printer == null) {
+                throw new IllegalArgumentException("One of passed printers is null");
+            }
         }
     }
 
-    private void changeState(CommandFactory.Type type, State nextState, Object message) throws LogException {
+    private static void checkMessageArgument(Object message) throws IllegalArgumentException {
+        if (message == null) {
+            throw new IllegalArgumentException("Null messages are prohibited");
+        }
+    }
+
+    private void changeState(CommandFactory.Type type, State nextState, Object message) throws LoggerException {
         if (currentState != nextState) {
             flush();
         }
@@ -194,12 +203,6 @@ public class Logger {
         Command command = commandFactory.createCommand(type, printers);
         command.setMessage(message.toString());
         currentState = nextState;
-        try {
-            currentState.apply(command);
-        } catch (PrinterException e) {
-            LogException logException = new LogException();
-            logException.initCause(e);
-            throw logException;
-        }
+        currentState.apply(command);
     }
 }
