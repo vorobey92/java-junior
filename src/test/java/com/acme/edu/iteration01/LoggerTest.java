@@ -2,17 +2,14 @@ package com.acme.edu.iteration01;
 
 import com.acme.edu.Logger;
 import com.acme.edu.SysoutCaptureAndAssertionAbility;
+import com.acme.edu.businessexceptions.LoggerException;
 import com.acme.edu.commands.CommandFactory;
-import com.acme.edu.businessexceptions.IllegalArgumentException;
-import com.acme.edu.businessexceptions.LogException;
 import com.acme.edu.printers.ConsolePrinter;
 import com.acme.edu.states.StateFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-
-import java.io.IOException;
 
 @Ignore
 public class LoggerTest implements SysoutCaptureAndAssertionAbility {
@@ -21,7 +18,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
 
     //region given
     @Before
-    public void setUpSystemOut() throws IOException {
+    public void setUpSystemOut() throws LoggerException {
         resetOut();
         captureSysout();
         logger = new Logger(new CommandFactory(), new StateFactory(), new ConsolePrinter());
@@ -34,7 +31,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     //endregion
 
     @Test
-    public void shouldLogInteger() throws LogException {
+    public void shouldLogInteger() throws LoggerException {
         //region when
         logger.log(1);
         logger.log(0);
@@ -49,7 +46,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldLogByte() throws LogException {
+    public void shouldLogByte() throws LoggerException {
         //region when
         logger.log((byte) 1);
         logger.log((byte) 0);
@@ -64,7 +61,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldLogChar() throws LogException {
+    public void shouldLogChar() throws LoggerException {
         //region when
         logger.log('a');
         logger.log('b');
@@ -79,7 +76,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldLogString() throws LogException, IllegalArgumentException {
+    public void shouldLogString() throws LoggerException {
         //region when
         logger.log("test string 1");
         logger.log("other str");
@@ -94,7 +91,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldLogBoolean() throws LogException {
+    public void shouldLogBoolean() throws LoggerException {
         //region when
         logger.log(true);
         logger.log(false);
@@ -109,7 +106,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldLogReference() throws LogException, IllegalArgumentException {
+    public void shouldLogReference() throws LoggerException {
         //region when
         logger.log(new Object());
         logger.flush();

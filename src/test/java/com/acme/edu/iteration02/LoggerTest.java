@@ -2,17 +2,14 @@ package com.acme.edu.iteration02;
 
 import com.acme.edu.Logger;
 import com.acme.edu.SysoutCaptureAndAssertionAbility;
+import com.acme.edu.businessexceptions.LoggerException;
 import com.acme.edu.commands.CommandFactory;
-import com.acme.edu.businessexceptions.IllegalArgumentException;
-import com.acme.edu.businessexceptions.LogException;
 import com.acme.edu.printers.ConsolePrinter;
 import com.acme.edu.states.StateFactory;
-import org.junit.Ignore;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
-
-import java.io.IOException;
 
 @Ignore
 public class LoggerTest implements SysoutCaptureAndAssertionAbility {
@@ -20,7 +17,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     private Logger logger;
     //region given
     @Before
-    public void setUpSystemOut() throws IOException {
+    public void setUpSystemOut() throws LoggerException {
         resetOut();
         captureSysout();
         logger = new Logger(new CommandFactory(), new StateFactory(), new ConsolePrinter());
@@ -28,7 +25,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     //endregion
 
     @Test
-    public void shouldLogSequentIntegersAsSum() throws LogException, IllegalArgumentException {
+    public void shouldLogSequentIntegersAsSum() throws LoggerException {
         //region when
         logger.log("str 1");
         logger.log(1);
@@ -49,7 +46,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldLogCorrectlyIntegerOverflowWhenSequentIntegers() throws LogException, IllegalArgumentException {
+    public void shouldLogCorrectlyIntegerOverflowWhenSequentIntegers() throws LoggerException {
         //region when
         logger.log("str 1");
         logger.log(10);
@@ -71,7 +68,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldLogCorrectlyByteOverflowWhenSequentBytes() throws LogException, IllegalArgumentException {
+    public void shouldLogCorrectlyByteOverflowWhenSequentBytes() throws LoggerException {
         //region when
         logger.log("str 1");
         logger.log((byte) 10);
@@ -93,7 +90,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldLogSameSubsequentStringsWithoutRepeat() throws LogException, IllegalArgumentException {
+    public void shouldLogSameSubsequentStringsWithoutRepeat() throws LoggerException {
         //region when
         logger.log("str 1");
         logger.log("str 2");

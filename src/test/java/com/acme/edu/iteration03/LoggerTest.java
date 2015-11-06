@@ -2,17 +2,14 @@ package com.acme.edu.iteration03;
 
 import com.acme.edu.Logger;
 import com.acme.edu.SysoutCaptureAndAssertionAbility;
+import com.acme.edu.businessexceptions.LoggerException;
 import com.acme.edu.commands.CommandFactory;
-import com.acme.edu.businessexceptions.IllegalArgumentException;
-import com.acme.edu.businessexceptions.LogException;
 import com.acme.edu.printers.ConsolePrinter;
 import com.acme.edu.states.StateFactory;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.Ignore;
-
-import java.io.IOException;
+import org.junit.Test;
 
 @Ignore
 public class LoggerTest implements SysoutCaptureAndAssertionAbility {
@@ -21,7 +18,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
 
     //region given
     @Before
-    public void setUpSystemOut() throws IOException {
+    public void setUpSystemOut() throws LoggerException {
         resetOut();
         captureSysout();
         logger = new Logger(new CommandFactory(), new StateFactory(), new ConsolePrinter());
@@ -34,7 +31,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     //endregion
 
     @Test
-    public void shouldLogIntegersArray() throws LogException, IllegalArgumentException {
+    public void shouldLogIntegersArray() throws LoggerException {
         //region when
         logger.log(-1, 0, 1);
         logger.flush();
@@ -48,7 +45,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldLogIntegersMatrix() throws LogException, IllegalArgumentException {
+    public void shouldLogIntegersMatrix() throws LoggerException {
         //region when
         logger.log(new int[][]{{-1, 0, 1}, {1, 2, 3}, {-1, -2, -3}});
         logger.flush();
@@ -62,7 +59,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldLogIntegersMulitidimentionalArray() throws LogException, IllegalArgumentException {
+    public void shouldLogIntegersMulitidimentionalArray() throws LoggerException {
         //region when
         logger.log(new int[][][][]{{{{0}}}});
         logger.flush();
@@ -76,7 +73,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldLogStringsWithOneMethodCall() throws LogException, IllegalArgumentException {
+    public void shouldLogStringsWithOneMethodCall() throws LoggerException {
         //region when
 
         logger.log("str1", "string 2", "str 3");
@@ -89,7 +86,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldLogIntegersWithOneMethodCall() throws LogException, IllegalArgumentException {
+    public void shouldLogIntegersWithOneMethodCall() throws LoggerException {
         //region when
         logger.log(-1, 0, 1, 3);
         logger.flush();
@@ -101,7 +98,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldCorrectDealWithIntegerOverflowWhenOneMethodCall() throws LogException, IllegalArgumentException {
+    public void shouldCorrectDealWithIntegerOverflowWhenOneMethodCall() throws LoggerException {
         //region when
         logger.log(1);
         logger.log("str");
