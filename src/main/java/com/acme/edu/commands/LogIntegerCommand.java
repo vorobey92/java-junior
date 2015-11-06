@@ -9,8 +9,8 @@ public class LogIntegerCommand extends Command<LogIntegerCommand> {
     private int minValue;
     private Decorator decorator;
 
-    public LogIntegerCommand(Printer printer, Decorator decorator, int maxValue, int minValue) {
-        super(printer);
+    public LogIntegerCommand(Decorator decorator, int maxValue, int minValue, Printer... printers) {
+        super(printers);
         this.maxValue = maxValue;
         this.minValue = minValue;
         this.decorator = decorator;

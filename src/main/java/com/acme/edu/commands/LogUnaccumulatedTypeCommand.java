@@ -7,8 +7,8 @@ import com.acme.edu.printers.PrinterException;
 public class LogUnaccumulatedTypeCommand extends Command<LogUnaccumulatedTypeCommand> {
     private Decorator decorator;
 
-    public LogUnaccumulatedTypeCommand(Printer printer, Decorator decorator) {
-        super(printer);
+    public LogUnaccumulatedTypeCommand(Decorator decorator, Printer... printers) {
+        super(printers);
         this.decorator = decorator;
     }
 

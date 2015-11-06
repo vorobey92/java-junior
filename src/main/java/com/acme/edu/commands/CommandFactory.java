@@ -7,30 +7,32 @@ public class CommandFactory {
 
     public enum Type {INT, BYTE, STRING, CHAR, BOOLEAN, OBJECT}
 
-    public Command createCommand(Type type, Printer printer) {
+    public Command createCommand(Type type, Printer... printers) {
         DecoratorFactory decoratorFactory = new DecoratorFactory();
 
         switch (type) {
             case INT:
                 return new LogIntegerCommand(
-                        printer, decoratorFactory.createDecorator("primitive: %s"), Integer.MAX_VALUE, Integer.MIN_VALUE
-                );
+                        decoratorFactory.createDecorator("primitive: %s"), Integer.MAX_VALUE, Integer.MIN_VALUE,
+                        printers
+                        );
             case BYTE:
                 return new LogIntegerCommand(
-                        printer, decoratorFactory.createDecorator("primitive: %s"), Byte.MAX_VALUE, Byte.MIN_VALUE
-                );
+                        decoratorFactory.createDecorator("primitive: %s"), Byte.MAX_VALUE, Byte.MIN_VALUE,
+                        printers
+                        );
             case STRING:
                 return new LogStringCommand(
-                        printer,
                         decoratorFactory.createDecorator("string: %s"),
-                        decoratorFactory.createDecorator("string: %s (x%d)")
+                        decoratorFactory.createDecorator("string: %s (x%d)"),
+                        printers
                 );
             case CHAR:
-                return new LogUnaccumulatedTypeCommand(printer, decoratorFactory.createDecorator("char: %s"));
+                return new LogUnaccumulatedTypeCommand(decoratorFactory.createDecorator("char: %s"), printers);
             case BOOLEAN:
-                return new LogUnaccumulatedTypeCommand(printer, decoratorFactory.createDecorator("primitive: %s"));
+                return new LogUnaccumulatedTypeCommand(decoratorFactory.createDecorator("primitive: %s"), printers);
             case OBJECT:
-                return new LogUnaccumulatedTypeCommand(printer, decoratorFactory.createDecorator("reference: %s"));
+                return new LogUnaccumulatedTypeCommand(decoratorFactory.createDecorator("reference: %s"), printers);
             default:
                 throw new IllegalArgumentException("Unexpected type: " + type);
         }

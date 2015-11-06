@@ -9,10 +9,10 @@ public class LogStringCommand extends Command<LogStringCommand> {
     private Decorator oneStringSequenceDecorator;
     private Decorator mulitpleStringSequenceDecorator;
     
-    public LogStringCommand(Printer printer,
-                            Decorator oneStringSequenceDecorator,
-                            Decorator mulitpleStringSequenceDecorator) {
-        super(printer);
+    public LogStringCommand(Decorator oneStringSequenceDecorator,
+                            Decorator mulitpleStringSequenceDecorator,
+                            Printer... printers) {
+        super(printers);
         setLengthOfStringsSequence(0);
         this.oneStringSequenceDecorator = oneStringSequenceDecorator;
         this.mulitpleStringSequenceDecorator = mulitpleStringSequenceDecorator;
