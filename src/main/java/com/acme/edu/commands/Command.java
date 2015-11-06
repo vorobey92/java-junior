@@ -4,18 +4,20 @@ import com.acme.edu.printers.Printer;
 import com.acme.edu.printers.PrinterException;
 
 public abstract class Command<T> {
-    private Printer printer;
+    private Printer[] printers;
     private String message;
 
-    public Command(Printer printer) {
-        this.printer = printer;
+    public Command(Printer... printers) {
+        this.printers = printers;
     }
 
     abstract public Command merge (T oldCommand) throws PrinterException;
 
     public void execute() throws PrinterException{
         if (getMessage() != null) {
-            printer.println(getFormattedString());
+            for (Printer printer : printers) {
+                printer.println(getFormattedString());
+            }
             setMessage(null);
         }
     }
