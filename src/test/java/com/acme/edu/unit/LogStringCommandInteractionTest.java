@@ -1,6 +1,5 @@
 package com.acme.edu.unit;
 
-import com.acme.edu.commands.LogIntegerCommand;
 import com.acme.edu.commands.LogStringCommand;
 import com.acme.edu.decorators.Decorator;
 import com.acme.edu.printers.Printer;
@@ -203,7 +202,7 @@ public class LogStringCommandInteractionTest {
     }
 
     @Test
-    public void shouldNotincrementCounterWhenNewMessageEqualsOldMessage() throws PrinterException {
+    public void shouldIncrementCounterWhenNewMessageEqualsOldMessage() throws PrinterException {
         String oldMessage = message;
         LogStringCommand mockCommand = mock(LogStringCommand.class);
 
