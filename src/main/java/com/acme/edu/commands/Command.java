@@ -14,24 +14,26 @@ public abstract class Command<T> {
         this.printers = printers;
     }
 
-    abstract public Command merge (T oldCommand) throws LoggingException;
+    abstract public Command merge(T oldCommand) throws LoggingException;
 
     public void execute() throws LoggingException {
-        if (getMessage() != null) {
-            ArrayList<Exception> printerExceptions = new ArrayList<>();
-            for (Printer printer : printers) {
-                try {
-                    printer.println(getFormattedString());
-                } catch (PrinterException e) {
-                    printerExceptions.add(e);
-                }
-            }
+        if (getMessage() == null) {
+            return;
+        }
 
-            if (printerExceptions.size() > 0) {
-                throw new LoggingException("Errors occur while logging", printerExceptions);
+        ArrayList<Exception> printerExceptions = new ArrayList<>();
+        for (Printer printer : printers) {
+            try {
+                printer.println(getFormattedString());
+            } catch (PrinterException e) {
+                printerExceptions.add(e);
             }
+        }
 
-            setMessage(null);
+        setMessage(null);
+
+        if (printerExceptions.size() > 0) {
+            throw new LoggingException("Errors occur while logging", printerExceptions);
         }
     }
 
