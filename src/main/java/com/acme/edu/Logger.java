@@ -23,7 +23,6 @@ public class Logger {
     private State intState;
     private State byteState;
     private State stringState;
-    private Printer printer;
     private Printer[] printers;
     private CommandFactory commandFactory;
 
@@ -35,7 +34,6 @@ public class Logger {
         stringState = stateFactory.createState();
         currentState = unaccumulatingState;
         this.printers = Arrays.copyOf(printers, printers.length);
-        this.printer = printers[0];
     }
 
     /**
@@ -193,7 +191,7 @@ public class Logger {
             flush();
         }
 
-        Command command = commandFactory.createCommand(type, printer);
+        Command command = commandFactory.createCommand(type, printers);
         command.setMessage(message.toString());
         currentState = nextState;
         try {
