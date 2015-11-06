@@ -4,15 +4,15 @@ import com.acme.edu.businessexceptions.IllegalArgumentException;
 
 import java.util.Arrays;
 
-class ArrayUtils {
+public class ArrayUtils {
 
     private ArrayUtils() {
 
     }
 
-    static int[] multiDimIntArrayToOneDimIntArray(Object[] multiDimArray) throws IllegalArgumentException {
+    public static int[] multiDimIntArrayToOneDimIntArray(Object[] multiDimArray) throws IllegalArgumentException {
         if (multiDimArray == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("The passed multidimensional array is null or has null element");
         }
 
         int[] resultArray = new int[0];
