@@ -1,5 +1,6 @@
 package com.acme.edu.commands;
 
+import com.acme.edu.businessexceptions.LoggingException;
 import com.acme.edu.decorators.Decorator;
 import com.acme.edu.printers.Printer;
 import com.acme.edu.printers.PrinterException;
@@ -31,7 +32,7 @@ public class LogStringCommand extends Command<LogStringCommand> {
     }
 
     @Override
-    public LogStringCommand merge(LogStringCommand oldCommand) throws PrinterException {
+    public LogStringCommand merge(LogStringCommand oldCommand) throws LoggingException {
         if (oldCommand == null || oldCommand.getMessage() == null) {
             return this;
         }

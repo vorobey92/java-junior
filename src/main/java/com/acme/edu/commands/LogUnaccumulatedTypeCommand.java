@@ -1,8 +1,8 @@
 package com.acme.edu.commands;
 
+import com.acme.edu.businessexceptions.LoggingException;
 import com.acme.edu.decorators.Decorator;
 import com.acme.edu.printers.Printer;
-import com.acme.edu.printers.PrinterException;
 
 public class LogUnaccumulatedTypeCommand extends Command<LogUnaccumulatedTypeCommand> {
     private Decorator decorator;
@@ -13,7 +13,7 @@ public class LogUnaccumulatedTypeCommand extends Command<LogUnaccumulatedTypeCom
     }
 
     @Override
-    public LogUnaccumulatedTypeCommand merge(LogUnaccumulatedTypeCommand oldCommand) throws PrinterException {
+    public LogUnaccumulatedTypeCommand merge(LogUnaccumulatedTypeCommand oldCommand) throws LoggingException {
         execute();
 
         return this;
