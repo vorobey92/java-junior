@@ -9,6 +9,8 @@ import com.acme.edu.printers.PrinterException;
 import com.acme.edu.states.State;
 import com.acme.edu.states.StateFactory;
 
+import java.util.Arrays;
+
 /**
  * A Logger can be used to apply different types of messages to the standard output stream. A Logger
  * accumulates some types of messages before logging (see description in method-level documentation).
@@ -22,16 +24,18 @@ public class Logger {
     private State byteState;
     private State stringState;
     private Printer printer;
+    private Printer[] printers;
     private CommandFactory commandFactory;
 
-    public Logger(Printer printer, CommandFactory commandFactory, StateFactory stateFactory) {
-        this.printer = printer;
+    public Logger(CommandFactory commandFactory, StateFactory stateFactory, Printer... printers) {
         this.commandFactory = commandFactory;
         unaccumulatingState = stateFactory.createState();
         intState = stateFactory.createState();
         byteState = stateFactory.createState();
         stringState = stateFactory.createState();
         currentState = unaccumulatingState;
+        this.printers = Arrays.copyOf(printers, printers.length);
+        this.printer = printers[0];
     }
 
     /**
