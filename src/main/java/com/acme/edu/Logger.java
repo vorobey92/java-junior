@@ -3,6 +3,7 @@ package com.acme.edu;
 import com.acme.edu.exception.LogException;
 import com.acme.edu.exception.NullMessageException;
 import com.acme.edu.exception.StateException;
+import com.acme.edu.printer.FilePrinter;
 import com.acme.edu.state.*;
 
 /**
@@ -114,6 +115,7 @@ public class Logger {
             throw  new StateException("Trying to close null State");
         }
         lastState.flush();
+        FilePrinter.stop();
     }
 
     /**

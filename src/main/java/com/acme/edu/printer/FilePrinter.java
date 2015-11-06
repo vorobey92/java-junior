@@ -5,28 +5,40 @@ import java.io.*;
 
 
 /**
+ * Realisation of Printable interface.
+ * FilePrinter logs messages into file.
  *
  */
 public class FilePrinter implements Printable {
 
-    private String code;
-
+    private static BufferedWriter i;
+    private static StringBuilder str = new StringBuilder("");
+    private static int countOfLogs = 0;
     /**
      *
      * @param code charSet
      */
-    public FilePrinter(String code){
-        this.code = code;
+    public FilePrinter(String code) throws CanNotPrintException {
+        File file = new File("log.txt");
+        try {
+            i = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file,true),code));
+        } catch (UnsupportedEncodingException | FileNotFoundException e) {
+            throw new CanNotPrintException(e);
+        }
     }
     @Override
     public void print(String message) throws CanNotPrintException {
-        File file = new File("log.txt");
 
-        try(
-                RandomAccessFile i = new RandomAccessFile(file, "rw" );
-        ) {
-            i.seek(i.length());
-            i.write(message.getBytes(code));
+        try{
+            if (countOfLogs < 50){
+                str.append(message);
+                countOfLogs++;
+            }else {
+                i.write(str.toString());
+                str.delete(0, str.length());
+                countOfLogs = 0;
+                i.flush();
+            }
         } catch (IOException e) {
             throw new CanNotPrintException(e);
         }
@@ -35,5 +47,17 @@ public class FilePrinter implements Printable {
     @Override
     public void println(String message) throws CanNotPrintException {
         print(message + System.lineSeparator());
+    }
+
+    public static void stop() throws CanNotPrintException {
+
+        try {
+            if (i == null) return;
+            i.write(str.toString());
+            str.delete(0, str.length());
+            i.close();
+        } catch (IOException e) {
+            throw new CanNotPrintException(e);
+        }
     }
 }

@@ -2,6 +2,7 @@ package com.acme.edu.iteration01;
 
 import com.acme.edu.Logger;
 import com.acme.edu.SysoutCaptureAndAssertionAbility;
+import com.acme.edu.exception.CanNotPrintException;
 import com.acme.edu.exception.LogException;
 import com.acme.edu.exception.NullMessageException;
 import com.acme.edu.printer.ConsolePrinter;
@@ -19,10 +20,10 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     private Logger logger;
     //region given
     @Before
-    public void setUpSystemOut() throws IOException {
+    public void setUpSystemOut() throws  CanNotPrintException {
         resetOut();
         captureSysout();
-        logger = new Logger(new StateFactory(new ConsolePrinter()));
+        logger = new Logger(new StateFactory(new ConsolePrinter(), new FilePrinter("UTF-8")));
 
 
     }
@@ -68,6 +69,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         //region when
         logger.log('a');
         logger.log('b');
+        logger.close();
         //endregion
 
         //region then
@@ -99,6 +101,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         //region when
         logger.log(true);
         logger.log(false);
+        logger.close();
         //endregion
 
         //region then
@@ -112,6 +115,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     public void shouldLogReference() throws IOException, LogException {
         //region when
         logger.log(new Object());
+        logger.close();
 
         //endregion
 
