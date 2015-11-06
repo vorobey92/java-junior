@@ -7,11 +7,10 @@ import com.acme.edu.printers.Printer;
 import com.acme.edu.printers.PrinterException;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InOrder;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -81,6 +80,142 @@ public class LogStringCommandInteractionTest {
         sut.merge(stubCommand);
 
         assertThat(sut.getMessage()).isEqualTo(message);
+    }
+
+    @Test
+     public void shouldLogOldMessageWhenNewMessageDiffersFromOldMessage() throws PrinterException {
+        String oldMessage = "old message";
+        LogStringCommand mockCommand = mock(LogStringCommand.class);
+
+        when(stubOneStringSequenceDecorator.decorate(message)).thenReturn(oneStringSequenceDecoratedString);
+        when(stubMultipleStringSequenceDecorator.decorate(message)).thenReturn(multipleStringsSequenceDecoratedString);
+        when(mockCommand.getMessage()).thenReturn(oldMessage);
+
+        sut.setMessage(message);
+        sut.merge(mockCommand);
+
+        verify(mockCommand, times(1)).execute();
+    }
+
+    @Test
+    public void shouldNotModifyOldMessageBeforeLoggingWhenNewMessageDiffersFromOldMessage() throws PrinterException {
+        String oldMessage = "old message";
+        LogStringCommand mockCommand = mock(LogStringCommand.class);
+
+        when(stubOneStringSequenceDecorator.decorate(message)).thenReturn(oneStringSequenceDecoratedString);
+        when(stubMultipleStringSequenceDecorator.decorate(message)).thenReturn(multipleStringsSequenceDecoratedString);
+        when(mockCommand.getMessage()).thenReturn(oldMessage);
+
+        sut.setMessage(message);
+        sut.merge(mockCommand);
+
+        verify(mockCommand, times(0)).setMessage(any());
+    }
+
+    @Test
+    public void shouldNotModifyNewMessageWhenNewMessageDiffersFromOldMessage() throws PrinterException {
+        String oldMessage = "old message";
+        LogStringCommand mockCommand = mock(LogStringCommand.class);
+
+        when(stubOneStringSequenceDecorator.decorate(message)).thenReturn(oneStringSequenceDecoratedString);
+        when(stubMultipleStringSequenceDecorator.decorate(message)).thenReturn(multipleStringsSequenceDecoratedString);
+        when(mockCommand.getMessage()).thenReturn(oldMessage);
+
+        sut.setMessage(message);
+        sut.merge(mockCommand);
+
+        assertThat(sut.getMessage()).isEqualTo(message);
+    }
+
+    @Test
+    public void shouldNotLogNewMessageWhenNewMessageDiffersFromOldMessage() throws PrinterException {
+        String oldMessage = "old message";
+        LogStringCommand mockCommand = mock(LogStringCommand.class);
+
+        when(stubOneStringSequenceDecorator.decorate(message)).thenReturn(oneStringSequenceDecoratedString);
+        when(stubMultipleStringSequenceDecorator.decorate(message)).thenReturn(multipleStringsSequenceDecoratedString);
+        when(mockCommand.getMessage()).thenReturn(oldMessage);
+
+        sut.setMessage(message);
+        sut.merge(mockCommand);
+
+        verify(mockPrinter, times(0)).println(anyString());
+    }
+
+    @Test
+    public void shouldNotModifyCounterWhenNewMessageDiffersFromOldMessage() throws PrinterException {
+        String oldMessage = "old message";
+        LogStringCommand mockCommand = mock(LogStringCommand.class);
+
+        when(stubOneStringSequenceDecorator.decorate(message)).thenReturn(oneStringSequenceDecoratedString);
+        when(stubMultipleStringSequenceDecorator.decorate(message)).thenReturn(multipleStringsSequenceDecoratedString);
+        when(mockCommand.getMessage()).thenReturn(oldMessage);
+
+        sut.setMessage(message);
+        sut.merge(mockCommand);
+
+        assertThat(sut.getLengthOfStringsSequence()).isEqualTo(1);
+    }
+
+    @Test
+    public void shouldNotLogOldMessageWhenNewMessageEqualsOldMessage() throws PrinterException {
+        String oldMessage = message;
+        LogStringCommand mockCommand = mock(LogStringCommand.class);
+
+        when(stubOneStringSequenceDecorator.decorate(message)).thenReturn(oneStringSequenceDecoratedString);
+        when(stubMultipleStringSequenceDecorator.decorate(message)).thenReturn(multipleStringsSequenceDecoratedString);
+        when(mockCommand.getMessage()).thenReturn(oldMessage);
+
+        sut.setMessage(message);
+        sut.merge(mockCommand);
+
+        verify(mockCommand, times(0)).execute();
+    }
+
+    @Test
+    public void shouldNotModifyNewMessageWhenNewMessageEqualsOldMessage() throws PrinterException {
+        String oldMessage = message;
+        LogStringCommand mockCommand = mock(LogStringCommand.class);
+
+        when(stubOneStringSequenceDecorator.decorate(message)).thenReturn(oneStringSequenceDecoratedString);
+        when(stubMultipleStringSequenceDecorator.decorate(message)).thenReturn(multipleStringsSequenceDecoratedString);
+        when(mockCommand.getMessage()).thenReturn(oldMessage);
+
+        sut.setMessage(message);
+        sut.merge(mockCommand);
+
+        assertThat(sut.getMessage()).isEqualTo(message);
+    }
+
+    @Test
+    public void shouldNotLogNewMessageWhenNewMessageEqualsOldMessage() throws PrinterException {
+        String oldMessage = message;
+        LogStringCommand mockCommand = mock(LogStringCommand.class);
+
+        when(stubOneStringSequenceDecorator.decorate(message)).thenReturn(oneStringSequenceDecoratedString);
+        when(stubMultipleStringSequenceDecorator.decorate(message)).thenReturn(multipleStringsSequenceDecoratedString);
+        when(mockCommand.getMessage()).thenReturn(oldMessage);
+
+        sut.setMessage(message);
+        sut.merge(mockCommand);
+
+        verify(mockPrinter, times(0)).println(anyString());
+    }
+
+    @Test
+    public void shouldNotincrementCounterWhenNewMessageEqualsOldMessage() throws PrinterException {
+        String oldMessage = message;
+        LogStringCommand mockCommand = mock(LogStringCommand.class);
+
+        when(stubOneStringSequenceDecorator.decorate(message)).thenReturn(oneStringSequenceDecoratedString);
+        when(stubMultipleStringSequenceDecorator.decorate(message)).thenReturn(multipleStringsSequenceDecoratedString);
+        when(mockCommand.getMessage()).thenReturn(oldMessage);
+        when(mockCommand.getLengthOfStringsSequence()).thenReturn(1);
+
+        sut.setMessage(message);
+        sut.merge(mockCommand);
+
+        assertThat(sut.getLengthOfStringsSequence()).isEqualTo(2);
     }
 
 }

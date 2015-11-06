@@ -78,4 +78,16 @@ public class LogStringCommandIsolationTest {
     public void shouldHaveNullMessageRightAfterCreation() {
         assertThat(sut.getMessage()).isEqualTo(null);
     }
+
+    @Test
+    public void shouldHaveZeroAsCounterRightAfterCreation() {
+        assertThat(sut.getLengthOfStringsSequence()).isEqualTo(0);
+    }
+
+    @Test
+    public void shouldHaveOneAsCounterRightAfterMessageWasSet() {
+        sut.setMessage(message);
+
+        assertThat(sut.getLengthOfStringsSequence()).isEqualTo(1);
+    }
 }
