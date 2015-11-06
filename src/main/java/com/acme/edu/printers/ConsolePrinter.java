@@ -15,9 +15,4 @@ public class ConsolePrinter implements Printer {
     public void println(String stringToPrint) {
         OUT.println(stringToPrint);
     }
-
-    @Override
-    public void close() {
-        OUT.close();
-    }
 }
