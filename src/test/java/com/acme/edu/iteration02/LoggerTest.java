@@ -5,6 +5,7 @@ import com.acme.edu.SysoutCaptureAndAssertionAbility;
 import com.acme.edu.exception.LogException;
 import com.acme.edu.exception.NullMessageException;
 import com.acme.edu.printer.ConsolePrinter;
+import com.acme.edu.printer.FilePrinter;
 import com.acme.edu.state.StateFactory;
 import org.junit.Before;
 import org.junit.Ignore;

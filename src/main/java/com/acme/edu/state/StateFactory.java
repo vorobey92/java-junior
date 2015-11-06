@@ -16,7 +16,7 @@ public class StateFactory {
      * Creating objects for all states.
      * @param printer determines stream for output
      */
-    public StateFactory(Printable printer) {
+    public StateFactory(Printable... printer) {
         intState = new IntState(printer);
         stringState = new StringState(printer);
         defaultState = new DefaultState(printer);

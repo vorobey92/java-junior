@@ -15,10 +15,10 @@ public class StringState extends State {
 
     /**
      *  Creating StringState object
-     * @param printer determines stream for logging
+     * @param printers determines streams for logging
      */
-    public StringState(Printable printer) {
-        super(printer);
+    public StringState(Printable... printers) {
+        super(printers);
     }
 
     /**

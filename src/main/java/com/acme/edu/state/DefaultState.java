@@ -10,10 +10,10 @@ public class DefaultState extends State {
 
     /**
      *
-     * @param printer determines stream for logging
+     * @param printers determines streams for logging
      */
-    public DefaultState(Printable printer) {
-        super(printer);
+    public DefaultState(Printable... printers) {
+        super(printers);
     }
 
     /**

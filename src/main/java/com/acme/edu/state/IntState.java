@@ -14,10 +14,10 @@ public class IntState extends State {
 
     /**
      * Creates IntState object
-     * @param printer determines stream for logging
+     * @param printers determines streams for logging
      */
-    public IntState(Printable printer) {
-        super(printer);
+    public IntState(Printable... printers) {
+        super(printers);
     }
 
 

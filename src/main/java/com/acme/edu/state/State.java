@@ -4,19 +4,24 @@ import com.acme.edu.exception.CanNotPrintException;
 import com.acme.edu.exception.StateException;
 import com.acme.edu.printer.Printable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Abstract class for State
  */
 public abstract class State {
 
-    protected Printable printer;
+    protected List<Printable> list = new ArrayList<Printable>();
 
     /**
      *
-     * @param printer determines stream for logging
+     * @param printers determines streams for logging
      */
-    public State (Printable printer){
-        this.printer = printer;
+    public State (Printable... printers){
+        for(Printable pr : printers) {
+            list.add(pr);
+        }
     }
 
     /**
@@ -32,7 +37,9 @@ public abstract class State {
 
     protected void print(String message) throws StateException {
         try {
-            printer.print(message);
+            for(Printable printer : list){
+                printer.print(message);
+            }
         } catch (CanNotPrintException e) {
             throw new StateException(e);
         }
@@ -40,7 +47,9 @@ public abstract class State {
 
     protected void println(String message) throws StateException {
         try {
-            printer.println(message);
+            for(Printable printer : list) {
+                printer.println(message);
+            }
         } catch (CanNotPrintException e) {
             throw new StateException(e);
         }
