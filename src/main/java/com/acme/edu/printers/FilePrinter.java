@@ -1,48 +1,41 @@
 package com.acme.edu.printers;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
 public class FilePrinter implements Printer {
-    private File file;
+    private static final int BUFFER_SIZE = 50;
+    private String fileName;
     private String charSet;
+    private int count = 0;
+    private StringBuilder buffer = new StringBuilder();
 
-    public FilePrinter(File file, String charSet) {
-        this.file = file;
+    public FilePrinter(String fileName, String charSet) {
+        this.fileName = fileName;
         this.charSet = charSet;
     }
 
     @Override
-    public void print(String stringToPrint) throws PrinterException {
-        try(PrintWriter printWriter =
-                    new PrintWriter(
-                            new BufferedWriter(
-                                    new OutputStreamWriter(
-                                            new FileOutputStream(file), charSet)))) {
-            printWriter.print(stringToPrint);
-            printWriter.flush();
-        } catch (IOException e) {
-            throw new PrinterException(e);
-        }
-
-    }
-
-    @Override
     public void println(String stringToPrint) throws PrinterException {
-        try(PrintWriter printWriter =
-                    new PrintWriter(
-                            new BufferedWriter(
-                                    new OutputStreamWriter(
-                                            new FileOutputStream(file), charSet)))) {
-            printWriter.println(stringToPrint);
-            printWriter.flush();
-        } catch (IOException e) {
-            throw new PrinterException(e);
-        }
+        buffer.append(stringToPrint);
+        ++count;
 
+        if (count > BUFFER_SIZE) {
+            try (PrintWriter printWriter =
+                         new PrintWriter(
+                                 new BufferedWriter(
+                                         new OutputStreamWriter(
+                                                 new FileOutputStream(fileName, true), charSet)))) {
+                printWriter.println(buffer.toString());
+                printWriter.flush();
+            } catch (IOException e) {
+                throw new PrinterException("I/O exception of some sort has occurred", e);
+            }
+            buffer.setLength(0);
+            count = 0;
+        }
     }
 }
