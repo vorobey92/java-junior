@@ -1,5 +1,6 @@
 package com.acme.edu.unit;
 
+import com.acme.edu.businessexceptions.LoggingException;
 import com.acme.edu.commands.LogStringCommand;
 import com.acme.edu.decorators.Decorator;
 import com.acme.edu.printers.Printer;
@@ -33,7 +34,7 @@ public class LogStringCommandInteractionTest {
     }
 
     @Test
-    public void shouldNotLogWhenMergeWithNullCommand() throws PrinterException {
+    public void shouldNotLogWhenMergeWithNullCommand() throws PrinterException, LoggingException {
 
         when(stubOneStringSequenceDecorator.decorate(message)).thenReturn(oneStringSequenceDecoratedString);
         when(stubMultipleStringSequenceDecorator.decorate(message)).thenReturn(multipleStringsSequenceDecoratedString);
@@ -45,7 +46,7 @@ public class LogStringCommandInteractionTest {
     }
 
     @Test
-    public void shouldNotModifyOwnMessageWhenMergeWithNullCommand() throws PrinterException {
+    public void shouldNotModifyOwnMessageWhenMergeWithNullCommand() throws PrinterException, LoggingException {
 
         sut.setMessage(message);
         sut.merge(null);
@@ -54,7 +55,7 @@ public class LogStringCommandInteractionTest {
     }
 
     @Test
-    public void shouldNotLogWhenMergeWithCommandThatDoesNotHaveMessage() throws PrinterException {
+    public void shouldNotLogWhenMergeWithCommandThatDoesNotHaveMessage() throws PrinterException, LoggingException {
         LogStringCommand stubCommand = mock(LogStringCommand.class);
 
         when(stubOneStringSequenceDecorator.decorate(message)).thenReturn(oneStringSequenceDecoratedString);
@@ -68,7 +69,7 @@ public class LogStringCommandInteractionTest {
     }
 
     @Test
-    public void shouldNotModifyOwnMessageWhenMergeWithCommandThatDoesNotHaveMessage() throws PrinterException {
+    public void shouldNotModifyOwnMessageWhenMergeWithCommandThatDoesNotHaveMessage() throws PrinterException, LoggingException {
         LogStringCommand stubCommand = mock(LogStringCommand.class);
 
         when(stubOneStringSequenceDecorator.decorate(message)).thenReturn(oneStringSequenceDecoratedString);
@@ -82,7 +83,7 @@ public class LogStringCommandInteractionTest {
     }
 
     @Test
-     public void shouldLogOldMessageWhenNewMessageDiffersFromOldMessage() throws PrinterException {
+     public void shouldLogOldMessageWhenNewMessageDiffersFromOldMessage() throws PrinterException, LoggingException {
         String oldMessage = "old message";
         LogStringCommand mockCommand = mock(LogStringCommand.class);
 
@@ -97,7 +98,7 @@ public class LogStringCommandInteractionTest {
     }
 
     @Test
-    public void shouldNotModifyOldMessageBeforeLoggingWhenNewMessageDiffersFromOldMessage() throws PrinterException {
+    public void shouldNotModifyOldMessageBeforeLoggingWhenNewMessageDiffersFromOldMessage() throws PrinterException, LoggingException {
         String oldMessage = "old message";
         LogStringCommand mockCommand = mock(LogStringCommand.class);
 
@@ -112,7 +113,7 @@ public class LogStringCommandInteractionTest {
     }
 
     @Test
-    public void shouldNotModifyNewMessageWhenNewMessageDiffersFromOldMessage() throws PrinterException {
+    public void shouldNotModifyNewMessageWhenNewMessageDiffersFromOldMessage() throws PrinterException, LoggingException {
         String oldMessage = "old message";
         LogStringCommand mockCommand = mock(LogStringCommand.class);
 
@@ -127,7 +128,7 @@ public class LogStringCommandInteractionTest {
     }
 
     @Test
-    public void shouldNotLogNewMessageWhenNewMessageDiffersFromOldMessage() throws PrinterException {
+    public void shouldNotLogNewMessageWhenNewMessageDiffersFromOldMessage() throws PrinterException, LoggingException {
         String oldMessage = "old message";
         LogStringCommand mockCommand = mock(LogStringCommand.class);
 
@@ -142,7 +143,7 @@ public class LogStringCommandInteractionTest {
     }
 
     @Test
-    public void shouldNotModifyCounterWhenNewMessageDiffersFromOldMessage() throws PrinterException {
+    public void shouldNotModifyCounterWhenNewMessageDiffersFromOldMessage() throws PrinterException, LoggingException {
         String oldMessage = "old message";
         LogStringCommand mockCommand = mock(LogStringCommand.class);
 
@@ -157,7 +158,7 @@ public class LogStringCommandInteractionTest {
     }
 
     @Test
-    public void shouldNotLogOldMessageWhenNewMessageEqualsOldMessage() throws PrinterException {
+    public void shouldNotLogOldMessageWhenNewMessageEqualsOldMessage() throws PrinterException, LoggingException {
         String oldMessage = message;
         LogStringCommand mockCommand = mock(LogStringCommand.class);
 
@@ -172,7 +173,7 @@ public class LogStringCommandInteractionTest {
     }
 
     @Test
-    public void shouldNotModifyNewMessageWhenNewMessageEqualsOldMessage() throws PrinterException {
+    public void shouldNotModifyNewMessageWhenNewMessageEqualsOldMessage() throws PrinterException, LoggingException {
         String oldMessage = message;
         LogStringCommand mockCommand = mock(LogStringCommand.class);
 
@@ -187,7 +188,7 @@ public class LogStringCommandInteractionTest {
     }
 
     @Test
-    public void shouldNotLogNewMessageWhenNewMessageEqualsOldMessage() throws PrinterException {
+    public void shouldNotLogNewMessageWhenNewMessageEqualsOldMessage() throws PrinterException, LoggingException {
         String oldMessage = message;
         LogStringCommand mockCommand = mock(LogStringCommand.class);
 
@@ -202,7 +203,7 @@ public class LogStringCommandInteractionTest {
     }
 
     @Test
-    public void shouldIncrementCounterWhenNewMessageEqualsOldMessage() throws PrinterException {
+    public void shouldIncrementCounterWhenNewMessageEqualsOldMessage() throws PrinterException, LoggingException {
         String oldMessage = message;
         LogStringCommand mockCommand = mock(LogStringCommand.class);
 

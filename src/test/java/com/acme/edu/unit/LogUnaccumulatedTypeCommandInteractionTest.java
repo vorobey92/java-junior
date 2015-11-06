@@ -1,5 +1,6 @@
 package com.acme.edu.unit;
 
+import com.acme.edu.businessexceptions.LoggingException;
 import com.acme.edu.commands.LogUnaccumulatedTypeCommand;
 import com.acme.edu.decorators.Decorator;
 import com.acme.edu.printers.Printer;
@@ -27,7 +28,7 @@ public class LogUnaccumulatedTypeCommandInteractionTest {
     }
 
     @Test
-    public void shouldLogWhenMergeWithNullCommand() throws PrinterException {
+    public void shouldLogWhenMergeWithNullCommand() throws PrinterException, LoggingException {
         when(stubDecorator.decorate(message)).thenReturn(decoratedString);
 
         sut.setMessage(message);
@@ -37,7 +38,7 @@ public class LogUnaccumulatedTypeCommandInteractionTest {
     }
 
     @Test
-    public void shouldLogWhenMergeWithCommandThatDoesNotHaveMessage() throws PrinterException {
+    public void shouldLogWhenMergeWithCommandThatDoesNotHaveMessage() throws PrinterException, LoggingException {
         LogUnaccumulatedTypeCommand stubCommand = mock(LogUnaccumulatedTypeCommand.class);
 
         when(stubDecorator.decorate(message)).thenReturn(decoratedString);
@@ -50,7 +51,7 @@ public class LogUnaccumulatedTypeCommandInteractionTest {
     }
 
     @Test
-    public void shouldNotLogOldMessageWhenMergeWithAnotherCommand() throws PrinterException {
+    public void shouldNotLogOldMessageWhenMergeWithAnotherCommand() throws PrinterException, LoggingException {
         String oldMessage = "old message";
         LogUnaccumulatedTypeCommand mockCommand = mock(LogUnaccumulatedTypeCommand.class);
 

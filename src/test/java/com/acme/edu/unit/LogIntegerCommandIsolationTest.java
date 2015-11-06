@@ -1,5 +1,6 @@
 package com.acme.edu.unit;
 
+import com.acme.edu.businessexceptions.LoggingException;
 import com.acme.edu.commands.LogIntegerCommand;
 import com.acme.edu.decorators.Decorator;
 import com.acme.edu.printers.Printer;
@@ -27,7 +28,7 @@ public class LogIntegerCommandIsolationTest {
     }
 
     @Test
-    public void shouldLogWhenHasMessage() throws PrinterException {
+    public void shouldLogWhenHasMessage() throws PrinterException, LoggingException {
         when(stubDecorator.decorate(message)).thenReturn(decoratedString);
 
         sut.setMessage(message);
@@ -37,7 +38,7 @@ public class LogIntegerCommandIsolationTest {
     }
 
     @Test
-    public void shouldSetMessageToNullAfterLogging() throws PrinterException {
+    public void shouldSetMessageToNullAfterLogging() throws PrinterException, LoggingException {
         sut.setMessage(message);
         sut.execute();
 
@@ -45,7 +46,7 @@ public class LogIntegerCommandIsolationTest {
     }
 
     @Test
-    public void shouldNotLogWhenHasNullMessage() throws PrinterException {
+    public void shouldNotLogWhenHasNullMessage() throws PrinterException, LoggingException {
         when(stubDecorator.decorate(any())).thenReturn(decoratedString);
 
         sut.setMessage(null);

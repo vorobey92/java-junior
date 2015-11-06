@@ -1,5 +1,6 @@
 package com.acme.edu.unit;
 
+import com.acme.edu.businessexceptions.LoggingException;
 import com.acme.edu.commands.LogStringCommand;
 import com.acme.edu.decorators.Decorator;
 import com.acme.edu.printers.Printer;
@@ -33,7 +34,7 @@ public class LogStringCommandIsolationTest {
     }
 
     @Test
-    public void shouldLogWhenAccumulatedNumberIsOne() throws PrinterException {
+    public void shouldLogWhenAccumulatedNumberIsOne() throws PrinterException, LoggingException {
         when(stubOneStringSequenceDecorator.decorate(message, 1)).thenReturn(oneStringSequenceDecoratedString);
         when(stubMultipleStringSequenceDecorator.decorate(message, 1)).thenReturn(multipleStringsSequenceDecoratedString);
 
@@ -44,7 +45,7 @@ public class LogStringCommandIsolationTest {
     }
 
     @Test
-    public void shouldLogWhenAccumulatedNumberIsTwo() throws PrinterException {
+    public void shouldLogWhenAccumulatedNumberIsTwo() throws PrinterException, LoggingException {
         when(stubOneStringSequenceDecorator.decorate(message, 2)).thenReturn(oneStringSequenceDecoratedString);
         when(stubMultipleStringSequenceDecorator.decorate(message, 2)).thenReturn(multipleStringsSequenceDecoratedString);
 
@@ -56,7 +57,7 @@ public class LogStringCommandIsolationTest {
     }
 
     @Test
-    public void shouldSetMessageToNullAfterLogging() throws PrinterException {
+    public void shouldSetMessageToNullAfterLogging() throws PrinterException, LoggingException {
         sut.setMessage(message);
         sut.execute();
 
@@ -64,7 +65,7 @@ public class LogStringCommandIsolationTest {
     }
 
     @Test
-    public void shouldNotLogWhenHasNullMessage() throws PrinterException {
+    public void shouldNotLogWhenHasNullMessage() throws PrinterException, LoggingException {
         when(stubOneStringSequenceDecorator.decorate(any())).thenReturn(oneStringSequenceDecoratedString);
         when(stubMultipleStringSequenceDecorator.decorate(any())).thenReturn(multipleStringsSequenceDecoratedString);
 

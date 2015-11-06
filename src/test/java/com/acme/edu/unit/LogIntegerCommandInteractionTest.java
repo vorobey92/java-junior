@@ -1,5 +1,6 @@
 package com.acme.edu.unit;
 
+import com.acme.edu.businessexceptions.LoggingException;
 import com.acme.edu.commands.LogIntegerCommand;
 import com.acme.edu.decorators.Decorator;
 import com.acme.edu.printers.Printer;
@@ -35,7 +36,7 @@ public class LogIntegerCommandInteractionTest {
     }
 
     @Test
-    public void shouldNotLogWhenMergeWithNullCommand() throws PrinterException {
+    public void shouldNotLogWhenMergeWithNullCommand() throws PrinterException, LoggingException {
         String message = "test message";
 
         when(stubDecorator.decorate(message)).thenReturn(decoratedString);
@@ -47,7 +48,7 @@ public class LogIntegerCommandInteractionTest {
     }
 
     @Test
-    public void shouldNotModifyOwnMessageWhenMergeWithNullCommand() throws PrinterException {
+    public void shouldNotModifyOwnMessageWhenMergeWithNullCommand() throws PrinterException, LoggingException {
         String message = "test message";
 
         sut.setMessage(message);
@@ -57,7 +58,7 @@ public class LogIntegerCommandInteractionTest {
     }
 
     @Test
-    public void shouldNotLogWhenMergeWithCommandThatDoesNotHaveMessage() throws PrinterException {
+    public void shouldNotLogWhenMergeWithCommandThatDoesNotHaveMessage() throws PrinterException, LoggingException {
         String message = "test message";
         LogIntegerCommand stubCommand = mock(LogIntegerCommand.class);
 
@@ -71,7 +72,7 @@ public class LogIntegerCommandInteractionTest {
     }
 
     @Test
-    public void shouldNotModifyOwnMessageWhenMergeWithCommandThatDoesNotHaveMessage() throws PrinterException {
+    public void shouldNotModifyOwnMessageWhenMergeWithCommandThatDoesNotHaveMessage() throws PrinterException, LoggingException {
         String message = "test message";
         LogIntegerCommand stubCommand = mock(LogIntegerCommand.class);
 
@@ -84,7 +85,7 @@ public class LogIntegerCommandInteractionTest {
     }
 
     @Test
-    public void shouldLogTwoIntegersWhenPositiveOverflowOccurs() throws PrinterException {
+    public void shouldLogTwoIntegersWhenPositiveOverflowOccurs() throws PrinterException, LoggingException {
         String message = "" + maxValue;
         LogIntegerCommand mockCommand = mock(LogIntegerCommand.class);
 
@@ -99,7 +100,7 @@ public class LogIntegerCommandInteractionTest {
     }
 
     @Test
-    public void shouldLogTwoIntegersRespectivelyPositiveWhenOverflowOccurs() throws PrinterException {
+    public void shouldLogTwoIntegersRespectivelyPositiveWhenOverflowOccurs() throws PrinterException, LoggingException {
         String message = "" + maxValue;
         LogIntegerCommand mockCommand = mock(LogIntegerCommand.class);
 
@@ -116,7 +117,7 @@ public class LogIntegerCommandInteractionTest {
     }
 
     @Test
-    public void shouldLogTwoIntegersWhenNegativeOverflowOccurs() throws PrinterException {
+    public void shouldLogTwoIntegersWhenNegativeOverflowOccurs() throws PrinterException, LoggingException {
         String message = "" + minValue;
         LogIntegerCommand mockCommand = mock(LogIntegerCommand.class);
 
@@ -131,7 +132,7 @@ public class LogIntegerCommandInteractionTest {
     }
 
     @Test
-    public void shouldLogTwoIntegersRespectivelyNegativeWhenOverflowOccurs() throws PrinterException {
+    public void shouldLogTwoIntegersRespectivelyNegativeWhenOverflowOccurs() throws PrinterException, LoggingException {
         String message = "" + minValue;
         LogIntegerCommand mockCommand = mock(LogIntegerCommand.class);
 
@@ -148,7 +149,7 @@ public class LogIntegerCommandInteractionTest {
     }
 
     @Test
-    public void shouldNotLogWhenOverflowDoesNotOccur() throws PrinterException {
+    public void shouldNotLogWhenOverflowDoesNotOccur() throws PrinterException, LoggingException {
         String message = "0";
         LogIntegerCommand mockCommand = mock(LogIntegerCommand.class);
 
@@ -163,7 +164,7 @@ public class LogIntegerCommandInteractionTest {
     }
 
     @Test
-    public void shouldSumWhenOverflowDoesNotOccur() throws PrinterException {
+    public void shouldSumWhenOverflowDoesNotOccur() throws PrinterException, LoggingException {
         String message = "0";
         LogIntegerCommand stubCommand = mock(LogIntegerCommand.class);
 
@@ -176,7 +177,7 @@ public class LogIntegerCommandInteractionTest {
     }
 
     @Test
-    public void shouldNotModifyArgumentWhenOverflowDoesNotOccur() throws PrinterException {
+    public void shouldNotModifyArgumentWhenOverflowDoesNotOccur() throws PrinterException, LoggingException {
         String message = "0";
         LogIntegerCommand mockCommand = mock(LogIntegerCommand.class);
 
