@@ -4,14 +4,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 
-public class FileLogWriter implements LogWriter {
-    private static final int BUFFER_SIZE = 50;
+public class FileLogWriter extends BufferedLogWriter {
     private String fileName;
     private String charset;
-    private List<String> buffer = new ArrayList<>(BUFFER_SIZE);
 
     public FileLogWriter(String fileName, String charset) {
         this.fileName = fileName;
@@ -19,13 +16,7 @@ public class FileLogWriter implements LogWriter {
     }
 
     @Override
-    public void println(String stringToPrint) throws LogWriterException {
-        buffer.add(stringToPrint);
-
-        if (buffer.size() < BUFFER_SIZE) {
-            return;
-        }
-
+    protected void write(List<String> buffer) throws LogWriterException {
         try (PrintWriter printWriter =
                      new PrintWriter(new OutputStreamWriter(new FileOutputStream(fileName, true), charset), false)) {
 
@@ -35,8 +26,6 @@ public class FileLogWriter implements LogWriter {
             printWriter.flush();
         } catch (IOException e) {
             throw new LogWriterException("I/O exception of some sort has occurred", e);
-        } finally {
-            buffer.clear();
         }
     }
 }
