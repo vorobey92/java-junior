@@ -45,6 +45,7 @@ public class RemotePrinter implements Printer {
             }
 
             socket.shutdownOutput();
+            socket.setSoTimeout(TIMEOUT);
             int statusCode = objectInputStream.readInt();
 
             if (statusCode == OK) {
