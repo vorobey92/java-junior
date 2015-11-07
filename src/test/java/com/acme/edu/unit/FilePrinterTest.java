@@ -111,5 +111,4 @@ public class FilePrinterTest {
         FilePrinter.stop();
         FilePrinter.stop();
     }
-
 }
