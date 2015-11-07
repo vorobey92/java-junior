@@ -2,7 +2,7 @@ package com.acme.edu.printers;
 
 import java.io.PrintStream;
 
-public class ConsolePrinter implements Printer {
+public class ConsoleLogWriter implements LogWriter {
 
     private static final PrintStream OUT = System.out;
 

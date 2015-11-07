@@ -3,8 +3,8 @@ package com.acme.edu.unit;
 import com.acme.edu.businessexceptions.LoggingException;
 import com.acme.edu.commands.LogUnaccumulatedTypeCommand;
 import com.acme.edu.decorators.Decorator;
-import com.acme.edu.printers.Printer;
-import com.acme.edu.printers.PrinterException;
+import com.acme.edu.printers.LogWriter;
+import com.acme.edu.printers.LogWriterException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,28 +17,28 @@ public class LogUnaccumulatedTypeCommandInteractionTest {
     private Decorator stubDecorator;
     private String decoratedString = "decorated string";
     private String message = "test message";
-    private Printer mockPrinter;
+    private LogWriter mockLogWriter;
     private LogUnaccumulatedTypeCommand sut;
 
     @Before
     public void setUp() {
-        mockPrinter = mock(Printer.class);
+        mockLogWriter = mock(LogWriter.class);
         stubDecorator = mock(Decorator.class);
-        sut = new LogUnaccumulatedTypeCommand(stubDecorator, mockPrinter);
+        sut = new LogUnaccumulatedTypeCommand(stubDecorator, mockLogWriter);
     }
 
     @Test
-    public void shouldLogWhenMergeWithNullCommand() throws PrinterException, LoggingException {
+    public void shouldLogWhenMergeWithNullCommand() throws LogWriterException, LoggingException {
         when(stubDecorator.decorate(message)).thenReturn(decoratedString);
 
         sut.setMessage(message);
         sut.merge(null);
 
-        verify(mockPrinter, times(1)).println(decoratedString);
+        verify(mockLogWriter, times(1)).println(decoratedString);
     }
 
     @Test
-    public void shouldLogWhenMergeWithCommandThatDoesNotHaveMessage() throws PrinterException, LoggingException {
+    public void shouldLogWhenMergeWithCommandThatDoesNotHaveMessage() throws LogWriterException, LoggingException {
         LogUnaccumulatedTypeCommand stubCommand = mock(LogUnaccumulatedTypeCommand.class);
 
         when(stubDecorator.decorate(message)).thenReturn(decoratedString);
@@ -47,11 +47,11 @@ public class LogUnaccumulatedTypeCommandInteractionTest {
         sut.setMessage(message);
         sut.merge(stubCommand);
 
-        verify(mockPrinter, times(1)).println(decoratedString);
+        verify(mockLogWriter, times(1)).println(decoratedString);
     }
 
     @Test
-    public void shouldNotLogOldMessageWhenMergeWithAnotherCommand() throws PrinterException, LoggingException {
+    public void shouldNotLogOldMessageWhenMergeWithAnotherCommand() throws LogWriterException, LoggingException {
         String oldMessage = "old message";
         LogUnaccumulatedTypeCommand mockCommand = mock(LogUnaccumulatedTypeCommand.class);
 

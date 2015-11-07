@@ -3,8 +3,8 @@ package com.acme.edu.unit;
 import com.acme.edu.businessexceptions.LoggingException;
 import com.acme.edu.commands.LogUnaccumulatedTypeCommand;
 import com.acme.edu.decorators.Decorator;
-import com.acme.edu.printers.Printer;
-import com.acme.edu.printers.PrinterException;
+import com.acme.edu.printers.LogWriter;
+import com.acme.edu.printers.LogWriterException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,28 +20,28 @@ public class LogUnaccumulatedTypeCommandIsolationTest {
     private Decorator stubDecorator;
     private String decoratedString = "decorated string";
     private String message = "test message";
-    private Printer mockPrinter;
+    private LogWriter mockLogWriter;
     private LogUnaccumulatedTypeCommand sut;
 
     @Before
     public void setUp() {
-        mockPrinter = mock(Printer.class);
+        mockLogWriter = mock(LogWriter.class);
         stubDecorator = mock(Decorator.class);
-        sut = new LogUnaccumulatedTypeCommand(stubDecorator, mockPrinter);
+        sut = new LogUnaccumulatedTypeCommand(stubDecorator, mockLogWriter);
     }
 
     @Test
-    public void shouldLogWhenHasMesage() throws LoggingException, PrinterException {
+    public void shouldLogWhenHasMesage() throws LoggingException, LogWriterException {
         when(stubDecorator.decorate(message)).thenReturn(decoratedString);
 
         sut.setMessage(message);
         sut.execute();
 
-        verify(mockPrinter, times(1)).println(decoratedString);
+        verify(mockLogWriter, times(1)).println(decoratedString);
     }
 
     @Test
-    public void shouldSetMessageToNullAfterLogging() throws PrinterException, LoggingException {
+    public void shouldSetMessageToNullAfterLogging() throws LogWriterException, LoggingException {
         sut.setMessage(message);
         sut.execute();
 
@@ -49,13 +49,13 @@ public class LogUnaccumulatedTypeCommandIsolationTest {
     }
 
     @Test
-    public void shouldNotLogWhenHasNullMessage() throws PrinterException, LoggingException {
+    public void shouldNotLogWhenHasNullMessage() throws LogWriterException, LoggingException {
         when(stubDecorator.decorate(any())).thenReturn(decoratedString);
 
         sut.setMessage(null);
         sut.execute();
 
-        verify(mockPrinter, times(0)).println(anyString());
+        verify(mockLogWriter, times(0)).println(anyString());
     }
 
     @Test

@@ -4,7 +4,7 @@ import com.acme.edu.businessexceptions.LoggerException;
 import com.acme.edu.commands.Command;
 import com.acme.edu.commands.CommandFactory;
 import com.acme.edu.businessexceptions.IllegalArgumentException;
-import com.acme.edu.printers.Printer;
+import com.acme.edu.printers.LogWriter;
 import com.acme.edu.states.State;
 import com.acme.edu.states.StateFactory;
 
@@ -22,14 +22,14 @@ public class Logger {
     private State intState;
     private State byteState;
     private State stringState;
-    private Printer[] printers;
+    private LogWriter[] logWriters;
     private CommandFactory commandFactory;
 
-    public Logger(CommandFactory commandFactory, StateFactory stateFactory, Printer... printers) throws LoggerException {
-        checkPrintersArgument(printers);
+    public Logger(CommandFactory commandFactory, StateFactory stateFactory, LogWriter... logWriters) throws LoggerException {
+        checkPrintersArgument(logWriters);
 
         this.commandFactory = commandFactory;
-        this.printers = Arrays.copyOf(printers, printers.length);
+        this.logWriters = Arrays.copyOf(logWriters, logWriters.length);
         unaccumulatingState = stateFactory.createState();
         intState = stateFactory.createState();
         byteState = stateFactory.createState();
@@ -177,14 +177,14 @@ public class Logger {
             currentState.flush();
     }
 
-    private static void checkPrintersArgument(Printer... printers) throws IllegalArgumentException {
-        if (printers == null || printers.length == 0) {
+    private static void checkPrintersArgument(LogWriter... logWriters) throws IllegalArgumentException {
+        if (logWriters == null || logWriters.length == 0) {
             throw new IllegalArgumentException("Not a single one printer was passed");
         }
 
-        for (Printer printer : printers) {
-            if (printer == null) {
-                throw new IllegalArgumentException("One of passed printers is null");
+        for (LogWriter logWriter : logWriters) {
+            if (logWriter == null) {
+                throw new IllegalArgumentException("One of passed logWriters is null");
             }
         }
     }
@@ -200,7 +200,7 @@ public class Logger {
             flush();
         }
 
-        Command command = commandFactory.createCommand(type, printers);
+        Command command = commandFactory.createCommand(type, logWriters);
         command.setMessage(message.toString());
         currentState = nextState;
         currentState.apply(command);

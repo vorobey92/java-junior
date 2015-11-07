@@ -1,17 +1,17 @@
 package com.acme.edu.commands;
 
 import com.acme.edu.businessexceptions.LoggingException;
-import com.acme.edu.printers.Printer;
-import com.acme.edu.printers.PrinterException;
+import com.acme.edu.printers.LogWriter;
+import com.acme.edu.printers.LogWriterException;
 
 import java.util.ArrayList;
 
 public abstract class Command<T> {
-    private Printer[] printers;
+    private LogWriter[] logWriters;
     private String message;
 
-    public Command(Printer... printers) {
-        this.printers = printers;
+    public Command(LogWriter... logWriters) {
+        this.logWriters = logWriters;
     }
 
     abstract public Command merge(T oldCommand) throws LoggingException;
@@ -22,10 +22,10 @@ public abstract class Command<T> {
         }
 
         ArrayList<Exception> printerExceptions = new ArrayList<>();
-        for (Printer printer : printers) {
+        for (LogWriter logWriter : logWriters) {
             try {
-                printer.println(getFormattedString());
-            } catch (PrinterException e) {
+                logWriter.println(getFormattedString());
+            } catch (LogWriterException e) {
                 printerExceptions.add(e);
             }
         }

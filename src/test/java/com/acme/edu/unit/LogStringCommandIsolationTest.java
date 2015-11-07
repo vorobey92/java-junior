@@ -3,8 +3,8 @@ package com.acme.edu.unit;
 import com.acme.edu.businessexceptions.LoggingException;
 import com.acme.edu.commands.LogStringCommand;
 import com.acme.edu.decorators.Decorator;
-import com.acme.edu.printers.Printer;
-import com.acme.edu.printers.PrinterException;
+import com.acme.edu.printers.LogWriter;
+import com.acme.edu.printers.LogWriterException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,30 +22,30 @@ public class LogStringCommandIsolationTest {
     private String oneStringSequenceDecoratedString = "decorated string when 1 string accumulated";
     private String multipleStringsSequenceDecoratedString = "decorated string when several strings accumulated";
     private String message = "test message";
-    private Printer mockPrinter;
+    private LogWriter mockLogWriter;
     private LogStringCommand sut;
 
     @Before
     public void setUp() {
-        mockPrinter = mock(Printer.class);
+        mockLogWriter = mock(LogWriter.class);
         stubOneStringSequenceDecorator = mock(Decorator.class);
         stubMultipleStringSequenceDecorator = mock(Decorator.class);
-        sut = new LogStringCommand(stubOneStringSequenceDecorator, stubMultipleStringSequenceDecorator, mockPrinter);
+        sut = new LogStringCommand(stubOneStringSequenceDecorator, stubMultipleStringSequenceDecorator, mockLogWriter);
     }
 
     @Test
-    public void shouldLogWhenAccumulatedNumberIsOne() throws PrinterException, LoggingException {
+    public void shouldLogWhenAccumulatedNumberIsOne() throws LogWriterException, LoggingException {
         when(stubOneStringSequenceDecorator.decorate(message, 1)).thenReturn(oneStringSequenceDecoratedString);
         when(stubMultipleStringSequenceDecorator.decorate(message, 1)).thenReturn(multipleStringsSequenceDecoratedString);
 
         sut.setMessage(message);
         sut.execute();
 
-        verify(mockPrinter, times(1)).println(oneStringSequenceDecoratedString);
+        verify(mockLogWriter, times(1)).println(oneStringSequenceDecoratedString);
     }
 
     @Test
-    public void shouldLogWhenAccumulatedNumberIsTwo() throws PrinterException, LoggingException {
+    public void shouldLogWhenAccumulatedNumberIsTwo() throws LogWriterException, LoggingException {
         when(stubOneStringSequenceDecorator.decorate(message, 2)).thenReturn(oneStringSequenceDecoratedString);
         when(stubMultipleStringSequenceDecorator.decorate(message, 2)).thenReturn(multipleStringsSequenceDecoratedString);
 
@@ -53,11 +53,11 @@ public class LogStringCommandIsolationTest {
         sut.setLengthOfStringsSequence(2);
         sut.execute();
 
-        verify(mockPrinter, times(1)).println(multipleStringsSequenceDecoratedString);
+        verify(mockLogWriter, times(1)).println(multipleStringsSequenceDecoratedString);
     }
 
     @Test
-    public void shouldSetMessageToNullAfterLogging() throws PrinterException, LoggingException {
+    public void shouldSetMessageToNullAfterLogging() throws LogWriterException, LoggingException {
         sut.setMessage(message);
         sut.execute();
 
@@ -65,14 +65,14 @@ public class LogStringCommandIsolationTest {
     }
 
     @Test
-    public void shouldNotLogWhenHasNullMessage() throws PrinterException, LoggingException {
+    public void shouldNotLogWhenHasNullMessage() throws LogWriterException, LoggingException {
         when(stubOneStringSequenceDecorator.decorate(any())).thenReturn(oneStringSequenceDecoratedString);
         when(stubMultipleStringSequenceDecorator.decorate(any())).thenReturn(multipleStringsSequenceDecoratedString);
 
         sut.setMessage(null);
         sut.execute();
 
-        verify(mockPrinter, times(0)).println(anyString());
+        verify(mockLogWriter, times(0)).println(anyString());
     }
 
     @Test

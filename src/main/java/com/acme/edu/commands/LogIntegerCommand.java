@@ -2,16 +2,15 @@ package com.acme.edu.commands;
 
 import com.acme.edu.businessexceptions.LoggingException;
 import com.acme.edu.decorators.Decorator;
-import com.acme.edu.printers.Printer;
-import com.acme.edu.printers.PrinterException;
+import com.acme.edu.printers.LogWriter;
 
 public class LogIntegerCommand extends Command<LogIntegerCommand> {
     private int maxValue;
     private int minValue;
     private Decorator decorator;
 
-    public LogIntegerCommand(Decorator decorator, int maxValue, int minValue, Printer... printers) {
-        super(printers);
+    public LogIntegerCommand(Decorator decorator, int maxValue, int minValue, LogWriter... logWriters) {
+        super(logWriters);
         this.maxValue = maxValue;
         this.minValue = minValue;
         this.decorator = decorator;

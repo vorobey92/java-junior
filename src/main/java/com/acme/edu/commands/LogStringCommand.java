@@ -2,8 +2,7 @@ package com.acme.edu.commands;
 
 import com.acme.edu.businessexceptions.LoggingException;
 import com.acme.edu.decorators.Decorator;
-import com.acme.edu.printers.Printer;
-import com.acme.edu.printers.PrinterException;
+import com.acme.edu.printers.LogWriter;
 
 public class LogStringCommand extends Command<LogStringCommand> {
     private int lengthOfStringsSequence;
@@ -12,8 +11,8 @@ public class LogStringCommand extends Command<LogStringCommand> {
     
     public LogStringCommand(Decorator oneStringSequenceDecorator,
                             Decorator mulitpleStringSequenceDecorator,
-                            Printer... printers) {
-        super(printers);
+                            LogWriter... logWriters) {
+        super(logWriters);
         setLengthOfStringsSequence(0);
         this.oneStringSequenceDecorator = oneStringSequenceDecorator;
         this.mulitpleStringSequenceDecorator = mulitpleStringSequenceDecorator;

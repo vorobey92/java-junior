@@ -3,8 +3,8 @@ package com.acme.edu.unit;
 import com.acme.edu.businessexceptions.LoggingException;
 import com.acme.edu.commands.LogIntegerCommand;
 import com.acme.edu.decorators.Decorator;
-import com.acme.edu.printers.Printer;
-import com.acme.edu.printers.PrinterException;
+import com.acme.edu.printers.LogWriter;
+import com.acme.edu.printers.LogWriterException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 import static org.fest.assertions.Assertions.*;
 
 public class LogIntegerCommandInteractionTest {
-    private Printer mockPrinter;
+    private LogWriter mockLogWriter;
     private LogIntegerCommand sut;
     private Decorator stubDecorator;
     private String decoratedString;
@@ -30,13 +30,13 @@ public class LogIntegerCommandInteractionTest {
         maxValue = Integer.MAX_VALUE;
         minValue = Integer.MIN_VALUE;
         decoratedString = "decorated string ";
-        mockPrinter = mock(Printer.class);
+        mockLogWriter = mock(LogWriter.class);
         stubDecorator = mock(Decorator.class);
-        sut = new LogIntegerCommand(stubDecorator, maxValue, minValue, mockPrinter);
+        sut = new LogIntegerCommand(stubDecorator, maxValue, minValue, mockLogWriter);
     }
 
     @Test
-    public void shouldNotLogWhenMergeWithNullCommand() throws PrinterException, LoggingException {
+    public void shouldNotLogWhenMergeWithNullCommand() throws LogWriterException, LoggingException {
         String message = "test message";
 
         when(stubDecorator.decorate(message)).thenReturn(decoratedString);
@@ -44,11 +44,11 @@ public class LogIntegerCommandInteractionTest {
         sut.setMessage(message);
         sut.merge(null);
 
-        verify(mockPrinter, times(0)).println(anyString());
+        verify(mockLogWriter, times(0)).println(anyString());
     }
 
     @Test
-    public void shouldNotModifyOwnMessageWhenMergeWithNullCommand() throws PrinterException, LoggingException {
+    public void shouldNotModifyOwnMessageWhenMergeWithNullCommand() throws LogWriterException, LoggingException {
         String message = "test message";
 
         sut.setMessage(message);
@@ -58,7 +58,7 @@ public class LogIntegerCommandInteractionTest {
     }
 
     @Test
-    public void shouldNotLogWhenMergeWithCommandThatDoesNotHaveMessage() throws PrinterException, LoggingException {
+    public void shouldNotLogWhenMergeWithCommandThatDoesNotHaveMessage() throws LogWriterException, LoggingException {
         String message = "test message";
         LogIntegerCommand stubCommand = mock(LogIntegerCommand.class);
 
@@ -68,11 +68,11 @@ public class LogIntegerCommandInteractionTest {
         sut.setMessage(message);
         sut.merge(stubCommand);
 
-        verify(mockPrinter, times(0)).println(anyString());
+        verify(mockLogWriter, times(0)).println(anyString());
     }
 
     @Test
-    public void shouldNotModifyOwnMessageWhenMergeWithCommandThatDoesNotHaveMessage() throws PrinterException, LoggingException {
+    public void shouldNotModifyOwnMessageWhenMergeWithCommandThatDoesNotHaveMessage() throws LogWriterException, LoggingException {
         String message = "test message";
         LogIntegerCommand stubCommand = mock(LogIntegerCommand.class);
 
@@ -85,7 +85,7 @@ public class LogIntegerCommandInteractionTest {
     }
 
     @Test
-    public void shouldLogTwoIntegersWhenPositiveOverflowOccurs() throws PrinterException, LoggingException {
+    public void shouldLogTwoIntegersWhenPositiveOverflowOccurs() throws LogWriterException, LoggingException {
         String message = "" + maxValue;
         LogIntegerCommand mockCommand = mock(LogIntegerCommand.class);
 
@@ -96,11 +96,11 @@ public class LogIntegerCommandInteractionTest {
         sut.merge(mockCommand);
 
         verify(mockCommand, times(1)).execute();
-        verify(mockPrinter, times(1)).println(decoratedString);
+        verify(mockLogWriter, times(1)).println(decoratedString);
     }
 
     @Test
-    public void shouldLogTwoIntegersRespectivelyPositiveWhenOverflowOccurs() throws PrinterException, LoggingException {
+    public void shouldLogTwoIntegersRespectivelyPositiveWhenOverflowOccurs() throws LogWriterException, LoggingException {
         String message = "" + maxValue;
         LogIntegerCommand mockCommand = mock(LogIntegerCommand.class);
 
@@ -110,14 +110,14 @@ public class LogIntegerCommandInteractionTest {
         sut.setMessage(message);
         sut.merge(mockCommand);
 
-        InOrder inOrder = inOrder(mockCommand, mockPrinter);
+        InOrder inOrder = inOrder(mockCommand, mockLogWriter);
 
         inOrder.verify(mockCommand).execute();
-        inOrder.verify(mockPrinter).println(anyString());
+        inOrder.verify(mockLogWriter).println(anyString());
     }
 
     @Test
-    public void shouldLogTwoIntegersWhenNegativeOverflowOccurs() throws PrinterException, LoggingException {
+    public void shouldLogTwoIntegersWhenNegativeOverflowOccurs() throws LogWriterException, LoggingException {
         String message = "" + minValue;
         LogIntegerCommand mockCommand = mock(LogIntegerCommand.class);
 
@@ -128,11 +128,11 @@ public class LogIntegerCommandInteractionTest {
         sut.merge(mockCommand);
 
         verify(mockCommand, times(1)).execute();
-        verify(mockPrinter, times(1)).println(decoratedString);
+        verify(mockLogWriter, times(1)).println(decoratedString);
     }
 
     @Test
-    public void shouldLogTwoIntegersRespectivelyNegativeWhenOverflowOccurs() throws PrinterException, LoggingException {
+    public void shouldLogTwoIntegersRespectivelyNegativeWhenOverflowOccurs() throws LogWriterException, LoggingException {
         String message = "" + minValue;
         LogIntegerCommand mockCommand = mock(LogIntegerCommand.class);
 
@@ -142,14 +142,14 @@ public class LogIntegerCommandInteractionTest {
         sut.setMessage(message);
         sut.merge(mockCommand);
 
-        InOrder inOrder = inOrder(mockCommand, mockPrinter);
+        InOrder inOrder = inOrder(mockCommand, mockLogWriter);
 
         inOrder.verify(mockCommand).execute();
-        inOrder.verify(mockPrinter).println(anyString());
+        inOrder.verify(mockLogWriter).println(anyString());
     }
 
     @Test
-    public void shouldNotLogWhenOverflowDoesNotOccur() throws PrinterException, LoggingException {
+    public void shouldNotLogWhenOverflowDoesNotOccur() throws LogWriterException, LoggingException {
         String message = "0";
         LogIntegerCommand mockCommand = mock(LogIntegerCommand.class);
 
@@ -160,11 +160,11 @@ public class LogIntegerCommandInteractionTest {
         sut.merge(mockCommand);
 
         verify(mockCommand, times(0)).execute();
-        verify(mockPrinter, times(0)).println(anyString());
+        verify(mockLogWriter, times(0)).println(anyString());
     }
 
     @Test
-    public void shouldSumWhenOverflowDoesNotOccur() throws PrinterException, LoggingException {
+    public void shouldSumWhenOverflowDoesNotOccur() throws LogWriterException, LoggingException {
         String message = "0";
         LogIntegerCommand stubCommand = mock(LogIntegerCommand.class);
 
@@ -177,7 +177,7 @@ public class LogIntegerCommandInteractionTest {
     }
 
     @Test
-    public void shouldNotModifyArgumentWhenOverflowDoesNotOccur() throws PrinterException, LoggingException {
+    public void shouldNotModifyArgumentWhenOverflowDoesNotOccur() throws LogWriterException, LoggingException {
         String message = "0";
         LogIntegerCommand mockCommand = mock(LogIntegerCommand.class);
 

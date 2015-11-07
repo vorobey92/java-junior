@@ -10,7 +10,7 @@ import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RemotePrinter implements Printer {
+public class RemoteLogWriter implements LogWriter {
     private static final int OK = 200;
     private static final int BAD_REQUEST = 400;
     private static final int REQUEST_TIMEOUT = 408;
@@ -24,14 +24,14 @@ public class RemotePrinter implements Printer {
     private String charset;
     private List<String> buffer = new ArrayList<>(BUFFER_SIZE);
 
-    public RemotePrinter(String host, int port, String charset) {
+    public RemoteLogWriter(String host, int port, String charset) {
         this.host = host;
         this.port = port;
         this.charset = charset;
     }
 
     @Override
-    public void println(String stringToPrint) throws PrinterException {
+    public void println(String stringToPrint) throws LogWriterException {
         buffer.add(stringToPrint);
 
         if (buffer.size() < BUFFER_SIZE) {
@@ -48,7 +48,7 @@ public class RemotePrinter implements Printer {
                 objectOutputStream.flush();
                 socket.shutdownOutput();
             } catch (IOException e) {
-                throw new PrinterException(
+                throw new LogWriterException(
                         "An I/O error occurred while sending data to the server: " + toStringHostAndPort(), e
                 );
             }
@@ -66,28 +66,28 @@ public class RemotePrinter implements Printer {
                     case BAD_REQUEST:
                         String serverErrorMessage = objectInputStream.readUTF();
                         socket.shutdownInput();
-                        throw new PrinterException(wrapServerErrorMessage(serverErrorMessage));
+                        throw new LogWriterException(wrapServerErrorMessage(serverErrorMessage));
                     case REQUEST_TIMEOUT:
                         socket.shutdownInput();
-                        throw new PrinterException(
+                        throw new LogWriterException(
                                 "The server timed out waiting for the request" + toStringHostAndPort()
                         );
                     default:
-                        throw new PrinterException(
+                        throw new LogWriterException(
                                 "Bad response was received from the server: " + toStringHostAndPort()
                         );
                 }
             } catch (SocketTimeoutException e) {
-                throw new PrinterException(
+                throw new LogWriterException(
                         "The server did not respond within timeout: " + toStringHostAndPort(), e
                 );
             } catch (IOException e) {
-                throw new PrinterException(
+                throw new LogWriterException(
                         "An I/O error occurred while receiving data from the server: " + toStringHostAndPort(), e
                 );
             }
         } catch (IOException e) {
-            throw new PrinterException("An I/O error occured when creating the socket: " + toStringHostAndPort(), e);
+            throw new LogWriterException("An I/O error occured when creating the socket: " + toStringHostAndPort(), e);
         } finally {
             buffer.clear();
         }
