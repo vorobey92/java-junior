@@ -14,7 +14,7 @@ public class FilePrinter implements Printable {
     private static BufferedWriter i;
     private static StringBuilder str = new StringBuilder("");
     private static int countOfLogs = 0;
-    private File file;
+
 
     /**
      * Creates BufferedWriter(file)
@@ -22,7 +22,6 @@ public class FilePrinter implements Printable {
      * @param code charSet
      */
     public FilePrinter(File file,String code) throws CanNotPrintException {
-        this.file = file;
         try {
             i = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file,true),code));
         } catch (UnsupportedEncodingException | FileNotFoundException e) {
