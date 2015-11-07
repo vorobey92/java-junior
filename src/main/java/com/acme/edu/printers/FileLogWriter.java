@@ -1,9 +1,11 @@
 package com.acme.edu.printers;
 
-import java.io.FileOutputStream;
+import java.lang.IllegalArgumentException;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.List;
 
 public class FileLogWriter extends BufferedLogWriter {
@@ -17,15 +19,17 @@ public class FileLogWriter extends BufferedLogWriter {
 
     @Override
     protected void write(List<String> buffer) throws LogWriterException {
-        try (PrintWriter printWriter =
-                     new PrintWriter(new OutputStreamWriter(new FileOutputStream(fileName, true), charset), false)) {
-
-            for (String stringFromBuffer : buffer) {
-                printWriter.println(stringFromBuffer);
-            }
-            printWriter.flush();
-        } catch (IOException e) {
-            throw new LogWriterException("I/O exception of some sort has occurred", e);
+        try {
+            Files.write(
+                    Paths.get(fileName),
+                    buffer,
+                    Charset.forName(charset),
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.WRITE,
+                    StandardOpenOption.APPEND
+            );
+        } catch (IOException | IllegalArgumentException e) {
+            throw new LogWriterException("An exception of some sort has occurred while writing messages to the file", e);
         }
     }
 }
