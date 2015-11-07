@@ -34,7 +34,6 @@ public class RemotePrinter implements Printer {
             return;
         }
 
-        String serverExceptionMessage = null;
         try (Socket socket = new Socket(host, port);
              DataOutputStream dataOutputStream =
                      new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
@@ -47,15 +46,25 @@ public class RemotePrinter implements Printer {
 
             socket.shutdownOutput();
             socket.setSoTimeout(TIMEOUT);
+
             switch (objectInputStream.readInt()) {
                 case OK:
+                    socket.shutdownInput();
                     return;
                 case INTERNAL_SERVER_ERROR:
-                    serverExceptionMessage = objectInputStream.readUTF();
-                    Exception serverException = (Exception) objectInputStream.readObject();
-                    throw new PrinterException(
-                            "The server encountered an unexpected condition: " + toStringHostAndPort(), serverException
-                    );
+                    try {
+                        Exception serverException = (Exception) objectInputStream.readObject();
+                        throw new PrinterException(
+                                "The server encountered an unexpected condition: " + toStringHostAndPort(),
+                                serverException
+                        );
+                    } catch (ClassNotFoundException e) {
+                        String serverExceptionMessage = objectInputStream.readUTF();
+                        throw new PrinterException(messageWhenCannotInstantiateException(serverExceptionMessage), e);
+                    }
+                    finally {
+                        socket.shutdownInput();
+                    }
                 default:
                     throw new PrinterException(
                             "Bad response was received from the server: " + toStringHostAndPort()
@@ -65,8 +74,6 @@ public class RemotePrinter implements Printer {
             throw new PrinterException("The Log Server did not respond: " + toStringHostAndPort(), e);
         } catch (IOException e) {
             throw new PrinterException("I/O exception of some sort has occurred: " + toStringHostAndPort(), e);
-        } catch (ClassNotFoundException e) {
-            throw new PrinterException(messageWhenCannotInstantiateException(serverExceptionMessage), e);
         } finally {
             buffer.clear();
         }
