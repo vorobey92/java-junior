@@ -1,13 +1,10 @@
 package com.acme.edu.unit;
 
 import com.acme.edu.exception.CanNotPrintException;
-import com.acme.edu.printer.NetPrinter;
 import com.acme.edu.printer.OutputStreamPrinter;
 import com.acme.edu.printer.Printable;
 import org.junit.Ignore;
 import org.junit.Test;
-
-import java.io.File;
 
 /**
  *
@@ -23,6 +20,6 @@ public class ClientServerTest {
         for(int i = 0; i < 140; i++)
             net.println("sdf");
 
-        NetPrinter.stop();
+        OutputStreamPrinter.stop();
     }
 }
