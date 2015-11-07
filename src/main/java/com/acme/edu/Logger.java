@@ -123,8 +123,9 @@ public class Logger {
      * @param message array of ints that will be loged
      */
     public void log(int... message) throws LogException {
-        if (message == null){
-            throw  new NullMessageException("Array is null");
+        if (    message == null ||
+                message.length == 0){
+            throw  new NullMessageException("Array is null  or empty");
         }
         state = factory.getDefaultState();
         state.log(Mapper.fromArrayToString(message));
@@ -136,8 +137,9 @@ public class Logger {
      * @param message matrix of ints that will be loged
      */
     public void log(int[][] message) throws LogException {
-        if (message == null){
-            throw new NullMessageException("Matrix is null");
+        if ( message == null ||
+             message.length == 0 ){
+            throw new NullMessageException("Matrix is null or empty");
         }
         state = factory.getDefaultState();
         state.log(Mapper.fromMatrixToString(message));
@@ -149,8 +151,9 @@ public class Logger {
      * @param message multimatrix that will be loged
      */
     public void log(int[][][][] message) throws LogException {
-        if (message == null){
-            throw  new NullMessageException("Multimatrix is null");
+        if (    message == null ||
+                message.length == 0 ){
+            throw  new NullMessageException("Multimatrix is null or empty");
         }
         state = factory.getDefaultState();
         state.log(Mapper.fromMultiMatrixToString(message));
@@ -162,8 +165,9 @@ public class Logger {
      * @param message array of Strings that will be loged
      */
     public void log(String... message) throws LogException {
-        if (message == null){
-                throw new NullMessageException("Array of strings is null");
+        if (    message == null ||
+                message.length == 0 ){
+                throw new NullMessageException("Array of strings is null or empty");
         }
         state = factory.getDefaultState();
         for(String str : message) {

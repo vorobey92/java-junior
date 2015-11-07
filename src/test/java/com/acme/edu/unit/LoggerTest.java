@@ -1,15 +1,29 @@
 package com.acme.edu.unit;
 
 import com.acme.edu.Logger;
+import com.acme.edu.Mapper;
 import com.acme.edu.exception.LogException;
+import com.acme.edu.exception.NullMessageException;
+import com.acme.edu.printer.FilePrinter;
 import com.acme.edu.state.*;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Matchers;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
+
+import static org.easymock.EasyMock.anyString;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
 import static  org.mockito.Mockito.*;
+import static org.powermock.api.easymock.PowerMock.mockStatic;
 
 //@RunWith(PowerMockRunner.class)
 //@PrepareForTest(Mapper.class)
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({FilePrinter.class, Mapper.class})
 public class LoggerTest {
 
     private State state;
@@ -26,6 +40,20 @@ public class LoggerTest {
 
         verify(factoryMock).getIntState(anyObject());
     }
+
+    @Test
+    public void shouldVerifyThatThereWasCallOfGetIntStateMethodOfStateFactoryClassWhenYouUsingLoggerToLogByte() throws  LogException {
+        StateFactory factoryMock = mock(StateFactory.class);
+        State state = mock(IntState.class);
+        Logger sut = new Logger(factoryMock);
+
+        when(factoryMock.getIntState(anyObject())).thenReturn(state);
+
+        sut.log((byte)1);
+
+        verify(factoryMock).getIntState(anyObject());
+    }
+
 
     @Test
     public void shouldVerifyThatThereWasCallOfGetStringStateMethodOfStateFactoryClassWhenYouUsingLogger() throws  LogException {
@@ -53,12 +81,60 @@ public class LoggerTest {
         verify(factoryMock, times(3)).getDefaultState();
     }
 
+    @Test
+    public void shouldVerifyThatThereWereThreeCallsOfGetDefaultStateMethodOfStateFactoryClassWhenYouCreatingLoggerObjectAndUsingLoggerToLogChar() throws  LogException {
+        StateFactory factoryMock = mock(StateFactory.class);
+        State state = mock(DefaultState.class);
+        Logger sut = new Logger(factoryMock);
+
+        when(factoryMock.getDefaultState()).thenReturn(state);
+
+        sut.log('a');
+
+        verify(factoryMock, times(3)).getDefaultState();
+    }
+
+    @Test
+    public void shouldVerifyThatThereWereThreeCallsOfGetDefaultStateMethodOfStateFactoryClassWhenYouCreatingLoggerObjectAndUsingLoggerToLogObject() throws  LogException {
+        StateFactory factoryMock = mock(StateFactory.class);
+        State state = mock(DefaultState.class);
+        Logger sut = new Logger(factoryMock);
+
+        when(factoryMock.getDefaultState()).thenReturn(state);
+
+        sut.log(new Object());
+
+        verify(factoryMock, times(3)).getDefaultState();
+    }
+
+    @Test
+    public void shouldVerifyThatThereWereThreeCallsOfGetDefaultStateMethodOfStateFactoryClassAndCallOfStaticMethodWhenYouCreatingLoggerObjectAndUsingLoggerToLogArrayOfInts() throws  LogException {
+        StateFactory factoryMock = mock(StateFactory.class);
+        State state = mock(DefaultState.class);
+        Logger sut = new Logger(factoryMock);
+
+        when(factoryMock.getDefaultState()).thenReturn(state);
+
+        sut.log(new int[]{1});
+
+        verify(state).log("primitives array: {1}" + System.lineSeparator());
+        verify(factoryMock, times(3)).getDefaultState();
+    }
+
     @Test(expected = LogException.class)
     public void shouldThrowLogExceptionWhenTryingToLogNullInsteadOfArray() throws LogException {
         StateFactory factoryMock = mock(StateFactory.class);
         Logger sut = new Logger(factoryMock);
 
         sut.log((int[]) null);
+    }
+
+    @Test(expected = LogException.class)
+    public void shouldThrowLogExceptionWhenTryingToLogEmptyArray() throws LogException {
+        StateFactory factoryMock = mock(StateFactory.class);
+        Logger sut = new Logger(factoryMock);
+
+        sut.log(new int[]{});
     }
 
     @Test(expected = LogException.class)
@@ -78,6 +154,30 @@ public class LoggerTest {
     }
 
     @Test(expected = LogException.class)
+    public void shouldThrowLogExceptionWhenTryingToLogEmptyMultimatrix() throws LogException {
+        StateFactory factoryMock = mock(StateFactory.class);
+        Logger sut = new Logger(factoryMock);
+
+        sut.log(new int[][][][]{});
+    }
+
+    @Test(expected = LogException.class)
+    public void shouldThrowLogExceptionWhenTryingToLogEmptyMatrix() throws LogException {
+        StateFactory factoryMock = mock(StateFactory.class);
+        Logger sut = new Logger(factoryMock);
+
+        sut.log(new int[][]{});
+    }
+
+    @Test(expected = LogException.class)
+    public void shouldThrowLogExceptionWhenTryingToLogEmptyArrayOfStrings() throws LogException {
+        StateFactory factoryMock = mock(StateFactory.class);
+        Logger sut = new Logger(factoryMock);
+
+        sut.log(new String[]{});
+    }
+
+    @Test(expected = LogException.class)
     public void shouldThrowLogExceptionWhenTryingToLogNullInsteadOfMatrix() throws LogException {
         StateFactory factoryMock = mock(StateFactory.class);
         Logger sut = new Logger(factoryMock);
@@ -93,7 +193,7 @@ public class LoggerTest {
         sut.log((String)null);
     }
 
-    @Test(expected = LogException.class)
+    @Test(expected = NullMessageException.class)
     public void shouldThrowLogExceptionWhenTryingToLogNullInsteadOfObject() throws LogException {
         StateFactory factoryMock = mock(StateFactory.class);
         Logger sut = new Logger(factoryMock);
@@ -107,6 +207,23 @@ public class LoggerTest {
         Logger sut = new Logger(factoryMock);
 
         sut.close();
+    }
+
+    @Test
+    @PrepareForTest({FilePrinter.class})
+    public void shouldVerifyThatThereWasCallOfFlushOfStateBuffer() throws  LogException {
+        StateFactory factoryMock = mock(StateFactory.class);
+        State state = mock(StringState.class);
+        mockStatic(FilePrinter.class);
+        Logger sut = new Logger(factoryMock);
+
+        when(factoryMock.getStringState(anyObject())).thenReturn(state);
+
+        sut.log("f");
+        sut.close();
+
+        verify(state).flush();
+        verify(FilePrinter.class);
     }
 
 }

@@ -20,10 +20,12 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     private Logger logger;
     //region given
     @Before
-    public void setUpSystemOut() throws  CanNotPrintException {
+    public void setUpSystemOut() throws CanNotPrintException, IOException {
         resetOut();
         captureSysout();
-        logger = new Logger(new StateFactory(new ConsolePrinter(), new FilePrinter("UTF-8")));
+        File file = new File("log.txt");
+        file.createNewFile();
+        logger = new Logger(new StateFactory(new ConsolePrinter(), new FilePrinter(file,"UTF-8")));
 
 
     }

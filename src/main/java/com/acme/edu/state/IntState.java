@@ -29,8 +29,20 @@ public class IntState extends State {
      */
     @Override
     public void log(String message) throws StateException {
-        // Checking overflow
-        if (Integer.parseInt(message) + bufferOfInts < 0) {
+        // Checking type overflow
+        if (    (Integer.parseInt(message) > 0) &&
+                (bufferOfInts > 0)              &&
+                (Integer.parseInt(message) + bufferOfInts < 0)) {
+            println(PREFIX + bufferOfInts);
+            println(PREFIX + message);
+            bufferOfInts = 0;
+            cntOfInts = 0;
+            return;
+        }
+        // Checking type overflow
+        if (    (Integer.parseInt(message) < 0) &&
+                (bufferOfInts < 0)              &&
+                (Integer.parseInt(message) + bufferOfInts > 0)) {
             println(PREFIX + bufferOfInts);
             println(PREFIX + message);
             bufferOfInts = 0;

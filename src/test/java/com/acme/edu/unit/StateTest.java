@@ -45,6 +45,19 @@ public class StateTest {
     }
 
     @Test
+    public void shouldLogTwoPrimitivesWhenAppearsTypeOverflowWhileSubtracting() throws CanNotPrintException, LogException {
+        mock = mock(ConsolePrinter.class);
+        sut = new IntState(mock);
+
+        sut.log("-1");
+        sut.log("-1");
+        sut.log("" + (Integer.MIN_VALUE));
+
+        verify(mock).println("primitive: -2");
+        verify(mock).println("primitive: " + (Integer.MIN_VALUE));
+    }
+
+    @Test
     public void shouldLogStringAndStringWithCounter() throws CanNotPrintException, LogException {
         mock = mock(ConsolePrinter.class);
         sut = new StringState(mock);
