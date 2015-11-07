@@ -60,7 +60,6 @@ public class NetPrinter implements Printable {
 
 
     public static void stop() throws CanNotPrintException {
-
         try {
             if (i == null) {
                 return;

@@ -10,7 +10,7 @@ import java.net.Socket;
 /**
  *
  */
-public class Server implements Runnable {
+public class Server {
     public static void main(String[] args) throws CanNotPrintException {
         try {
             ServerSocket ss = new ServerSocket(6666);
@@ -30,32 +30,4 @@ public class Server implements Runnable {
         }
     }
 
-    /**
-     *
-     */
-    @Override
-    public void run() {
-        try {
-            ServerSocket ss = new ServerSocket(6666);
-
-            Socket client = ss.accept();
-
-            BufferedReader is = new BufferedReader(new InputStreamReader(client.getInputStream()));
-            File log = new File("log.txt");
-            FilePrinter pr = new FilePrinter(log, "UTF-8");
-            String readLine;
-            while ((readLine = is.readLine()) != null) {
-                pr.println(readLine);
-            }
-
-        } catch (IOException e) {
-            try {
-                throw new CanNotPrintException(e);
-            } catch (CanNotPrintException e1) {
-                e1.printStackTrace();
-            }
-        } catch (CanNotPrintException e) {
-            e.printStackTrace();
-        }
-    }
 }
