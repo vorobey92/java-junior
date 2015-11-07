@@ -38,40 +38,56 @@ public class RemotePrinter implements Printer {
             return;
         }
 
-        try (Socket socket = new Socket(host, port);
-             ObjectOutputStream objectOutputStream =
-                     new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-             ObjectInputStream objectInputStream =
-                     new ObjectInputStream(new BufferedInputStream(socket.getInputStream()))) {
+        try (Socket socket = new Socket(host, port)) {
 
-            objectOutputStream.writeObject(buffer);
-            objectOutputStream.writeUTF(charset);
-            socket.shutdownOutput();
-
-            socket.setSoTimeout(TIMEOUT);
-
-            switch (objectInputStream.readInt()) {
-                case OK:
-                    socket.shutdownInput();
-                    return;
-                case INTERNAL_SERVER_ERROR:
-                case BAD_REQUEST:
-                    String serverErrorMessage = objectInputStream.readUTF();
-                    socket.shutdownInput();
-                    throw new PrinterException(wrapServerErrorMessage(serverErrorMessage));
-                case REQUEST_TIMEOUT:
-                    socket.shutdownInput();
-                    throw new PrinterException("The server timed out waiting for the request" + toStringHostAndPort());
-                default:
-                    socket.shutdownInput();
-                    throw new PrinterException(
-                            "Bad response was received from the server: " + toStringHostAndPort()
-                    );
+            ObjectOutputStream objectOutputStream;
+            try {
+                objectOutputStream = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+                objectOutputStream.writeObject(buffer);
+                objectOutputStream.writeUTF(charset);
+                objectOutputStream.flush();
+                socket.shutdownOutput();
+            } catch (IOException e) {
+                throw new PrinterException(
+                        "An I/O error occurred while sending data to the server: " + toStringHostAndPort(), e
+                );
             }
-        } catch (SocketTimeoutException e) {
-            throw new PrinterException("The Log Server did not respond within timeout: " + toStringHostAndPort(), e);
+
+            ObjectInputStream objectInputStream;
+            try {
+                objectInputStream = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
+                socket.setSoTimeout(TIMEOUT);
+
+                switch (objectInputStream.readInt()) {
+                    case OK:
+                        socket.shutdownInput();
+                        return;
+                    case INTERNAL_SERVER_ERROR:
+                    case BAD_REQUEST:
+                        String serverErrorMessage = objectInputStream.readUTF();
+                        socket.shutdownInput();
+                        throw new PrinterException(wrapServerErrorMessage(serverErrorMessage));
+                    case REQUEST_TIMEOUT:
+                        socket.shutdownInput();
+                        throw new PrinterException(
+                                "The server timed out waiting for the request" + toStringHostAndPort()
+                        );
+                    default:
+                        throw new PrinterException(
+                                "Bad response was received from the server: " + toStringHostAndPort()
+                        );
+                }
+            } catch (SocketTimeoutException e) {
+                throw new PrinterException(
+                        "The server did not respond within timeout: " + toStringHostAndPort(), e
+                );
+            } catch (IOException e) {
+                throw new PrinterException(
+                        "An I/O error occurred while receiving data from the server: " + toStringHostAndPort(), e
+                );
+            }
         } catch (IOException e) {
-            throw new PrinterException("I/O exception of some sort has occurred: " + toStringHostAndPort(), e);
+            throw new PrinterException("An I/O error occured when creating the socket: " + toStringHostAndPort(), e);
         } finally {
             buffer.clear();
         }

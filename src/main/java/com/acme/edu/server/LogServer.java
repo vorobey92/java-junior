@@ -17,7 +17,7 @@ import java.net.SocketTimeoutException;
 import java.util.Date;
 import java.util.List;
 
-public class LogServer {
+public class LogServer implements Runnable {
     private static final int TIMEOUT = 5000;
     private static final int OK = 200;
     private static final int BAD_REQUEST = 400;
@@ -39,6 +39,7 @@ public class LogServer {
         server.run();
     }
 
+    @Override
     public void run() {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             while (true) {
@@ -58,6 +59,7 @@ public class LogServer {
                     } catch (SocketTimeoutException e) {
                         clientSocket.shutdownInput();
                         objectOutputStream.writeInt(REQUEST_TIMEOUT);
+                        objectOutputStream.flush();
                         clientSocket.shutdownOutput();
                         continue;
                     } catch (ClassNotFoundException | IOException e) {
@@ -66,6 +68,7 @@ public class LogServer {
                         objectOutputStream.writeUTF(
                                 "The communication protocol was violated: the server received unexpected data types"
                         );
+                        objectOutputStream.flush();
                         clientSocket.shutdownOutput();
                         continue;
                     }
@@ -84,6 +87,7 @@ public class LogServer {
                                 "The server does not support the provided charset: charset=" + charset
                         );
                     } finally {
+                        objectOutputStream.flush();
                         clientSocket.shutdownOutput();
                     }
 
