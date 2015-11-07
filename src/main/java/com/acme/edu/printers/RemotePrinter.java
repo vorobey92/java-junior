@@ -6,6 +6,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,19 +47,16 @@ public class RemotePrinter implements Printer {
 
             socket.shutdownOutput();
             socket.setSoTimeout(TIMEOUT);
-            int statusCode = objectInputStream.readInt();
-
-            if (statusCode == OK) {
-                return;
+            switch (objectInputStream.readInt()) {
+                case OK:
+                    return;
+                case INTERNAL_SERVER_ERROR:
+                    serverExceptionMessage = objectInputStream.readUTF();
+                    Exception serverException = (Exception) objectInputStream.readObject();
+                    throw new PrinterException("The server encountered an unexpected condition", serverException);
+                default:
+                    throw new PrinterException("Bad response was received from the server");
             }
-
-            if (statusCode == INTERNAL_SERVER_ERROR) {
-                serverExceptionMessage = objectInputStream.readUTF();
-                Exception serverException = (Exception) objectInputStream.readObject();
-                throw new PrinterException("The server encountered an unexpected condition", serverException);
-            }
-
-            throw new PrinterException("Bad response was received from the server");
 
         } catch (IOException e) {
             throw new PrinterException("I/O exception of some sort has occurred", e);
