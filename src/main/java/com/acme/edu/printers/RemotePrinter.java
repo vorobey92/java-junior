@@ -2,21 +2,20 @@ package com.acme.edu.printers;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
 import java.io.DataOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
 public class RemotePrinter implements Printer {
-    private static final int BUFFER_SIZE = 50;
     private static final int OK = 200;
     private static final int INTERNAL_SERVER_ERROR = 500;
+    private static final int TIMEOUT = 3000;
+
+    private static final int BUFFER_SIZE = 50;
+
     private String host;
     private int port;
     private List<String> buffer = new ArrayList<>(BUFFER_SIZE);
@@ -45,7 +44,7 @@ public class RemotePrinter implements Printer {
                 dataOutputStream.writeUTF(stringFromBuffer);
             }
 
-            dataOutputStream.close();
+            socket.shutdownOutput();
             int statusCode = objectInputStream.readInt();
 
             if (statusCode == OK) {
