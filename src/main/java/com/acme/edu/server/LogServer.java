@@ -31,6 +31,11 @@ public class LogServer {
         this.fileName = fileName;
     }
 
+    public static void main(String[] args) {
+        LogServer server = new LogServer(Integer.parseInt(args[0]), args[1]);
+        server.run();
+    }
+
     public void run() {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             while (true) {
