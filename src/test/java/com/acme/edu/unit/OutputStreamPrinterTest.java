@@ -1,7 +1,7 @@
 package com.acme.edu.unit;
 
 import com.acme.edu.exception.CanNotPrintException;
-import com.acme.edu.printer.FilePrinter;
+import com.acme.edu.printer.OutputStreamPrinter;
 import com.acme.edu.printer.Printable;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
@@ -12,7 +12,7 @@ import java.io.IOException;
 import static org.junit.Assert.assertEquals;
 
 
-public class FilePrinterTest {
+public class OutputStreamPrinterTest {
 
     private File file;
     private Printable pr;
@@ -21,7 +21,7 @@ public class FilePrinterTest {
     @Test
     public void shouldFlushBufferOf50WordsToTXTFile() throws CanNotPrintException {
         file = new File("test.txt");
-        pr = new FilePrinter(file,"UTF-8");
+        pr = new OutputStreamPrinter(file,"UTF-8");
         StringBuilder str = new StringBuilder("");
 
         for(int i = 0; i < 50; i++) {
@@ -34,7 +34,7 @@ public class FilePrinterTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        FilePrinter.stop();
+        OutputStreamPrinter.stop();
         file.delete();
     }
 
@@ -42,7 +42,7 @@ public class FilePrinterTest {
     public void shouldNoWritesToFile() throws CanNotPrintException, IOException, InterruptedException {
 
         file = new File("test.txt");
-        pr = new FilePrinter(file,"UTF-8");
+        pr = new OutputStreamPrinter(file,"UTF-8");
         pr.print("str2");
 
         try {
@@ -50,19 +50,19 @@ public class FilePrinterTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        FilePrinter.stop();
+        OutputStreamPrinter.stop();
         file.delete();
     }
 
     @Test
     public void shouldWriteStringToFileAfterStop() throws CanNotPrintException {
         file = new File("test.txt");
-        pr = new FilePrinter(file,"UTF-8");
+        pr = new OutputStreamPrinter(file,"UTF-8");
 
         String s = "str";
 
         pr.print("str");
-        FilePrinter.stop();
+        OutputStreamPrinter.stop();
 
         try {
             assertEquals(s, FileUtils.readFileToString(file));
@@ -75,12 +75,12 @@ public class FilePrinterTest {
     @Test
     public void shouldWriteStringAndGoToNextLineToFileAfterStop() throws CanNotPrintException {
         file = new File("test.txt");
-        pr = new FilePrinter(file,"UTF-8");
+        pr = new OutputStreamPrinter(file,"UTF-8");
 
         String s = "str" + System.lineSeparator();
 
         pr.println("str");
-        FilePrinter.stop();
+        OutputStreamPrinter.stop();
 
         try {
             assertEquals(s, FileUtils.readFileToString(file));
@@ -94,21 +94,21 @@ public class FilePrinterTest {
     public void shouldThrowCannotPrintExceptionWhenCreatingObject() throws CanNotPrintException {
 
         File error = new File("");
-        Printable printer = new FilePrinter(error, "UTF-8");
-        FilePrinter.stop();
+        Printable printer = new OutputStreamPrinter(error, "UTF-8");
+        OutputStreamPrinter.stop();
     }
 
     @Test(expected = CanNotPrintException.class)
     public void shouldThrowCannotPrintExceptionWhenCreatingObjectBecauseWrongCharset() throws CanNotPrintException {
 
         File error = new File("");
-        Printable printer = new FilePrinter(error, "");
-        FilePrinter.stop();
+        Printable printer = new OutputStreamPrinter(error, "");
+        OutputStreamPrinter.stop();
     }
 
     @Test(expected = CanNotPrintException.class)
     public void shouldThrowCannotPrintExceptionWhenTryingToStopAlreadyStopedWriting() throws CanNotPrintException {
-        FilePrinter.stop();
-        FilePrinter.stop();
+        OutputStreamPrinter.stop();
+        OutputStreamPrinter.stop();
     }
 }

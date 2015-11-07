@@ -4,9 +4,8 @@ import com.acme.edu.Logger;
 import com.acme.edu.SysoutCaptureAndAssertionAbility;
 import com.acme.edu.exception.CanNotPrintException;
 import com.acme.edu.exception.LogException;
-import com.acme.edu.exception.NullMessageException;
 import com.acme.edu.printer.ConsolePrinter;
-import com.acme.edu.printer.FilePrinter;
+import com.acme.edu.printer.OutputStreamPrinter;
 import com.acme.edu.state.StateFactory;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -25,7 +24,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         captureSysout();
         File file = new File("log.txt");
         file.createNewFile();
-        logger = new Logger(new StateFactory(new ConsolePrinter(), new FilePrinter(file,"UTF-8")));
+        logger = new Logger(new StateFactory(new ConsolePrinter(), new OutputStreamPrinter(file,"UTF-8")));
 
 
     }

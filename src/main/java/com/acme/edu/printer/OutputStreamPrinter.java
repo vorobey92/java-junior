@@ -2,18 +2,20 @@ package com.acme.edu.printer;
 
 import com.acme.edu.exception.CanNotPrintException;
 import java.io.*;
+import java.net.Socket;
 
 
 /**
  * Realisation of Printable interface.
- * FilePrinter logs messages into file.
+ * OutputStreamPrinter logs messages into file.
  *
  */
-public class FilePrinter implements Printable {
+public class OutputStreamPrinter implements Printable {
 
     private static BufferedWriter i;
     private static StringBuilder str = new StringBuilder("");
     private static int countOfLogs = 0;
+    private Socket socket;
 
 
     /**
@@ -21,10 +23,25 @@ public class FilePrinter implements Printable {
      *@param file
      * @param code charSet
      */
-    public FilePrinter(File file,String code) throws CanNotPrintException {
+    public OutputStreamPrinter(File file, String code) throws CanNotPrintException {
         try {
             i = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file,true),code));
         } catch (UnsupportedEncodingException | FileNotFoundException e) {
+            throw new CanNotPrintException(e);
+        }
+    }
+
+    /**
+     *
+     * @param host
+     * @param port
+     * @throws CanNotPrintException
+     */
+    public OutputStreamPrinter(String host, int port) throws CanNotPrintException {
+        try {
+            socket = new Socket(host, port);
+            i = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+        } catch (IOException e) {
             throw new CanNotPrintException(e);
         }
     }
@@ -36,19 +53,18 @@ public class FilePrinter implements Printable {
      */
     @Override
     public void print(String message) throws CanNotPrintException {
-
-        try{
-            if (countOfLogs < 50){
-                str.append(message);
-                countOfLogs++;
-            }else {
+        if (countOfLogs < 50) {
+            str.append(message);
+            countOfLogs++;
+        } else {
+            try {
                 i.write(str.toString());
                 str.delete(0, str.length());
                 countOfLogs = 0;
                 i.flush();
+            } catch(IOException e){
+                throw new CanNotPrintException(e);
             }
-        } catch (IOException e) {
-            throw new CanNotPrintException(e);
         }
     }
 
