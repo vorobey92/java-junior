@@ -63,10 +63,10 @@ public class RemotePrinter implements Printer {
             }
         } catch (SocketTimeoutException e) {
             throw new PrinterException("The Log Server did not respond: " + toStringHostAndPort(), e);
-        }catch (IOException e) {
+        } catch (IOException e) {
             throw new PrinterException("I/O exception of some sort has occurred: " + toStringHostAndPort(), e);
         } catch (ClassNotFoundException e) {
-            throw new PrinterException(serverExceptionMessage, e);
+            throw new PrinterException(messageWhenCannotInstantiateException(serverExceptionMessage), e);
         } finally {
             buffer.clear();
         }
@@ -74,5 +74,11 @@ public class RemotePrinter implements Printer {
 
     private String toStringHostAndPort() {
         return "host=" + host + " port=" + port;
+    }
+
+    private String messageWhenCannotInstantiateException(String serverExceptionMessage) {
+        return "The server encountered an unexpected condition: " + toStringHostAndPort() + System.lineSeparator()
+                + "Error Message: " + serverExceptionMessage + System.lineSeparator()
+                + "Cannot instantiate received exception";
     }
 }
