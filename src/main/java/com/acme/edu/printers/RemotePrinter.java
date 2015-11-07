@@ -53,17 +53,26 @@ public class RemotePrinter implements Printer {
                 case INTERNAL_SERVER_ERROR:
                     serverExceptionMessage = objectInputStream.readUTF();
                     Exception serverException = (Exception) objectInputStream.readObject();
-                    throw new PrinterException("The server encountered an unexpected condition", serverException);
+                    throw new PrinterException(
+                            "The server encountered an unexpected condition: " + toStringHostAndPort(), serverException
+                    );
                 default:
-                    throw new PrinterException("Bad response was received from the server");
+                    throw new PrinterException(
+                            "Bad response was received from the server: " + toStringHostAndPort()
+                    );
             }
-
-        } catch (IOException e) {
-            throw new PrinterException("I/O exception of some sort has occurred", e);
+        } catch (SocketTimeoutException e) {
+            throw new PrinterException("The Log Server did not respond: " + toStringHostAndPort(), e);
+        }catch (IOException e) {
+            throw new PrinterException("I/O exception of some sort has occurred: " + toStringHostAndPort(), e);
         } catch (ClassNotFoundException e) {
             throw new PrinterException(serverExceptionMessage, e);
         } finally {
             buffer.clear();
         }
+    }
+
+    private String toStringHostAndPort() {
+        return "host=" + host + " port=" + port;
     }
 }
