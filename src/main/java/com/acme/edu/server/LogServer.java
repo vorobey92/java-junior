@@ -2,18 +2,18 @@ package com.acme.edu.server;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStreamWriter;
 import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.Date;
 import java.util.List;
 
@@ -56,41 +56,43 @@ public class LogServer implements Runnable {
                     try {
                         messages = (List<String>) objectInputStream.readObject();
                         charset = objectInputStream.readUTF();
-                    } catch (SocketTimeoutException e) {
                         clientSocket.shutdownInput();
-                        objectOutputStream.writeInt(REQUEST_TIMEOUT);
-                        objectOutputStream.flush();
-                        clientSocket.shutdownOutput();
+                    } catch (SocketTimeoutException e) {
+                        writeDataToOutputStream(
+                                REQUEST_TIMEOUT,
+                                "The server timed out waiting for the request",
+                                objectOutputStream,
+                                clientSocket
+                        );
                         continue;
                     } catch (ClassNotFoundException | IOException e) {
-                        clientSocket.shutdownInput();
-                        objectOutputStream.writeInt(BAD_REQUEST);
-                        objectOutputStream.writeUTF(
-                                "The communication protocol was violated: the server received unexpected data types"
+                        writeDataToOutputStream(
+                                BAD_REQUEST,
+                                "The communication protocol was violated: the server received unexpected data types",
+                                objectOutputStream,
+                                clientSocket
                         );
-                        objectOutputStream.flush();
-                        clientSocket.shutdownOutput();
                         continue;
                     }
-
-                    clientSocket.shutdownInput();
 
                     try {
                         writeTofile(messages, charset);
-                        objectOutputStream.writeInt(OK);
-                    } catch (FileNotFoundException e) {
-                        objectOutputStream.writeInt(INTERNAL_SERVER_ERROR);
-                        objectOutputStream.writeUTF("Error occurred while writing a log file\r\n" + e.getMessage());
-                    } catch (UnsupportedEncodingException e) {
-                        objectOutputStream.writeInt(INTERNAL_SERVER_ERROR);
-                        objectOutputStream.writeUTF(
-                                "The server does not support the provided charset: charset=" + charset
+                        writeDataToOutputStream(OK, null, objectOutputStream, clientSocket);
+                    } catch (IOException | InvalidPathException e) {
+                        writeDataToOutputStream(
+                                INTERNAL_SERVER_ERROR,
+                                "Error occurred while writing a log file\r\n" + e.getMessage(),
+                                objectOutputStream,
+                                clientSocket
                         );
-                    } finally {
-                        objectOutputStream.flush();
-                        clientSocket.shutdownOutput();
+                    } catch (IllegalArgumentException e) {
+                        writeDataToOutputStream(
+                                INTERNAL_SERVER_ERROR,
+                                "The server does not support the provided charset: charset=" + charset,
+                                objectOutputStream,
+                                clientSocket
+                        );
                     }
-
                 } catch (IOException e) {
                     ERR.println(new Date());
                     e.printStackTrace();
@@ -103,15 +105,23 @@ public class LogServer implements Runnable {
         }
     }
 
-    private void writeTofile(List<String> messages, String charSet)
-            throws FileNotFoundException, UnsupportedEncodingException {
-        try (PrintWriter printWriter =
-                     new PrintWriter(new OutputStreamWriter(new FileOutputStream(fileName, true), charSet), false)) {
+    private static void writeDataToOutputStream(
+            int statusCode, String errorMessage, ObjectOutputStream objectOutputStream, Socket clientSocket
+    ) throws IOException {
+        objectOutputStream.writeInt(statusCode);
+        objectOutputStream.writeUTF(errorMessage);
+        objectOutputStream.flush();
+        clientSocket.shutdownOutput();
+    }
 
-            for (String message : messages) {
-                printWriter.println(message);
-            }
-            printWriter.flush();
-        }
+    private void writeTofile(List<String> messages, String charset) throws IOException, InvalidPathException {
+        Files.write(
+                Paths.get(fileName),
+                messages,
+                Charset.forName(charset),
+                StandardOpenOption.CREATE,
+                StandardOpenOption.WRITE,
+                StandardOpenOption.APPEND
+        );
     }
 }
