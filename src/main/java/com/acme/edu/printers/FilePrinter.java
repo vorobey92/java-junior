@@ -23,22 +23,24 @@ public class FilePrinter implements Printer {
     public void println(String stringToPrint) throws PrinterException {
         buffer.add(stringToPrint);
 
-        if (buffer.size() == BUFFER_SIZE) {
-            try (PrintWriter printWriter =
-                         new PrintWriter(
-                                 new BufferedWriter(
-                                         new OutputStreamWriter(
-                                                 new FileOutputStream(fileName, true), charSet)))) {
+        if (buffer.size() < BUFFER_SIZE) {
+            return;
+        }
 
-                for (String stringFromBuffer : buffer) {
-                    printWriter.println(stringFromBuffer);
-                }
-                printWriter.flush();
-            } catch (IOException e) {
-                throw new PrinterException("I/O exception of some sort has occurred", e);
-            } finally {
-                buffer.clear();
+        try (PrintWriter printWriter =
+                     new PrintWriter(
+                             new BufferedWriter(
+                                     new OutputStreamWriter(
+                                             new FileOutputStream(fileName, true), charSet)))) {
+
+            for (String stringFromBuffer : buffer) {
+                printWriter.println(stringFromBuffer);
             }
+            printWriter.flush();
+        } catch (IOException e) {
+            throw new PrinterException("I/O exception of some sort has occurred", e);
+        } finally {
+            buffer.clear();
         }
     }
 }
