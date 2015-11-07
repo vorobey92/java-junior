@@ -1,6 +1,5 @@
 package com.acme.edu.printers;
 
-import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -12,7 +11,7 @@ public class FilePrinter implements Printer {
     private static final int BUFFER_SIZE = 50;
     private String fileName;
     private String charSet;
-    private List<String> buffer = new ArrayList<String>(BUFFER_SIZE);
+    private List<String> buffer = new ArrayList<>(BUFFER_SIZE);
 
     public FilePrinter(String fileName, String charSet) {
         this.fileName = fileName;
@@ -28,10 +27,7 @@ public class FilePrinter implements Printer {
         }
 
         try (PrintWriter printWriter =
-                     new PrintWriter(
-                             new BufferedWriter(
-                                     new OutputStreamWriter(
-                                             new FileOutputStream(fileName, true), charSet)))) {
+                     new PrintWriter(new OutputStreamWriter(new FileOutputStream(fileName, true), charSet), false)) {
 
             for (String stringFromBuffer : buffer) {
                 printWriter.println(stringFromBuffer);
