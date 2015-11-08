@@ -37,7 +37,6 @@ public abstract class State {
     public abstract void flush() throws StateException;
 
     protected void print(String message) throws StateException {
-        try {
             for (Printable printer : listOfPrinters) {
                 try {
                     printer.print(message);
@@ -45,15 +44,12 @@ public abstract class State {
                     exceptionList.add(e);
                 }
             }
-        } finally {
             if (!exceptionList.isEmpty()){
                 throw new StateException(exceptionList.toString());
             }
-        }
     }
 
     protected void println(String message) throws StateException {
-       try {
            for (Printable printer : listOfPrinters) {
                try {
                    printer.println(message);
@@ -61,11 +57,9 @@ public abstract class State {
                    exceptionList.add(e);
                }
            }
-       } finally {
             if (!exceptionList.isEmpty()){
                 throw new StateException(exceptionList.toString());
             }
-        }
     }
 
 }
