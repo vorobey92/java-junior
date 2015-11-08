@@ -58,7 +58,7 @@ public class LogServer implements Runnable {
                         charset = objectInputStream.readUTF();
                         clientSocket.shutdownInput();
                     } catch (SocketTimeoutException e) {
-                        writeDataToOutputStream(
+                        writeDataAndShutdownOutputStream(
                                 REQUEST_TIMEOUT,
                                 "The server timed out waiting for the request",
                                 objectOutputStream,
@@ -66,7 +66,7 @@ public class LogServer implements Runnable {
                         );
                         continue;
                     } catch (ClassNotFoundException | IOException e) {
-                        writeDataToOutputStream(
+                        writeDataAndShutdownOutputStream(
                                 BAD_REQUEST,
                                 "The communication protocol was violated: the server received unexpected data types",
                                 objectOutputStream,
@@ -77,16 +77,16 @@ public class LogServer implements Runnable {
 
                     try {
                         writeTofile(messages, charset);
-                        writeDataToOutputStream(OK, null, objectOutputStream, clientSocket);
+                        writeDataAndShutdownOutputStream(OK, null, objectOutputStream, clientSocket);
                     } catch (IOException | InvalidPathException e) {
-                        writeDataToOutputStream(
+                        writeDataAndShutdownOutputStream(
                                 INTERNAL_SERVER_ERROR,
                                 "Error occurred while writing a log file\r\n" + e.getMessage(),
                                 objectOutputStream,
                                 clientSocket
                         );
                     } catch (IllegalArgumentException e) {
-                        writeDataToOutputStream(
+                        writeDataAndShutdownOutputStream(
                                 INTERNAL_SERVER_ERROR,
                                 "The server does not support the provided charset: charset=" + charset,
                                 objectOutputStream,
@@ -105,7 +105,7 @@ public class LogServer implements Runnable {
         }
     }
 
-    private static void writeDataToOutputStream(
+    private static void writeDataAndShutdownOutputStream(
             int statusCode, String errorMessage, ObjectOutputStream objectOutputStream, Socket clientSocket
     ) throws IOException {
         objectOutputStream.writeInt(statusCode);
@@ -114,7 +114,7 @@ public class LogServer implements Runnable {
         clientSocket.shutdownOutput();
     }
 
-    private void writeTofile(List<String> messages, String charset) throws IOException, InvalidPathException {
+    private void writeTofile(List<String> messages, String charset) throws IOException, IllegalArgumentException {
         Files.write(
                 Paths.get(fileName),
                 messages,
