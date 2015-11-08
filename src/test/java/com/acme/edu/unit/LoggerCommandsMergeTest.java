@@ -36,4 +36,15 @@ public class LoggerCommandsMergeTest {
 
         verify(mockCommandNew, times(1)).merge(mockCommandOld);
     }
+
+    @Test
+    public void shouldSetLastCommandToNullRightAfterCreation() throws LoggerException {
+        Object dummyMessage = new Object();
+
+        when(mockCommandFactory.createCommand(eq(dummyMessage), anyVararg())).thenReturn(mockCommandOld);
+
+        sut.log(dummyMessage);
+
+        verify(mockCommandOld, times(1)).merge(null);
+    }
 }
