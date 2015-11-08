@@ -4,7 +4,7 @@ import com.acme.edu.businessexceptions.LoggingException;
 import com.acme.edu.decorators.Decorator;
 import com.acme.edu.printers.LogWriter;
 
-public class LogIntegerCommand extends Command {
+public class LogIntegerCommand extends AccumulatingCommand {
     private int maxValue;
     private int minValue;
     private Decorator decorator;

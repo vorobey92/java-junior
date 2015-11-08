@@ -13,13 +13,17 @@ public class LogUnaccumulatedTypeCommand extends Command {
     }
 
     @Override
-    protected String getFormattedString() {
-        return decorator.decorate(getMessage());
+    public Command merge(Command oldCommand) throws LoggingException {
+        if (oldCommand != null) {
+            oldCommand.execute();
+        }
+
+        execute();
+        return this;
     }
 
     @Override
-    protected Command mergeWithCommandOfSameClass(Command oldCommand) throws LoggingException {
-        oldCommand.execute();
-        return this;
+    protected String getFormattedString() {
+        return decorator.decorate(getMessage());
     }
 }

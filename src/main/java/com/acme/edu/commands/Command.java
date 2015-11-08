@@ -14,18 +14,7 @@ public abstract class Command {
         this.logWriters = logWriters;
     }
 
-    public Command merge(Command oldCommand) throws LoggingException {
-        if (oldCommand == null) {
-            return this;
-        }
-
-        if (!getClass().isAssignableFrom(oldCommand.getClass())) {
-            oldCommand.execute();
-            return this;
-        }
-
-        return mergeWithCommandOfSameClass(oldCommand);
-    }
+    public abstract Command merge(Command oldCommand) throws LoggingException;
 
     public void execute() throws LoggingException {
         if (getMessage() == null) {
@@ -57,6 +46,4 @@ public abstract class Command {
     }
 
     protected abstract String getFormattedString();
-
-    protected abstract Command mergeWithCommandOfSameClass(Command oldCommand) throws LoggingException;
 }

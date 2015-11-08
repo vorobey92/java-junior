@@ -4,7 +4,7 @@ import com.acme.edu.businessexceptions.LoggingException;
 import com.acme.edu.decorators.Decorator;
 import com.acme.edu.printers.LogWriter;
 
-public class LogStringCommand extends Command {
+public class LogStringCommand extends AccumulatingCommand {
     private int lengthOfStringsSequence;
     private Decorator oneStringSequenceDecorator;
     private Decorator mulitpleStringSequenceDecorator;
