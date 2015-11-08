@@ -1,4 +1,4 @@
-package com.acme.edu.server;
+package com.acme.edu.clientserver;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
