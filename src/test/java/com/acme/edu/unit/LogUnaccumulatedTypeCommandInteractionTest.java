@@ -29,30 +29,30 @@ public class LogUnaccumulatedTypeCommandInteractionTest {
     }
 
     @Test
-    public void shouldNotLogWhenMergeWithNullCommand() throws LogWriterException, LoggingException {
-        when(stubDecorator.decorate(anyString())).thenReturn(decoratedString);
+    public void shouldLogWhenMergeWithNullCommand() throws LogWriterException, LoggingException {
+        when(stubDecorator.decorate(message)).thenReturn(decoratedString);
 
         sut.setMessage(message);
         sut.merge(null);
 
-        verify(mockLogWriter, times(0)).writeLine(anyString());
+        verify(mockLogWriter, times(1)).writeLine(decoratedString);
     }
 
     @Test
-    public void shouldNotLogWhenMergeWithCommandThatDoesNotHaveMessage() throws LogWriterException, LoggingException {
+    public void shouldLogWhenMergeWithCommandThatDoesNotHaveMessage() throws LogWriterException, LoggingException {
         LogUnaccumulatedTypeCommand stubCommand = mock(LogUnaccumulatedTypeCommand.class);
 
-        when(stubDecorator.decorate(anyString())).thenReturn(decoratedString);
+        when(stubDecorator.decorate(message)).thenReturn(decoratedString);
         when(stubCommand.getMessage()).thenReturn(null);
 
         sut.setMessage(message);
         sut.merge(stubCommand);
 
-        verify(mockLogWriter, times(0)).writeLine(anyString());
+        verify(mockLogWriter, times(1)).writeLine(decoratedString);
     }
 
     @Test
-    public void shouldLogLogOldMessageWhenMergeWithAnotherCommand() throws LogWriterException, LoggingException {
+    public void shouldLogOldMessageWhenMergeWithAnotherCommand() throws LogWriterException, LoggingException {
         String oldMessage = "old message";
         LogUnaccumulatedTypeCommand mockCommand = mock(LogUnaccumulatedTypeCommand.class);
 
