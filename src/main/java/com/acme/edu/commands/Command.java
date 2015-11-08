@@ -5,6 +5,7 @@ import com.acme.edu.printers.LogWriter;
 import com.acme.edu.printers.LogWriterException;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Command {
     private LogWriter[] logWriters;
@@ -21,7 +22,7 @@ public abstract class Command {
             return;
         }
 
-        ArrayList<Exception> printerExceptions = new ArrayList<>();
+        List<Exception> printerExceptions = new ArrayList<>();
         for (LogWriter logWriter : logWriters) {
             try {
                 logWriter.writeLine(getFormattedString());
@@ -32,7 +33,7 @@ public abstract class Command {
 
         setMessage(null);
 
-        if (printerExceptions.size() > 0) {
+        if (!printerExceptions.isEmpty()) {
             throw new LoggingException("Errors occur while logging", printerExceptions);
         }
     }
