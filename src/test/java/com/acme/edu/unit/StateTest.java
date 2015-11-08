@@ -1,19 +1,30 @@
 package com.acme.edu.unit;
 
 
+import com.acme.edu.SysoutCaptureAndAssertionAbility;
 import com.acme.edu.exception.CanNotPrintException;
 import com.acme.edu.exception.LogException;
+import com.acme.edu.exception.StateException;
 import com.acme.edu.printer.ConsolePrinter;
+import com.acme.edu.printer.OutputStreamPrinter;
 import com.acme.edu.printer.Printable;
 import com.acme.edu.state.DefaultState;
 import com.acme.edu.state.IntState;
 import com.acme.edu.state.State;
 import com.acme.edu.state.StringState;
+import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
+import java.io.File;
+import java.io.IOException;
+
+import static org.apache.commons.io.FileUtils.readFileToString;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
-public class StateTest {
+public class StateTest implements SysoutCaptureAndAssertionAbility {
 
     private Printable mock;
     private State sut;
@@ -102,6 +113,27 @@ public class StateTest {
         sut.flush();
 
         verify(mock, times(0)).println("");
+    }
+
+    @Rule
+    public final ExpectedException exception = ExpectedException.none();
+
+    @Test
+    public void shouldTryToWriteToOtherPrintersAlthoughThereAreExceptionFromOneOfPrinters() throws StateException, IOException {
+        Printable mockCons = mock(ConsolePrinter.class);
+        Printable mockFile = mock(OutputStreamPrinter.class);
+        sut = new StringState(mockCons, mockFile);
+
+        doThrow(CanNotPrintException.class).when(mockFile).println(anyString());
+        doThrow(CanNotPrintException.class).when(mockCons).println(anyString());
+
+        // don't know how to show that there will be exception like
+        // StateException([CanNotPrintException, CanNotPrintException])
+        // but it will
+        exception.expect(StateException.class);
+        sut.log("a");
+        sut.flush();
+
     }
 
 

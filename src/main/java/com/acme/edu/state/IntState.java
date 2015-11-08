@@ -29,10 +29,11 @@ public class IntState extends State {
      */
     @Override
     public void log(String message) throws StateException {
+        int parsedMessage = Integer.parseInt(message);
         // Checking type overflow
-        if (    (Integer.parseInt(message) > 0) &&
-                (bufferOfInts > 0)              &&
-                (Integer.parseInt(message) + bufferOfInts < 0)) {
+        if (    (parsedMessage > 0) &&
+                (bufferOfInts > 0)  &&
+                (parsedMessage + bufferOfInts < 0)) {
             println(PREFIX + bufferOfInts);
             println(PREFIX + message);
             bufferOfInts = 0;
@@ -40,9 +41,9 @@ public class IntState extends State {
             return;
         }
         // Checking type overflow
-        if (    (Integer.parseInt(message) < 0) &&
+        if (    (parsedMessage < 0) &&
                 (bufferOfInts < 0)              &&
-                (Integer.parseInt(message) + bufferOfInts > 0)) {
+                (parsedMessage + bufferOfInts > 0)) {
             println(PREFIX + bufferOfInts);
             println(PREFIX + message);
             bufferOfInts = 0;
@@ -50,7 +51,7 @@ public class IntState extends State {
             return;
         }
 
-        bufferOfInts += Integer.parseInt(message);
+        bufferOfInts += parsedMessage;
         cntOfInts++;
     }
 

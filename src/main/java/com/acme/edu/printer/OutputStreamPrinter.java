@@ -7,8 +7,9 @@ import java.net.Socket;
 
 /**
  * Realisation of Printable interface.
- * OutputStreamPrinter logs messages into file.
- *
+ * OutputStreamPrinter logs messages into file or through socket to server.
+ * In the end of print need to call OutputStreamPrinter.stop() method to flush the buffer,
+ *  and close file or socket.
  */
 public class OutputStreamPrinter implements Printable {
 
@@ -27,13 +28,14 @@ public class OutputStreamPrinter implements Printable {
         try {
             i = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file,true),code));
         } catch (UnsupportedEncodingException | FileNotFoundException e) {
-            throw new CanNotPrintException(e);
+            throw new CanNotPrintException("File or Charset problems",e);
         }
     }
 
     /**
+     * Creates a socket
      *
-     * @param host
+     * @param host name or ip of the server
      * @param port
      * @throws CanNotPrintException
      */
@@ -42,12 +44,14 @@ public class OutputStreamPrinter implements Printable {
             socket = new Socket(host, port);
             i = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
         } catch (IOException e) {
-            throw new CanNotPrintException(e);
+            throw new CanNotPrintException("Socket problem",e);
         }
     }
 
     /**
-     *
+     * This method have a buffer of 50 words,
+     * so if you won't call stop() method and you don't have more than 50 words to print
+     * you will see nothing in outputStream
      * @param  message The <code>String</code> to be printed
      * @throws CanNotPrintException
      */
@@ -70,6 +74,9 @@ public class OutputStreamPrinter implements Printable {
 
     /**
      * Prints a String and then terminate the line.
+     * This method have a buffer of 50 words,
+     * so if you won't call stop() method and you don't have more than 50 words to print
+     * you will see nothing in outputStream
      * @param message The <code>String</code> to be printed
      * @throws CanNotPrintException
      */
@@ -79,7 +86,8 @@ public class OutputStreamPrinter implements Printable {
     }
 
     /**
-     * Stops process of logging to file
+     * Stops process of logging to file or to the server.
+     * Also this method flush the buffer and close the OutputStream
      * @throws CanNotPrintException
      */
     public static void stop() throws CanNotPrintException {

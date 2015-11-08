@@ -12,7 +12,8 @@ import java.util.List;
  */
 public abstract class State {
 
-    protected List<Printable> list = new ArrayList<Printable>();
+    protected List<Printable> listOfPrinters = new ArrayList<Printable>();
+    private List<Exception> exceptionList = new ArrayList<Exception>();
 
     /**
      *
@@ -20,7 +21,7 @@ public abstract class State {
      */
     public State (Printable... printers){
         for(Printable pr : printers) {
-            list.add(pr);
+            listOfPrinters.add(pr);
         }
     }
 
@@ -37,23 +38,34 @@ public abstract class State {
 
     protected void print(String message) throws StateException {
         try {
-            for(Printable printer : list){
-                printer.print(message);
+            for (Printable printer : listOfPrinters) {
+                try {
+                    printer.print(message);
+                } catch (CanNotPrintException e) {
+                    exceptionList.add(e);
+                }
             }
-        } catch (CanNotPrintException e) {
-            throw new StateException(e);
+        } finally {
+            if (!exceptionList.isEmpty()){
+                throw new StateException(exceptionList.toString());
+            }
         }
     }
 
     protected void println(String message) throws StateException {
-        try {
-            for(Printable printer : list) {
-                printer.println(message);
+       try {
+           for (Printable printer : listOfPrinters) {
+               try {
+                   printer.println(message);
+               } catch (CanNotPrintException e) {
+                   exceptionList.add(e);
+               }
+           }
+       } finally {
+            if (!exceptionList.isEmpty()){
+                throw new StateException(exceptionList.toString());
             }
-        } catch (CanNotPrintException e) {
-            throw new StateException(e);
         }
     }
-
 
 }

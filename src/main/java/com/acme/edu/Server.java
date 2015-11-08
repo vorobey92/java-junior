@@ -28,8 +28,10 @@ public class Server {
             Socket client = ss.accept();
 
             BufferedReader is = new BufferedReader(new InputStreamReader(client.getInputStream()));
+
             File log = new File("log.txt");
             OutputStreamPrinter pr = new OutputStreamPrinter(log, "UTF-8");
+
             String readLine;
             while ((readLine = is.readLine()) != null) {
                 pr.println(readLine);
