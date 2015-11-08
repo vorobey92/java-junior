@@ -1,6 +1,7 @@
 package com.acme.edu.unit;
 
 import com.acme.edu.businessexceptions.LoggingException;
+import com.acme.edu.commands.Command;
 import com.acme.edu.commands.LogUnaccumulatedTypeCommand;
 import com.acme.edu.decorators.Decorator;
 import com.acme.edu.printers.LogWriter;
@@ -40,7 +41,7 @@ public class LogUnaccumulatedTypeCommandInteractionTest {
 
     @Test
     public void shouldLogWhenMergeWithCommandThatDoesNotHaveMessage() throws LogWriterException, LoggingException {
-        LogUnaccumulatedTypeCommand stubCommand = mock(LogUnaccumulatedTypeCommand.class);
+        Command stubCommand = mock(Command.class);
 
         when(stubDecorator.decorate(message)).thenReturn(decoratedString);
         when(stubCommand.getMessage()).thenReturn(null);
@@ -52,9 +53,9 @@ public class LogUnaccumulatedTypeCommandInteractionTest {
     }
 
     @Test
-    public void shouldLogOldMessageWhenMergeWithAnotherCommand() throws LogWriterException, LoggingException {
+    public void shouldExecuteOldCommandWhenMergeWithExecuteOldCommand() throws LogWriterException, LoggingException {
         String oldMessage = "old message";
-        LogUnaccumulatedTypeCommand mockCommand = mock(LogUnaccumulatedTypeCommand.class);
+        Command mockCommand = mock(Command.class);
 
         when(stubDecorator.decorate(message)).thenReturn(decoratedString);
         when(mockCommand.getMessage()).thenReturn(oldMessage);
@@ -63,5 +64,18 @@ public class LogUnaccumulatedTypeCommandInteractionTest {
         sut.merge(mockCommand);
 
         verify(mockCommand, times(1)).execute();
+    }
+
+    @Test
+    public void shouldNotExecuteOldCommandWhenMergeWithExecuteOldCommandWithNullMessage() throws LogWriterException, LoggingException {
+        Command mockCommand = mock(Command.class);
+
+        when(stubDecorator.decorate(message)).thenReturn(decoratedString);
+        when(mockCommand.getMessage()).thenReturn(null);
+
+        sut.setMessage(message);
+        sut.merge(mockCommand);
+
+        verify(mockCommand, times(0)).execute();
     }
 }

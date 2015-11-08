@@ -1,6 +1,7 @@
 package com.acme.edu.unit;
 
 import com.acme.edu.businessexceptions.LoggingException;
+import com.acme.edu.commands.Command;
 import com.acme.edu.commands.LogIntegerCommand;
 import com.acme.edu.decorators.Decorator;
 import com.acme.edu.printers.LogWriter;
@@ -187,5 +188,33 @@ public class LogIntegerCommandInteractionTest {
         sut.merge(mockCommand);
 
         verify(mockCommand, times(0)).setMessage(anyString());
+    }
+
+    @Test
+    public void shouldExecuteOldCommandOfAnotherClassWhileMerging() throws LogWriterException, LoggingException {
+        Command mockOldCommand = mock(Command.class);
+        String message = "0";
+        String oldCommandMessage = "old command message";
+
+        when(mockOldCommand.getMessage()).thenReturn(oldCommandMessage);
+
+        sut.setMessage(message);
+        sut.merge(mockOldCommand);
+
+        verify(mockOldCommand, times(1)).execute();
+    }
+
+    @Test
+    public void shouldNotLogWhileMergingWithOldCommandOfAnotherClass() throws LogWriterException, LoggingException {
+        Command mockOldCommand = mock(Command.class);
+        String message = "0";
+        String oldCommandMessage = "old command message";
+
+        when(mockOldCommand.getMessage()).thenReturn(oldCommandMessage);
+
+        sut.setMessage(message);
+        sut.merge(mockOldCommand);
+
+        verify(mockLogWriter, times(0)).writeLine(anyString());
     }
 }
