@@ -14,7 +14,7 @@ public class LogUnaccumulatedTypeCommand extends Command {
 
     @Override
     public Command merge(Command oldCommand) throws LoggingException {
-        if (oldCommand != null) {
+        if (oldCommand != null && oldCommand.getMessage() != null) {
             oldCommand.execute();
         }
 
