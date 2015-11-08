@@ -2,6 +2,10 @@ package com.acme.edu.printers;
 
 public class LogWriterException extends Exception {
 
+    public LogWriterException() {
+        super();
+    }
+
     public LogWriterException(String message) {
         super(message);
     }
