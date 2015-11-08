@@ -27,7 +27,7 @@ public class RemoteLogWriter extends BufferedLogWriter {
     }
 
     @Override
-    protected void write(List<String> buffer) throws LogWriterException {
+    protected void writeBuffer(List<String> buffer) throws LogWriterException {
         try (Socket socket = new Socket(host, port)) {
 
             ObjectOutputStream objectOutputStream;

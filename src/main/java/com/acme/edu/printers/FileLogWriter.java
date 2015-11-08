@@ -18,7 +18,7 @@ public class FileLogWriter extends BufferedLogWriter {
     }
 
     @Override
-    protected void write(List<String> buffer) throws LogWriterException {
+    protected void writeBuffer(List<String> buffer) throws LogWriterException {
         try {
             Files.write(
                     Paths.get(fileName),

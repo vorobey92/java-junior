@@ -16,11 +16,11 @@ public abstract class BufferedLogWriter implements LogWriter {
         }
 
         try {
-            write(buffer);
+            writeBuffer(buffer);
         } finally {
             buffer.clear();
         }
     }
 
-    protected abstract void write(List<String> buffer) throws LogWriterException;
+    protected abstract void writeBuffer(List<String> buffer) throws LogWriterException;
 }
