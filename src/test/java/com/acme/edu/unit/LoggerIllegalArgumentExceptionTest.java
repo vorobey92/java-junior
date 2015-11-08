@@ -13,19 +13,14 @@ import static org.mockito.Mockito.*;
 
 public class LoggerIllegalArgumentExceptionTest {
     private Logger sut;
-    private CommandFactory commandFactoryOfDummies = new CommandFactory() {
-        @Override
-        public Command createCommand(Type type, LogWriter... logWriters) {
-            return mock(Command.class);
-        }
-    };
-    private StateFactory stateFactoryOfDummies = new StateFactory() {
-        @Override
-        public State createState() {
-            return mock(State.class);
-        }
-    };
     private LogWriter dummyLogWriter = mock(LogWriter.class);
+    private CommandFactory stubCommandFactory = mock(CommandFactory.class);
+    private StateFactory stubStateFactory = mock(StateFactory.class);
+
+    {
+        when(stubCommandFactory.createCommand(any(), any())).thenReturn(mock(Command.class));
+        when(stubStateFactory.createState()).thenReturn(mock(State.class));
+    }
 
 //    TODO: test scenarios when exceptions should not be thrown
 
@@ -116,6 +111,6 @@ public class LoggerIllegalArgumentExceptionTest {
     }
 
     private Logger createSut(LogWriter... logWriters) throws LoggerException {
-        return new Logger(commandFactoryOfDummies, stateFactoryOfDummies, logWriters);
+        return new Logger(stubCommandFactory, stubStateFactory, logWriters);
     }
 }
