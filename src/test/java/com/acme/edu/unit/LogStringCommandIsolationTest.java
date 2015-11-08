@@ -41,7 +41,7 @@ public class LogStringCommandIsolationTest {
         sut.setMessage(message);
         sut.execute();
 
-        verify(mockLogWriter, times(1)).println(oneStringSequenceDecoratedString);
+        verify(mockLogWriter, times(1)).writeLine(oneStringSequenceDecoratedString);
     }
 
     @Test
@@ -53,7 +53,7 @@ public class LogStringCommandIsolationTest {
         sut.setLengthOfStringsSequence(2);
         sut.execute();
 
-        verify(mockLogWriter, times(1)).println(multipleStringsSequenceDecoratedString);
+        verify(mockLogWriter, times(1)).writeLine(multipleStringsSequenceDecoratedString);
     }
 
     @Test
@@ -72,7 +72,7 @@ public class LogStringCommandIsolationTest {
         sut.setMessage(null);
         sut.execute();
 
-        verify(mockLogWriter, times(0)).println(anyString());
+        verify(mockLogWriter, times(0)).writeLine(anyString());
     }
 
     @Test

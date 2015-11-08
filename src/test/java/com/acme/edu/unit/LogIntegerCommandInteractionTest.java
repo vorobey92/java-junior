@@ -44,7 +44,7 @@ public class LogIntegerCommandInteractionTest {
         sut.setMessage(message);
         sut.merge(null);
 
-        verify(mockLogWriter, times(0)).println(anyString());
+        verify(mockLogWriter, times(0)).writeLine(anyString());
     }
 
     @Test
@@ -68,7 +68,7 @@ public class LogIntegerCommandInteractionTest {
         sut.setMessage(message);
         sut.merge(stubCommand);
 
-        verify(mockLogWriter, times(0)).println(anyString());
+        verify(mockLogWriter, times(0)).writeLine(anyString());
     }
 
     @Test
@@ -96,7 +96,7 @@ public class LogIntegerCommandInteractionTest {
         sut.merge(mockCommand);
 
         verify(mockCommand, times(1)).execute();
-        verify(mockLogWriter, times(1)).println(decoratedString);
+        verify(mockLogWriter, times(1)).writeLine(decoratedString);
     }
 
     @Test
@@ -113,7 +113,7 @@ public class LogIntegerCommandInteractionTest {
         InOrder inOrder = inOrder(mockCommand, mockLogWriter);
 
         inOrder.verify(mockCommand).execute();
-        inOrder.verify(mockLogWriter).println(anyString());
+        inOrder.verify(mockLogWriter).writeLine(anyString());
     }
 
     @Test
@@ -128,7 +128,7 @@ public class LogIntegerCommandInteractionTest {
         sut.merge(mockCommand);
 
         verify(mockCommand, times(1)).execute();
-        verify(mockLogWriter, times(1)).println(decoratedString);
+        verify(mockLogWriter, times(1)).writeLine(decoratedString);
     }
 
     @Test
@@ -145,7 +145,7 @@ public class LogIntegerCommandInteractionTest {
         InOrder inOrder = inOrder(mockCommand, mockLogWriter);
 
         inOrder.verify(mockCommand).execute();
-        inOrder.verify(mockLogWriter).println(anyString());
+        inOrder.verify(mockLogWriter).writeLine(anyString());
     }
 
     @Test
@@ -160,7 +160,7 @@ public class LogIntegerCommandInteractionTest {
         sut.merge(mockCommand);
 
         verify(mockCommand, times(0)).execute();
-        verify(mockLogWriter, times(0)).println(anyString());
+        verify(mockLogWriter, times(0)).writeLine(anyString());
     }
 
     @Test

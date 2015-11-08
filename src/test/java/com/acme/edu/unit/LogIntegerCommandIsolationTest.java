@@ -34,7 +34,7 @@ public class LogIntegerCommandIsolationTest {
         sut.setMessage(message);
         sut.execute();
 
-        verify(mockLogWriter, times(1)).println(decoratedString);
+        verify(mockLogWriter, times(1)).writeLine(decoratedString);
     }
 
     @Test
@@ -52,7 +52,7 @@ public class LogIntegerCommandIsolationTest {
         sut.setMessage(null);
         sut.execute();
 
-        verify(mockLogWriter, times(0)).println(anyString());
+        verify(mockLogWriter, times(0)).writeLine(anyString());
     }
 
     @Test

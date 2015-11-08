@@ -34,7 +34,7 @@ public class LogUnaccumulatedTypeCommandInteractionTest {
         sut.setMessage(message);
         sut.merge(null);
 
-        verify(mockLogWriter, times(1)).println(decoratedString);
+        verify(mockLogWriter, times(1)).writeLine(decoratedString);
     }
 
     @Test
@@ -47,7 +47,7 @@ public class LogUnaccumulatedTypeCommandInteractionTest {
         sut.setMessage(message);
         sut.merge(stubCommand);
 
-        verify(mockLogWriter, times(1)).println(decoratedString);
+        verify(mockLogWriter, times(1)).writeLine(decoratedString);
     }
 
     @Test

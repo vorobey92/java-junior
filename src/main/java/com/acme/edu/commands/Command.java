@@ -24,7 +24,7 @@ public abstract class Command<T> {
         ArrayList<Exception> printerExceptions = new ArrayList<>();
         for (LogWriter logWriter : logWriters) {
             try {
-                logWriter.println(getFormattedString());
+                logWriter.writeLine(getFormattedString());
             } catch (LogWriterException e) {
                 printerExceptions.add(e);
             }

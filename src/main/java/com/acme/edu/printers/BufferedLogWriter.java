@@ -8,7 +8,7 @@ public abstract class BufferedLogWriter implements LogWriter {
     private List<String> buffer = new ArrayList<>(BUFFER_SIZE);
 
     @Override
-    public void println(String stringToPrint) throws LogWriterException {
+    public void writeLine(String stringToPrint) throws LogWriterException {
         buffer.add(stringToPrint);
 
         if (buffer.size() < BUFFER_SIZE) {

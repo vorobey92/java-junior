@@ -1,5 +1,5 @@
 package com.acme.edu.printers;
 
 public interface LogWriter {
-    void println(String stringToPrint) throws LogWriterException;
+    void writeLine(String stringToPrint) throws LogWriterException;
 }

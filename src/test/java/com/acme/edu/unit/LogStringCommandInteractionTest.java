@@ -42,7 +42,7 @@ public class LogStringCommandInteractionTest {
         sut.setMessage(message);
         sut.merge(null);
 
-        verify(mockLogWriter, times(0)).println(anyString());
+        verify(mockLogWriter, times(0)).writeLine(anyString());
     }
 
     @Test
@@ -65,7 +65,7 @@ public class LogStringCommandInteractionTest {
         sut.setMessage(message);
         sut.merge(stubCommand);
 
-        verify(mockLogWriter, times(0)).println(anyString());
+        verify(mockLogWriter, times(0)).writeLine(anyString());
     }
 
     @Test
@@ -139,7 +139,7 @@ public class LogStringCommandInteractionTest {
         sut.setMessage(message);
         sut.merge(mockCommand);
 
-        verify(mockLogWriter, times(0)).println(anyString());
+        verify(mockLogWriter, times(0)).writeLine(anyString());
     }
 
     @Test
@@ -199,7 +199,7 @@ public class LogStringCommandInteractionTest {
         sut.setMessage(message);
         sut.merge(mockCommand);
 
-        verify(mockLogWriter, times(0)).println(anyString());
+        verify(mockLogWriter, times(0)).writeLine(anyString());
     }
 
     @Test

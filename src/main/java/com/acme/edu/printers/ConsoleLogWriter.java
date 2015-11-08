@@ -7,7 +7,7 @@ public class ConsoleLogWriter implements LogWriter {
     private static final PrintStream OUT = System.out;
 
     @Override
-    public void println(String stringToPrint) {
+    public void writeLine(String stringToPrint) {
         OUT.println(stringToPrint);
     }
 }
