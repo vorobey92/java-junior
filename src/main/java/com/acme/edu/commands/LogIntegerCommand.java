@@ -4,7 +4,7 @@ import com.acme.edu.businessexceptions.LoggingException;
 import com.acme.edu.decorators.Decorator;
 import com.acme.edu.printers.LogWriter;
 
-public class LogIntegerCommand extends Command<LogIntegerCommand> {
+public class LogIntegerCommand extends Command {
     private int maxValue;
     private int minValue;
     private Decorator decorator;
@@ -17,13 +17,19 @@ public class LogIntegerCommand extends Command<LogIntegerCommand> {
     }
 
     @Override
-    public LogIntegerCommand merge(LogIntegerCommand oldCommand) throws LoggingException {
-        if (oldCommand == null || oldCommand.getMessage() == null) {
+    protected String getFormattedString() {
+        return decorator.decorate(getMessage());
+    }
+
+    @Override
+    protected Command mergeWithCommandOfSameClass(Command oldCommand) throws LoggingException {
+        if (oldCommand.getMessage() == null) {
             return this;
         }
 
-        if (isSumOutOfRange(oldCommand.getMessage())) {
-            oldCommand.execute();
+        LogIntegerCommand logIntegerCommand = (LogIntegerCommand) oldCommand;
+        if (isSumOutOfRange(logIntegerCommand.getMessage())) {
+            logIntegerCommand.execute();
             execute();
             setMessage(null);
 
@@ -31,15 +37,10 @@ public class LogIntegerCommand extends Command<LogIntegerCommand> {
         }
 
         setMessage(
-                Integer.toString(Integer.parseInt(getMessage()) + Integer.parseInt(oldCommand.getMessage()))
+                Integer.toString(Integer.parseInt(getMessage()) + Integer.parseInt(logIntegerCommand.getMessage()))
         );
 
         return this;
-    }
-
-    @Override
-    protected String getFormattedString() {
-        return decorator.decorate(getMessage());
     }
 
     private boolean isSumOutOfRange(String oldMessage) {

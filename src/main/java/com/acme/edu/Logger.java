@@ -3,10 +3,9 @@ package com.acme.edu;
 import com.acme.edu.businessexceptions.LoggerException;
 import com.acme.edu.commands.Command;
 import com.acme.edu.commands.CommandFactory;
+import com.acme.edu.commands.CommandFactoryImpl;
 import com.acme.edu.businessexceptions.IllegalArgumentException;
 import com.acme.edu.printers.LogWriter;
-import com.acme.edu.states.State;
-import com.acme.edu.states.StateFactory;
 
 import java.util.Arrays;
 
@@ -17,24 +16,15 @@ import java.util.Arrays;
  */
 public class Logger {
 
-    private State currentState;
-    private State unaccumulatingState;
-    private State intState;
-    private State byteState;
-    private State stringState;
     private LogWriter[] logWriters;
     private CommandFactory commandFactory;
+    private Command lastCommand;
 
-    public Logger(CommandFactory commandFactory, StateFactory stateFactory, LogWriter... logWriters) throws LoggerException {
+    public Logger(CommandFactory commandFactory, LogWriter... logWriters) throws LoggerException {
         checkPrintersArgument(logWriters);
 
         this.commandFactory = commandFactory;
         this.logWriters = Arrays.copyOf(logWriters, logWriters.length);
-        unaccumulatingState = stateFactory.createState();
-        intState = stateFactory.createState();
-        byteState = stateFactory.createState();
-        stringState = stateFactory.createState();
-        currentState = unaccumulatingState;
     }
 
     /**
@@ -50,7 +40,7 @@ public class Logger {
      * @param message The int to be accumulated.
      */
     public void log(int message) throws LoggerException {
-        changeState(CommandFactory.Type.INT, intState, message);
+        process(message);
     }
 
     /**
@@ -66,7 +56,7 @@ public class Logger {
      * @param message The byte to be accumulated.
      */
     public void log(byte message) throws LoggerException {
-        changeState(CommandFactory.Type.BYTE, byteState, message);
+        process(message);
     }
 
     /**
@@ -77,7 +67,7 @@ public class Logger {
      * @param message The char to be logged.
      */
     public void log(char message) throws LoggerException {
-        changeState(CommandFactory.Type.CHAR, unaccumulatingState, message);
+        process(message);
     }
 
     /**
@@ -95,7 +85,7 @@ public class Logger {
      */
     public void log(String message) throws LoggerException {
         checkMessageArgument(message);
-        changeState(CommandFactory.Type.STRING, stringState, message);
+        process(message);
     }
 
     /**
@@ -106,7 +96,7 @@ public class Logger {
      * @param message The boolean to be logged.
      */
     public void log(boolean message) throws LoggerException {
-        changeState(CommandFactory.Type.BOOLEAN, unaccumulatingState, message);
+        process(message);
     }
 
     /**
@@ -118,7 +108,7 @@ public class Logger {
      */
     public void log(Object message) throws LoggerException {
         checkMessageArgument(message);
-        changeState(CommandFactory.Type.OBJECT, unaccumulatingState, message);
+        process(message);
     }
 
     /**
@@ -174,7 +164,10 @@ public class Logger {
      * after the flush() method is invoked.
      */
     public void flush() throws LoggerException {
-            currentState.flush();
+        if (lastCommand != null) {
+            lastCommand.execute();
+            lastCommand = null;
+        }
     }
 
     private static void checkPrintersArgument(LogWriter... logWriters) throws IllegalArgumentException {
@@ -195,14 +188,9 @@ public class Logger {
         }
     }
 
-    private void changeState(CommandFactory.Type type, State nextState, Object message) throws LoggerException {
-        if (currentState != nextState) {
-            flush();
-        }
-
-        Command command = commandFactory.createCommand(type, logWriters);
+    private void process(Object message) throws LoggerException {
+        Command command = commandFactory.createCommand(message, logWriters);
         command.setMessage(message.toString());
-        currentState = nextState;
-        currentState.apply(command);
+        lastCommand = command.merge(lastCommand);
     }
 }

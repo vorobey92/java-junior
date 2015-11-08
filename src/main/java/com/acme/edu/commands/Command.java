@@ -6,7 +6,7 @@ import com.acme.edu.printers.LogWriterException;
 
 import java.util.ArrayList;
 
-public abstract class Command<T> {
+public abstract class Command {
     private LogWriter[] logWriters;
     private String message;
 
@@ -14,7 +14,18 @@ public abstract class Command<T> {
         this.logWriters = logWriters;
     }
 
-    abstract public Command merge(T oldCommand) throws LoggingException;
+    public Command merge(Command oldCommand) throws LoggingException {
+        if (oldCommand == null) {
+            return this;
+        }
+
+        if (!getClass().isAssignableFrom(oldCommand.getClass())) {
+            oldCommand.execute();
+            return this;
+        }
+
+        return mergeWithCommandOfSameClass(oldCommand);
+    }
 
     public void execute() throws LoggingException {
         if (getMessage() == null) {
@@ -45,5 +56,7 @@ public abstract class Command<T> {
         return message;
     }
 
-    abstract protected String getFormattedString();
+    protected abstract String getFormattedString();
+
+    protected abstract Command mergeWithCommandOfSameClass(Command oldCommand) throws LoggingException;
 }

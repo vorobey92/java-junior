@@ -4,7 +4,7 @@ import com.acme.edu.businessexceptions.LoggingException;
 import com.acme.edu.decorators.Decorator;
 import com.acme.edu.printers.LogWriter;
 
-public class LogStringCommand extends Command<LogStringCommand> {
+public class LogStringCommand extends Command {
     private int lengthOfStringsSequence;
     private Decorator oneStringSequenceDecorator;
     private Decorator mulitpleStringSequenceDecorator;
@@ -30,21 +30,6 @@ public class LogStringCommand extends Command<LogStringCommand> {
         setLengthOfStringsSequence(1);
     }
 
-    @Override
-    public LogStringCommand merge(LogStringCommand oldCommand) throws LoggingException {
-        if (oldCommand == null || oldCommand.getMessage() == null) {
-            return this;
-        }
-
-        if (oldCommand.getMessage().equals(getMessage())) {
-            setLengthOfStringsSequence(getLengthOfStringsSequence() + oldCommand.getLengthOfStringsSequence());
-        } else {
-            oldCommand.execute();
-        }
-        
-        return this;
-    }
-
     public int getLengthOfStringsSequence() {
         return lengthOfStringsSequence;
     }
@@ -60,5 +45,17 @@ public class LogStringCommand extends Command<LogStringCommand> {
                 : oneStringSequenceDecorator;
 
         return decorator.decorate(getMessage(), getLengthOfStringsSequence());
+    }
+
+    @Override
+    protected Command mergeWithCommandOfSameClass(Command oldCommand) throws LoggingException {
+        LogStringCommand logStringCommand = (LogStringCommand) oldCommand;
+        if (getMessage().equals(logStringCommand.getMessage())) {
+            setLengthOfStringsSequence(getLengthOfStringsSequence() + logStringCommand.getLengthOfStringsSequence());
+        } else {
+            logStringCommand.execute();
+        }
+
+        return this;
     }
 }
