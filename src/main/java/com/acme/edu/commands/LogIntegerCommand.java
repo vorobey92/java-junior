@@ -23,9 +23,6 @@ public class LogIntegerCommand extends AccumulatingCommand {
 
     @Override
     protected Command mergeWithCommandOfSameClass(Command oldCommand) throws LoggingException {
-        if (oldCommand.getMessage() == null) {
-            return this;
-        }
 
         LogIntegerCommand logIntegerCommand = (LogIntegerCommand) oldCommand;
         if (isSumOutOfRange(logIntegerCommand.getMessage())) {
