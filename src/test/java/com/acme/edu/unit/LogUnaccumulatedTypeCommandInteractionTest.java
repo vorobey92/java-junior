@@ -8,6 +8,7 @@ import com.acme.edu.printers.LogWriterException;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -28,30 +29,30 @@ public class LogUnaccumulatedTypeCommandInteractionTest {
     }
 
     @Test
-    public void shouldLogWhenMergeWithNullCommand() throws LogWriterException, LoggingException {
-        when(stubDecorator.decorate(message)).thenReturn(decoratedString);
+    public void shouldNotLogWhenMergeWithNullCommand() throws LogWriterException, LoggingException {
+        when(stubDecorator.decorate(anyString())).thenReturn(decoratedString);
 
         sut.setMessage(message);
         sut.merge(null);
 
-        verify(mockLogWriter, times(1)).writeLine(decoratedString);
+        verify(mockLogWriter, times(0)).writeLine(anyString());
     }
 
     @Test
-    public void shouldLogWhenMergeWithCommandThatDoesNotHaveMessage() throws LogWriterException, LoggingException {
+    public void shouldNotLogWhenMergeWithCommandThatDoesNotHaveMessage() throws LogWriterException, LoggingException {
         LogUnaccumulatedTypeCommand stubCommand = mock(LogUnaccumulatedTypeCommand.class);
 
-        when(stubDecorator.decorate(message)).thenReturn(decoratedString);
+        when(stubDecorator.decorate(anyString())).thenReturn(decoratedString);
         when(stubCommand.getMessage()).thenReturn(null);
 
         sut.setMessage(message);
         sut.merge(stubCommand);
 
-        verify(mockLogWriter, times(1)).writeLine(decoratedString);
+        verify(mockLogWriter, times(0)).writeLine(anyString());
     }
 
     @Test
-    public void shouldNotLogOldMessageWhenMergeWithAnotherCommand() throws LogWriterException, LoggingException {
+    public void shouldLogLogOldMessageWhenMergeWithAnotherCommand() throws LogWriterException, LoggingException {
         String oldMessage = "old message";
         LogUnaccumulatedTypeCommand mockCommand = mock(LogUnaccumulatedTypeCommand.class);
 
@@ -61,6 +62,6 @@ public class LogUnaccumulatedTypeCommandInteractionTest {
         sut.setMessage(message);
         sut.merge(mockCommand);
 
-        verify(mockCommand, times(0)).execute();
+        verify(mockCommand, times(1)).execute();
     }
 }

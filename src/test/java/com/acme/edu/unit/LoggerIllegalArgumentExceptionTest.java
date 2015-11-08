@@ -3,10 +3,8 @@ package com.acme.edu.unit;
 import com.acme.edu.Logger;
 import com.acme.edu.businessexceptions.LoggerException;
 import com.acme.edu.commands.Command;
-import com.acme.edu.commands.CommandFactory;
+import com.acme.edu.commands.CommandFactoryImpl;
 import com.acme.edu.printers.LogWriter;
-import com.acme.edu.states.State;
-import com.acme.edu.states.StateFactory;
 import org.junit.Test;
 
 import static org.mockito.Mockito.*;
@@ -14,12 +12,10 @@ import static org.mockito.Mockito.*;
 public class LoggerIllegalArgumentExceptionTest {
     private Logger sut;
     private LogWriter dummyLogWriter = mock(LogWriter.class);
-    private CommandFactory stubCommandFactory = mock(CommandFactory.class);
-    private StateFactory stubStateFactory = mock(StateFactory.class);
+    private CommandFactoryImpl stubCommandFactory = mock(CommandFactoryImpl.class);
 
     {
         when(stubCommandFactory.createCommand(any(), any())).thenReturn(mock(Command.class));
-        when(stubStateFactory.createState()).thenReturn(mock(State.class));
     }
 
 //    TODO: test scenarios when exceptions should not be thrown
@@ -111,6 +107,6 @@ public class LoggerIllegalArgumentExceptionTest {
     }
 
     private Logger createSut(LogWriter... logWriters) throws LoggerException {
-        return new Logger(stubCommandFactory, stubStateFactory, logWriters);
+        return new Logger(stubCommandFactory, logWriters);
     }
 }

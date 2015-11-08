@@ -3,9 +3,8 @@ package com.acme.edu.iteration02;
 import com.acme.edu.Logger;
 import com.acme.edu.SysoutCaptureAndAssertionAbility;
 import com.acme.edu.businessexceptions.LoggerException;
-import com.acme.edu.commands.CommandFactory;
+import com.acme.edu.commands.CommandFactoryImpl;
 import com.acme.edu.printers.ConsoleLogWriter;
-import com.acme.edu.states.StateFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -20,7 +19,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     public void setUpSystemOut() throws LoggerException {
         resetOut();
         captureSysout();
-        logger = new Logger(new CommandFactory(), new StateFactory(), new ConsoleLogWriter());
+        logger = new Logger(new CommandFactoryImpl(), new ConsoleLogWriter());
     }
     //endregion
 
