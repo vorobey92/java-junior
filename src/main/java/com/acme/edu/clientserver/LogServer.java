@@ -77,7 +77,9 @@ public class LogServer implements Runnable {
 
                     try {
                         writeTofile(messages, charset);
-                        writeDataAndShutdownOutputStream(OK, null, objectOutputStream, clientSocket);
+                        objectOutputStream.writeInt(OK);
+                        objectOutputStream.flush();
+                        clientSocket.shutdownOutput();
                     } catch (IOException | InvalidPathException e) {
                         writeDataAndShutdownOutputStream(
                                 INTERNAL_SERVER_ERROR,
