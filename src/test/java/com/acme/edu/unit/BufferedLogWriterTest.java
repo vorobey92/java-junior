@@ -15,25 +15,37 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 public class BufferedLogWriterTest {
-    private BufferWriter mockBufferWriter = mock(BufferWriter.class);
     private String dummyMessage = "test message";
     private String highPriorityMessage =
             "high priority message contains " + BufferedLogWriter.HIGH_PRIORITY_SUBSTRING + " substring";
     private BufferedLogWriter sut;
     private ArgumentCaptor<List> argument;
+    private BufferWriter mockBufferWriter;
 
     @Before
     public void setUp() {
-        sut = new BufferedLogWriter(mockBufferWriter);
+        mockBufferWriter = mock(BufferWriter.class);
         argument = ArgumentCaptor.forClass(List.class);
+        sut = new BufferedLogWriter(mockBufferWriter);
     }
 
     @Test
-    public void shouldPlaceHighPriorityMessageInTheBeginningOfTheBuffer() throws LogWriterException {
+    public void shouldPlaceHighPriorityMessageInTheBeginningOfTheBufferWhenItWasLastMessage() throws LogWriterException {
         for (int i = 0; i < BufferedLogWriter.BUFFER_SIZE - 1; ++i) {
             sut.writeLine(dummyMessage);
         }
         sut.writeLine(highPriorityMessage);
+
+        verify(mockBufferWriter).writeBuffer(argument.capture());
+        assertThat(argument.getValue().get(0)).isEqualTo(highPriorityMessage);
+    }
+
+    @Test
+    public void shouldPlaceHighPriorityMessageInTheBeginningOfTheBufferWhenItWasFirstMessage() throws LogWriterException {
+        sut.writeLine(highPriorityMessage);
+        for (int i = 1; i < BufferedLogWriter.BUFFER_SIZE; ++i) {
+            sut.writeLine(dummyMessage);
+        }
 
         verify(mockBufferWriter).writeBuffer(argument.capture());
         assertThat(argument.getValue().get(0)).isEqualTo(highPriorityMessage);
