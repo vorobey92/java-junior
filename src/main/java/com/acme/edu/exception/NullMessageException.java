@@ -16,7 +16,9 @@ public class NullMessageException extends LogException {
      * call to {@link #initCause}.
      */
     public NullMessageException() {
+        super();
     }
+
 
     /**
      * Constructs a new exception with the specified detail message.  The

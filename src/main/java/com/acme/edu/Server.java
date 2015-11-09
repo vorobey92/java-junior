@@ -1,6 +1,6 @@
 package com.acme.edu;
 
-import com.acme.edu.exception.CanNotPrintException;
+import com.acme.edu.exception.PrintException;
 import com.acme.edu.printer.OutputStreamPrinter;
 
 import java.io.*;
@@ -12,34 +12,39 @@ import java.net.Socket;
  */
 public class Server {
 
-    private Server(){
+    private Server() {
 
     }
 
     /**
      * Starts a server
+     *
      * @param args
-     * @throws CanNotPrintException
+     * @throws PrintException
      */
-    public static void main(String[] args) throws CanNotPrintException {
+    public static void main(String[] args) throws PrintException, IOException {
+
         try {
             ServerSocket ss = new ServerSocket(6666);
+            while (true) {
+                Socket client = ss.accept();
 
-            Socket client = ss.accept();
+                BufferedReader is = new BufferedReader(new InputStreamReader(client.getInputStream()));
 
-            BufferedReader is = new BufferedReader(new InputStreamReader(client.getInputStream()));
+                OutputStreamPrinter pr = new OutputStreamPrinter(new File("ServerLog.txt"), "UTF-8", false);
 
-            File log = new File("log.txt");
-            OutputStreamPrinter pr = new OutputStreamPrinter(log, "UTF-8");
+                String readLine;
+                while ((readLine = is.readLine()) != null) {
+                    if ("STOP".equals(readLine)) {
+                        System.out.println("Sry, we are closing");
+                        System.exit(0);
+                    }
+                    pr.println(readLine);
+                    System.out.println(">>>>>" + readLine);
 
-            String readLine;
-            while ((readLine = is.readLine()) != null) {
-                pr.println(readLine);
+                }
+
             }
-
-        } catch (IOException e) {
-            throw new CanNotPrintException(e);
-        }
+        }catch (Exception e){}
     }
-
 }

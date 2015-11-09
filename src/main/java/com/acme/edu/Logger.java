@@ -2,8 +2,6 @@ package com.acme.edu;
 
 import com.acme.edu.exception.LogException;
 import com.acme.edu.exception.NullMessageException;
-import com.acme.edu.exception.StateException;
-import com.acme.edu.printer.OutputStreamPrinter;
 import com.acme.edu.state.*;
 
 /**
@@ -112,10 +110,9 @@ public class Logger {
      */
     public void close() throws  LogException {
         if (lastState == null){
-            throw  new StateException("Trying to close null State");
+            throw  new LogException("Trying to close null State");
         }
         lastState.flush();
-        OutputStreamPrinter.stop();
     }
 
     /**

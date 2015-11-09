@@ -8,13 +8,15 @@ package com.acme.edu.exception;
      * the method or constructor boundary.
      */
     public class LogException extends Exception {
-        /**
-         * Constructs a new exception with {@code null} as its detail message.
-         * The cause is not initialized, and may subsequently be initialized by a
-         * call to {@link #initCause}.
-         */
-        public LogException() {
-        }
+
+     /**
+      * Constructs a new exception with {@code null} as its detail message.
+      * The cause is not initialized, and may subsequently be initialized by a
+      * call to {@link #initCause}.
+      */
+     public LogException() {
+         super();
+     }
 
         /**
          * Constructs a new exception with the specified detail message.  The
@@ -75,4 +77,4 @@ package com.acme.edu.exception;
         public LogException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
             super(message, cause, enableSuppression, writableStackTrace);
         }
-    }
+ }

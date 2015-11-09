@@ -2,9 +2,8 @@ package com.acme.edu.unit;
 
 
 import com.acme.edu.SysoutCaptureAndAssertionAbility;
-import com.acme.edu.exception.CanNotPrintException;
+import com.acme.edu.exception.PrintException;
 import com.acme.edu.exception.LogException;
-import com.acme.edu.exception.StateException;
 import com.acme.edu.printer.ConsolePrinter;
 import com.acme.edu.printer.OutputStreamPrinter;
 import com.acme.edu.printer.Printable;
@@ -12,12 +11,10 @@ import com.acme.edu.state.DefaultState;
 import com.acme.edu.state.IntState;
 import com.acme.edu.state.State;
 import com.acme.edu.state.StringState;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.io.File;
 import java.io.IOException;
 
 import static org.apache.commons.io.FileUtils.readFileToString;
@@ -30,7 +27,7 @@ public class StateTest implements SysoutCaptureAndAssertionAbility {
     private State sut;
 
     @Test
-    public void shouldLogSumOfPrimitivesWhenYouTryingToLogSequenceOfInts() throws CanNotPrintException, LogException {
+    public void shouldLogSumOfPrimitivesWhenYouTryingToLogSequenceOfInts() throws PrintException, LogException {
         mock = mock(ConsolePrinter.class);
         sut = new IntState(mock);
 
@@ -43,7 +40,7 @@ public class StateTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldLogTwoPrimitivesWhenAppearsTypeOverflowWhileSumming() throws CanNotPrintException, LogException {
+    public void shouldLogTwoPrimitivesWhenAppearsTypeOverflowWhileSumming() throws PrintException, LogException {
         mock = mock(ConsolePrinter.class);
         sut = new IntState(mock);
 
@@ -56,7 +53,7 @@ public class StateTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldLogTwoPrimitivesWhenAppearsTypeOverflowWhileSubtracting() throws CanNotPrintException, LogException {
+    public void shouldLogTwoPrimitivesWhenAppearsTypeOverflowWhileSubtracting() throws PrintException, LogException {
         mock = mock(ConsolePrinter.class);
         sut = new IntState(mock);
 
@@ -69,7 +66,7 @@ public class StateTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldLogStringAndStringWithCounter() throws CanNotPrintException, LogException {
+    public void shouldLogStringAndStringWithCounter() throws PrintException, LogException {
         mock = mock(ConsolePrinter.class);
         sut = new StringState(mock);
 
@@ -92,7 +89,7 @@ public class StateTest implements SysoutCaptureAndAssertionAbility {
 
 
     @Test
-    public void shoudLogThatWeWillGiveToThatDefaultState() throws CanNotPrintException, LogException {
+    public void shoudLogThatWeWillGiveToThatDefaultState() throws PrintException, LogException {
         mock = mock(ConsolePrinter.class);
         sut = new DefaultState(mock);
 
@@ -105,7 +102,7 @@ public class StateTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldThrowNullPointerExceptionWhenNullStringIsFirst() throws CanNotPrintException, LogException {
+    public void shouldThrowNullPointerExceptionWhenNullStringIsFirst() throws PrintException, LogException {
         mock = mock(ConsolePrinter.class);
         sut = new StringState(mock);
 
@@ -119,18 +116,18 @@ public class StateTest implements SysoutCaptureAndAssertionAbility {
     public final ExpectedException exception = ExpectedException.none();
 
     @Test
-    public void shouldTryToWriteToOtherPrintersAlthoughThereAreExceptionFromOneOfPrinters() throws StateException, IOException {
+    public void shouldTryToWriteToOtherPrintersAlthoughThereAreExceptionFromOneOfPrinters() throws IOException, PrintException {
         Printable mockCons = mock(ConsolePrinter.class);
         Printable mockFile = mock(OutputStreamPrinter.class);
         sut = new StringState(mockCons, mockFile);
 
-        doThrow(CanNotPrintException.class).when(mockFile).println(anyString());
-        doThrow(CanNotPrintException.class).when(mockCons).println(anyString());
+        doThrow(PrintException.class).when(mockFile).println(anyString());
+        doThrow(PrintException.class).when(mockCons).println(anyString());
 
         // don't know how to show that there will be exception like
-        // StateException([CanNotPrintException, CanNotPrintException])
+        // StateException([PrintException, PrintException])
         // but it will
-        exception.expect(StateException.class);
+        exception.expect(PrintException.class);
         sut.log("a");
         sut.flush();
 

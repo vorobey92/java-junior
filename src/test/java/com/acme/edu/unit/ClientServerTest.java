@@ -1,6 +1,6 @@
 package com.acme.edu.unit;
 
-import com.acme.edu.exception.CanNotPrintException;
+import com.acme.edu.exception.PrintException;
 import com.acme.edu.printer.OutputStreamPrinter;
 import com.acme.edu.printer.Printable;
 import org.junit.Ignore;
@@ -13,13 +13,12 @@ public class ClientServerTest {
 
     @Test
     @Ignore
-    public void testtesttest() throws CanNotPrintException {
+    public void testtesttest() throws PrintException {
 
-        Printable net = new OutputStreamPrinter("127.0.0.1", 6666);
+        Printable net = new OutputStreamPrinter("localhost", 6666, false);
 
-        for(int i = 0; i < 140; i++)
-            net.println("sdf");
+//        for(int i = 0; i < 51; i++)
+            net.print("STOP");
 
-        OutputStreamPrinter.stop();
     }
 }

@@ -1,6 +1,6 @@
 package com.acme.edu.state;
 
-import com.acme.edu.exception.StateException;
+import com.acme.edu.exception.PrintException;
 import com.acme.edu.printer.Printable;
 
 /**
@@ -28,7 +28,7 @@ public class IntState extends State {
      * @param message number (int) that will be logged (or sum for sequence)
      */
     @Override
-    public void log(String message) throws StateException {
+    public void log(String message) throws PrintException {
         int parsedMessage = Integer.parseInt(message);
         // Checking type overflow
         if (    (parsedMessage > 0) &&
@@ -59,7 +59,7 @@ public class IntState extends State {
      * Method to release buffer into log.
      */
     @Override
-    public void flush() throws StateException {
+    public void flush() throws PrintException {
         if (cntOfInts > 0) {
             println(PREFIX + bufferOfInts);
             bufferOfInts = 0;

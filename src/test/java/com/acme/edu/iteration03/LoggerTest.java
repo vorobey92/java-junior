@@ -17,6 +17,8 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     private static final String SEP = System.lineSeparator();
     private Logger logger;
     //region given
+
+    /*
     @Before
     public void setUpSystemOut() throws IOException {
         captureSysout();
@@ -120,5 +122,5 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         //endregion
     }
 
-
+*/
 }

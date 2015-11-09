@@ -1,7 +1,7 @@
 package com.acme.edu.state;
 
-import com.acme.edu.exception.CanNotPrintException;
-import com.acme.edu.exception.StateException;
+import com.acme.edu.exception.LogException;
+import com.acme.edu.exception.PrintException;
 import com.acme.edu.printer.Printable;
 
 import java.util.ArrayList;
@@ -29,36 +29,36 @@ public abstract class State {
      *
      * @param message string thar will be loged
      */
-    public abstract void log(String message) throws StateException;
+    public abstract void log(String message) throws PrintException;
 
     /**
      * Method for releasing buffer
      */
-    public abstract void flush() throws StateException;
+    public abstract void flush() throws PrintException;
 
-    protected void print(String message) throws StateException {
+    protected void print(String message) throws PrintException {
             for (Printable printer : listOfPrinters) {
                 try {
                     printer.print(message);
-                } catch (CanNotPrintException e) {
+                } catch (PrintException e) {
                     exceptionList.add(e);
                 }
             }
             if (!exceptionList.isEmpty()){
-                throw new StateException(exceptionList.toString());
+                throw new PrintException(exceptionList.toString());
             }
     }
 
-    protected void println(String message) throws StateException {
+    protected void println(String message) throws PrintException {
            for (Printable printer : listOfPrinters) {
                try {
                    printer.println(message);
-               } catch (CanNotPrintException e) {
+               } catch (PrintException e) {
                    exceptionList.add(e);
                }
            }
             if (!exceptionList.isEmpty()){
-                throw new StateException(exceptionList.toString());
+                throw new PrintException(exceptionList.toString());
             }
     }
 

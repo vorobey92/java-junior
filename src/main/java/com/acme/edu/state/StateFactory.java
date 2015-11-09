@@ -1,6 +1,6 @@
 package com.acme.edu.state;
 
-import com.acme.edu.exception.StateException;
+import com.acme.edu.exception.PrintException;
 import com.acme.edu.printer.Printable;
 
 /**
@@ -30,7 +30,7 @@ public class StateFactory {
      * @param lastState previous state
      * @return returns string state
      */
-    public State getStringState(State lastState) throws StateException {
+    public State getStringState(State lastState) throws PrintException {
         if (lastState != null && lastState != stringState) {
             lastState.flush();
         }
@@ -44,7 +44,7 @@ public class StateFactory {
      * @param lastState previous state
      * @return returns int state
      */
-    public State getIntState(State lastState) throws StateException {
+    public State getIntState(State lastState) throws PrintException {
         if (lastState != null && lastState != intState) {
             lastState.flush();
         }
