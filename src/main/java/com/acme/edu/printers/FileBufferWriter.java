@@ -1,6 +1,5 @@
 package com.acme.edu.printers;
 
-import java.lang.IllegalArgumentException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -8,17 +7,17 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
 
-public class FileLogWriter extends BufferedLogWriter {
+public class FileBufferWriter implements BufferWriter {
     private String fileName;
     private String charset;
 
-    public FileLogWriter(String fileName, String charset) {
+    public FileBufferWriter(String fileName, String charset) {
         this.fileName = fileName;
         this.charset = charset;
     }
 
     @Override
-    protected void writeBuffer(List<String> buffer) throws LogWriterException {
+    public void writeBuffer(List<String> buffer) throws LogWriterException {
         try {
             Files.write(
                     Paths.get(fileName),
