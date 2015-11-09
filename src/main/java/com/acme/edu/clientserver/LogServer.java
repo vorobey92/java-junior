@@ -28,14 +28,16 @@ public class LogServer implements Runnable {
 
     private int port;
     private String fileName;
+    private String charset;
 
-    public LogServer(int port, String fileName) {
+    public LogServer(int port, String fileName, String charset) {
         this.port = port;
         this.fileName = fileName;
+        this.charset = charset;
     }
 
     public static void main(String[] args) {
-        LogServer server = new LogServer(Integer.parseInt(args[0]), args[1]);
+        LogServer server = new LogServer(Integer.parseInt(args[0]), args[1], args[2]);
         server.run();
     }
 
@@ -51,11 +53,9 @@ public class LogServer implements Runnable {
 
                     clientSocket.setSoTimeout(TIMEOUT);
                     List<String> messages;
-                    String charset;
 
                     try {
                         messages = (List<String>) objectInputStream.readObject();
-                        charset = objectInputStream.readUTF();
                         clientSocket.shutdownInput();
                     } catch (SocketTimeoutException e) {
                         writeDataAndShutdownOutputStream(
