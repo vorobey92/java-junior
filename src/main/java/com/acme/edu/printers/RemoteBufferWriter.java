@@ -1,6 +1,4 @@
-package com.acme.edu.clientserver;
-
-import com.acme.edu.printers.LogWriterException;
+package com.acme.edu.printers;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -11,7 +9,7 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.List;
 
-public class Client {
+public class RemoteBufferWriter implements BufferWriter {
     private static final int OK = 200;
     private static final int BAD_REQUEST = 400;
     private static final int REQUEST_TIMEOUT = 408;
@@ -21,19 +19,19 @@ public class Client {
     private String host;
     private int port;
 
-    public Client(String host, int port) {
+    public RemoteBufferWriter(String host, int port) {
         this.host = host;
         this.port = port;
     }
 
-    public void sendData(List<String> stringsToBeSend, String charset) throws LogWriterException {
+    @Override
+    public void writeBuffer(List<String> buffer) throws LogWriterException {
         try (Socket socket = new Socket(host, port)) {
 
             ObjectOutputStream objectOutputStream;
             try {
                 objectOutputStream = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-                objectOutputStream.writeObject(stringsToBeSend);
-                objectOutputStream.writeUTF(charset);
+                objectOutputStream.writeObject(buffer);
                 objectOutputStream.flush();
                 socket.shutdownOutput();
             } catch (IOException e) {
