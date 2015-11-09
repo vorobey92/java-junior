@@ -1,5 +1,9 @@
 package com.acme.edu.clientserver;
 
+import com.acme.edu.printers.BufferWriter;
+import com.acme.edu.printers.FileBufferWriter;
+import com.acme.edu.printers.LogWriterException;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
@@ -9,11 +13,6 @@ import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.InvalidPathException;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.Date;
 import java.util.List;
 
@@ -27,17 +26,16 @@ public class LogServer implements Runnable {
     private static final PrintStream ERR = System.err;
 
     private int port;
-    private String fileName;
-    private String charset;
+    private BufferWriter bufferWriter;
 
-    public LogServer(int port, String fileName, String charset) {
+    public LogServer(int port, BufferWriter bufferWriter) {
         this.port = port;
-        this.fileName = fileName;
-        this.charset = charset;
+        this.bufferWriter = bufferWriter;
     }
 
     public static void main(String[] args) {
-        LogServer server = new LogServer(Integer.parseInt(args[0]), args[1], args[2]);
+        BufferWriter bufferWriter = new FileBufferWriter(args[1], args[2]);
+        LogServer server = new LogServer(Integer.parseInt(args[0]), bufferWriter);
         server.run();
     }
 
@@ -76,21 +74,14 @@ public class LogServer implements Runnable {
                     }
 
                     try {
-                        writeTofile(messages, charset);
+                        bufferWriter.writeBuffer(messages);
                         objectOutputStream.writeInt(OK);
                         objectOutputStream.flush();
                         clientSocket.shutdownOutput();
-                    } catch (IOException | InvalidPathException e) {
+                    } catch (LogWriterException e) {
                         writeDataAndShutdownOutputStream(
                                 INTERNAL_SERVER_ERROR,
-                                "Error occurred while writing a log file\r\n" + e.getMessage(),
-                                objectOutputStream,
-                                clientSocket
-                        );
-                    } catch (IllegalArgumentException e) {
-                        writeDataAndShutdownOutputStream(
-                                INTERNAL_SERVER_ERROR,
-                                "The server does not support the provided charset: charset=" + charset,
+                                e.getMessage(),
                                 objectOutputStream,
                                 clientSocket
                         );
@@ -114,16 +105,5 @@ public class LogServer implements Runnable {
         objectOutputStream.writeUTF(errorMessage);
         objectOutputStream.flush();
         clientSocket.shutdownOutput();
-    }
-
-    private void writeTofile(List<String> messages, String charset) throws IOException, IllegalArgumentException {
-        Files.write(
-                Paths.get(fileName),
-                messages,
-                Charset.forName(charset),
-                StandardOpenOption.CREATE,
-                StandardOpenOption.WRITE,
-                StandardOpenOption.APPEND
-        );
     }
 }
