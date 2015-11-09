@@ -16,7 +16,7 @@ import java.net.SocketTimeoutException;
 import java.util.Date;
 import java.util.List;
 
-public class LogServer implements Runnable {
+public class LogServer {
     private static final int TIMEOUT = 5000;
     private static final int OK = 200;
     private static final int BAD_REQUEST = 400;
@@ -36,11 +36,10 @@ public class LogServer implements Runnable {
     public static void main(String[] args) {
         BufferWriter bufferWriter = new FileBufferWriter(args[1], args[2]);
         LogServer server = new LogServer(Integer.parseInt(args[0]), bufferWriter);
-        server.run();
+        server.start();
     }
 
-    @Override
-    public void run() {
+    public void start() {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             while (true) {
                 try (Socket clientSocket = serverSocket.accept();

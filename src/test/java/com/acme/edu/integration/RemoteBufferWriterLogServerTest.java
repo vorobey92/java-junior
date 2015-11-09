@@ -43,7 +43,7 @@ public class RemoteBufferWriterLogServerTest {
         LogServer server = new LogServer(port, bufferWriter);
         RemoteBufferWriter client = new RemoteBufferWriter(localhost, port);
 
-        Thread serverThread = new Thread(server);
+        Thread serverThread = new Thread(server::start);
         serverThread.setDaemon(true);
         serverThread.start();
         Thread.sleep(1000);
