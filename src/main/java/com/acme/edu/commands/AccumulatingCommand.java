@@ -4,7 +4,7 @@ import com.acme.edu.businessexceptions.LoggingException;
 import com.acme.edu.printers.LogWriter;
 
 /**
- * An AccumulatingCommand is subclass of Command and provides a skeletal implementation for command which accumulate
+ * AccumulatingCommand is subclass of Command and provides a skeletal implementation for command which accumulate
  * data.
  */
 public abstract class AccumulatingCommand extends Command {
