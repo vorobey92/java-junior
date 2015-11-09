@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public abstract class BufferedLogWriter implements LogWriter {
+public class BufferedLogWriter implements LogWriter {
     private static final int BUFFER_SIZE = 50;
     private static final String HIGH_PRIORITY_SUBSTRING = "ERROR";
     private static final Comparator<String> MESSAGE_COMPARATOR =
@@ -13,6 +13,11 @@ public abstract class BufferedLogWriter implements LogWriter {
                     -> Boolean.compare(containsHighPrioritySubstring(message1), containsHighPrioritySubstring(message2));
 
     private List<String> buffer = new ArrayList<>(BUFFER_SIZE);
+    private BufferWriter bufferWriter;
+
+    public BufferedLogWriter(BufferWriter bufferWriter) {
+        this.bufferWriter = bufferWriter;
+    }
 
     @Override
     public void writeLine(String stringToPrint) throws LogWriterException {
@@ -25,13 +30,11 @@ public abstract class BufferedLogWriter implements LogWriter {
         Collections.sort(buffer, MESSAGE_COMPARATOR);
 
         try {
-            writeBuffer(buffer);
+            bufferWriter.writeBuffer(buffer);
         } finally {
             buffer.clear();
         }
     }
-
-    protected abstract void writeBuffer(List<String> buffer) throws LogWriterException;
 
     private static boolean containsHighPrioritySubstring(String message) {
         return message.contains(HIGH_PRIORITY_SUBSTRING);
