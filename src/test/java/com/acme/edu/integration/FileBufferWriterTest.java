@@ -1,7 +1,7 @@
 package com.acme.edu.integration;
 
-import com.acme.edu.printers.FileBufferWriter;
-import com.acme.edu.printers.LogWriterException;
+import com.acme.edu.writers.FileBufferWriter;
+import com.acme.edu.writers.LogWriterException;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;

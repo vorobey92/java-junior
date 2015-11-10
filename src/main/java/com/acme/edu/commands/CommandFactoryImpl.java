@@ -1,7 +1,7 @@
 package com.acme.edu.commands;
 
 import com.acme.edu.decorators.DecoratorFactory;
-import com.acme.edu.printers.LogWriter;
+import com.acme.edu.writers.LogWriter;
 
 public class CommandFactoryImpl implements CommandFactory {
     @Override

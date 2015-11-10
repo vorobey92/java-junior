@@ -3,11 +3,10 @@ package com.acme.edu.unit;
 import com.acme.edu.businessexceptions.LoggingException;
 import com.acme.edu.commands.LogStringCommand;
 import com.acme.edu.decorators.Decorator;
-import com.acme.edu.printers.LogWriter;
-import com.acme.edu.printers.LogWriterException;
+import com.acme.edu.writers.LogWriter;
+import com.acme.edu.writers.LogWriterException;
 import org.junit.Before;
 import org.junit.Test;
-import sun.rmi.runtime.Log;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Matchers.any;

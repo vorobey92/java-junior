@@ -4,7 +4,7 @@ import com.acme.edu.Logger;
 import com.acme.edu.businessexceptions.LoggerException;
 import com.acme.edu.commands.Command;
 import com.acme.edu.commands.CommandFactoryImpl;
-import com.acme.edu.printers.LogWriter;
+import com.acme.edu.writers.LogWriter;
 import org.junit.Test;
 
 import static org.mockito.Mockito.*;

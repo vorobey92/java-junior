@@ -1,4 +1,4 @@
-package com.acme.edu.printers;
+package com.acme.edu.writers;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

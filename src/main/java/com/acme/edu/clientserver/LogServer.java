@@ -1,8 +1,8 @@
 package com.acme.edu.clientserver;
 
-import com.acme.edu.printers.BufferWriter;
-import com.acme.edu.printers.FileBufferWriterFactory;
-import com.acme.edu.printers.LogWriterException;
+import com.acme.edu.writers.BufferWriter;
+import com.acme.edu.writers.FileBufferWriterFactory;
+import com.acme.edu.writers.LogWriterException;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

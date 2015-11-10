@@ -4,7 +4,7 @@ import com.acme.edu.Logger;
 import com.acme.edu.SysoutCaptureAndAssertionAbility;
 import com.acme.edu.businessexceptions.LoggerException;
 import com.acme.edu.commands.CommandFactoryImpl;
-import com.acme.edu.printers.ConsoleLogWriter;
+import com.acme.edu.writers.ConsoleLogWriter;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;

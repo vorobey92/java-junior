@@ -1,4 +1,4 @@
-package com.acme.edu.printers;
+package com.acme.edu.writers;
 
 public class LogWriterException extends Exception {
 

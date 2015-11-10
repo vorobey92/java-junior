@@ -1,8 +1,8 @@
 package com.acme.edu.unit;
 
-import com.acme.edu.printers.BufferWriter;
-import com.acme.edu.printers.BufferedLogWriter;
-import com.acme.edu.printers.LogWriterException;
+import com.acme.edu.writers.BufferWriter;
+import com.acme.edu.writers.BufferedLogWriter;
+import com.acme.edu.writers.LogWriterException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;

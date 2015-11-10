@@ -1,8 +1,8 @@
 package com.acme.edu.commands;
 
 import com.acme.edu.businessexceptions.LoggingException;
-import com.acme.edu.printers.LogWriter;
-import com.acme.edu.printers.LogWriterException;
+import com.acme.edu.writers.LogWriter;
+import com.acme.edu.writers.LogWriterException;
 
 import java.util.ArrayList;
 import java.util.List;

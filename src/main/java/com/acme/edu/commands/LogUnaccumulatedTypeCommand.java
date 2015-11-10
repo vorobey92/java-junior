@@ -2,7 +2,7 @@ package com.acme.edu.commands;
 
 import com.acme.edu.businessexceptions.LoggingException;
 import com.acme.edu.decorators.Decorator;
-import com.acme.edu.printers.LogWriter;
+import com.acme.edu.writers.LogWriter;
 
 /**
  * LogUnaccumulatedTypeCommand is subclass of Command and implements unaccumulating behaviour of

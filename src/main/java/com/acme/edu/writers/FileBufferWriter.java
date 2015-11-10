@@ -1,4 +1,4 @@
-package com.acme.edu.printers;
+package com.acme.edu.writers;
 
 import java.io.IOException;
 import java.nio.charset.Charset;

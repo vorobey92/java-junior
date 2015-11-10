@@ -4,7 +4,7 @@ import com.acme.edu.businessexceptions.LoggerException;
 import com.acme.edu.commands.Command;
 import com.acme.edu.commands.CommandFactory;
 import com.acme.edu.businessexceptions.IllegalArgumentException;
-import com.acme.edu.printers.LogWriter;
+import com.acme.edu.writers.LogWriter;
 
 import java.util.Arrays;
 

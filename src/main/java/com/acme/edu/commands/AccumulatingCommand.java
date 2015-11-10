@@ -1,7 +1,7 @@
 package com.acme.edu.commands;
 
 import com.acme.edu.businessexceptions.LoggingException;
-import com.acme.edu.printers.LogWriter;
+import com.acme.edu.writers.LogWriter;
 
 /**
  * AccumulatingCommand is subclass of Command and provides a skeletal implementation for command which accumulate

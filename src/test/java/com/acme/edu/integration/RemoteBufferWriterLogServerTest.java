@@ -2,11 +2,9 @@ package com.acme.edu.integration;
 
 import com.acme.edu.businessexceptions.LoggerException;
 import com.acme.edu.clientserver.LogServer;
-import com.acme.edu.printers.BufferWriter;
-import com.acme.edu.printers.FileBufferWriter;
-import com.acme.edu.printers.FileBufferWriterFactory;
-import com.acme.edu.printers.LogWriterException;
-import com.acme.edu.printers.RemoteBufferWriter;
+import com.acme.edu.writers.FileBufferWriterFactory;
+import com.acme.edu.writers.LogWriterException;
+import com.acme.edu.writers.RemoteBufferWriter;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
