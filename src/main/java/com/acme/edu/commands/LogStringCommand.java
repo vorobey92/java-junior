@@ -26,6 +26,11 @@ public class LogStringCommand extends AccumulatingCommand {
         this.mulitpleStringSequenceDecorator = mulitpleStringSequenceDecorator;
     }
 
+    /**
+     * Sets a passed String as the command's message. Invocation of this method drops currently accumulated
+     * data if this message has so.
+     * @param message a String to be set as the command's message
+     */
     @Override
     public void setMessage(String message) {
         super.setMessage(message);
@@ -38,6 +43,9 @@ public class LogStringCommand extends AccumulatingCommand {
         lengthOfStringsSequence = 1;
     }
 
+    /**
+     * @return the number of accumulated string messages
+     */
     public int getLengthOfStringsSequence() {
         return lengthOfStringsSequence;
     }
