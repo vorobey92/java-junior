@@ -21,7 +21,7 @@ public class LoggerException extends Exception {
      * Constructs a new exception with the specified detail message and the specified list of causes -
      * exceptions that caused this exception to get thrown
      * @param message the detail message
-     * @param causes the list of causes (which is saved for later retrieval by the getCauses() method
+     * @param causes the list of causes (which is saved for later retrieval by the getCauses() method)
      */
     public LoggerException(String message, List<Exception> causes) {
         super(message);
