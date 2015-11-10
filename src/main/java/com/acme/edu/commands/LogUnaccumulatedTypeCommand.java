@@ -12,7 +12,8 @@ public class LogUnaccumulatedTypeCommand extends Command {
     private Decorator decorator;
 
     /**
-     * Constructs a new LogUnaccumulatedTypeCommand object with provided array of LogWriters
+     * Constructs a new LogUnaccumulatedTypeCommand object with provided decorator and array of
+     * LogWriters
      * @param decorator a decorator which will be used to decorate the contained message
      * @param logWriters an array of LogWriters which will be used for writing a message exception
      */
