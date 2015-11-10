@@ -9,10 +9,6 @@ import java.util.Arrays;
  */
 public class ArrayUtils {
 
-    private ArrayUtils() {
-
-    }
-
     /**
      * Reduces the passed multidimensional int array to one dimensional int array containing the elements
      * of the source array
@@ -47,5 +43,9 @@ public class ArrayUtils {
         System.arraycopy(array2, 0, newArray, array1.length, array2.length);
 
         return newArray;
+    }
+
+    private ArrayUtils() {
+
     }
 }
