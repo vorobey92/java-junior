@@ -63,15 +63,6 @@ public class LogServer {
         }
     }
 
-    private static void writeDataAndShutdownOutputStream(
-            int statusCode, String errorMessage, ObjectOutputStream objectOutputStream, Socket clientSocket
-    ) throws IOException {
-        objectOutputStream.writeInt(statusCode);
-        objectOutputStream.writeUTF(errorMessage);
-        objectOutputStream.flush();
-        clientSocket.shutdownOutput();
-    }
-
     private class RequestHandler implements Runnable {
         private Socket clientSocket;
         private BufferWriter bufferWriter;
@@ -131,6 +122,15 @@ public class LogServer {
                 e.printStackTrace();
                 ERR.println();
             }
+        }
+
+        private void writeDataAndShutdownOutputStream(
+                int statusCode, String errorMessage, ObjectOutputStream objectOutputStream, Socket clientSocket
+        ) throws IOException {
+            objectOutputStream.writeInt(statusCode);
+            objectOutputStream.writeUTF(errorMessage);
+            objectOutputStream.flush();
+            clientSocket.shutdownOutput();
         }
     }
 }
