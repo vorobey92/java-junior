@@ -3,7 +3,18 @@ package com.acme.edu.commands;
 import com.acme.edu.decorators.DecoratorFactory;
 import com.acme.edu.writers.LogWriter;
 
+/**
+ * An CommandFactory implementation
+ */
 public class CommandFactoryImpl implements CommandFactory {
+
+    /**
+     * Creates a new instance of a Command using the passed message and LogWriters. The created Command
+     * is specific to the message's class. The created Command contains the passed message.
+     * @param message the message for which a Command is created
+     * @param logWriters an array of LogWriters which will be used for writing a message
+     * @return the Command object
+     */
     @Override
     public Command createCommand(Object message, LogWriter... logWriters) {
         DecoratorFactory decoratorFactory = new DecoratorFactory();
