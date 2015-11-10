@@ -28,7 +28,9 @@ public class LogServer {
     private static final PrintStream ERR = System.err;
     private static final int NUMBER_OF_THREADS = 5;
 
+    private final Object fileMonitor = new Object();
     private Executor executor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
+
     private int port;
     private FileBufferWriterFactory fileBufferWriterFactory;
 
@@ -48,7 +50,7 @@ public class LogServer {
             while (true) {
                 try {
                     Socket clientSocket = serverSocket.accept();
-                    executor.execute(new Handler(clientSocket, fileBufferWriterFactory.createBufferWriter()));
+                    executor.execute(new RequestHandler(clientSocket, fileBufferWriterFactory.createBufferWriter()));
                 } catch (IOException e) {
                     ERR.println(new Date());
                     e.printStackTrace();
@@ -70,11 +72,11 @@ public class LogServer {
         clientSocket.shutdownOutput();
     }
 
-    private static class Handler implements Runnable {
+    private class RequestHandler implements Runnable {
         private Socket clientSocket;
         private BufferWriter bufferWriter;
 
-        private Handler(Socket clientSocket, BufferWriter bufferWriter) {
+        private RequestHandler(Socket clientSocket, BufferWriter bufferWriter) {
             this.clientSocket = clientSocket;
             this.bufferWriter = bufferWriter;
         }
@@ -110,7 +112,9 @@ public class LogServer {
                 }
 
                 try {
-                    bufferWriter.writeBuffer(messages);
+                    synchronized (fileMonitor) {
+                        bufferWriter.writeBuffer(messages);
+                    }
                     objectOutputStream.writeInt(OK);
                     objectOutputStream.flush();
                     clientSocket.shutdownOutput();
