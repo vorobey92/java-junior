@@ -24,44 +24,28 @@ public class Server extends Thread {
 
     @Override
     public void run() {
-        ServerSocket ss = null;
-        try {
-             ss = new ServerSocket(port);
-        } catch (IOException e) {
-            try {
-                if (ss != null) {
-                    ss.close();
-                }
-            } catch (IOException e1) {
-                throw new RuntimeException(e);
-            }
-        }
-        System.out.println("Server starter!");
-        try {
+        try(
+                ServerSocket ss = new ServerSocket(port)
+        ) {
             while (true) {
                 Socket client = ss.accept();
                 try {
                     new ServeClient(client);
                 } catch (IOException e) {
+                    System.err.print(e);
                     if (client != null){
                         try{
                             client.close();
                         }catch (IOException e1){
-                            throw new RuntimeException(e1);
+                            System.err.print(e1);
                         }
                     }
                 }
             }
         } catch (PrintException e) {
-            throw new RuntimeException(e);
+            System.err.print(e);
         } catch (IOException e) {
-            throw new RuntimeException(e);
-        } finally {
-            try {
-                ss.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            System.err.print(e);
         }
     }
 }
@@ -90,16 +74,15 @@ class ServeClient extends Thread {
                 }
                 if (readLine != null) {
                     pr.println(Thread.currentThread().getName() + " MESSAGE: " + readLine);
-                    System.out.println(Thread.currentThread().getName() + " MESSAGE: " + readLine);
                 }
             }
-        } catch (IOException e) {
-            System.err.println(e);
-        } catch (PrintException e) {
+        } catch (IOException | PrintException e) {
             System.err.println(e);
         } finally {
             try {
-                socket.close();
+                if (socket != null) {
+                    socket.close();
+                }
             } catch (IOException e) {
                 System.err.print(e);
             }
