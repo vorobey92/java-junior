@@ -4,6 +4,7 @@ import com.acme.edu.businessexceptions.LoggerException;
 import com.acme.edu.clientserver.LogServer;
 import com.acme.edu.printers.BufferWriter;
 import com.acme.edu.printers.FileBufferWriter;
+import com.acme.edu.printers.FileBufferWriterFactory;
 import com.acme.edu.printers.LogWriterException;
 import com.acme.edu.printers.RemoteBufferWriter;
 import org.apache.commons.io.FileUtils;
@@ -39,7 +40,7 @@ public class RemoteBufferWriterLogServerTest {
 
     @Test
     public void remoteBufferWriterInMainThreadSmokeTest() throws LoggerException, InterruptedException, LogWriterException, IOException {
-        BufferWriter bufferWriter = new FileBufferWriter(getFileName(), charset);
+        FileBufferWriterFactory bufferWriter = new FileBufferWriterFactory(getFileName(), charset);
         LogServer server = new LogServer(port, bufferWriter);
         RemoteBufferWriter client = new RemoteBufferWriter(localhost, port);
 
