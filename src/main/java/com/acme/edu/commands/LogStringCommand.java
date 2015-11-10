@@ -4,6 +4,13 @@ import com.acme.edu.businessexceptions.LoggingException;
 import com.acme.edu.decorators.Decorator;
 import com.acme.edu.printers.LogWriter;
 
+/**
+ * LogIntegerCommand is subclass of AccumulatingCommand and implements behaviour of accumulating of
+ * integral-type messages with bounds checking. If this command mergers with another command of LogIntegerCommand
+ * class, this command is returned with a new message which is equal sum of the message of this command and the
+ * message of another command. If the new message may come out of bounds, another command and this command are
+ * executed respectively instead of addition of their messages and this command is returned.
+ */
 public class LogStringCommand extends AccumulatingCommand {
     private int lengthOfStringsSequence;
     private Decorator oneStringSequenceDecorator;
@@ -13,7 +20,7 @@ public class LogStringCommand extends AccumulatingCommand {
                             Decorator mulitpleStringSequenceDecorator,
                             LogWriter... logWriters) {
         super(logWriters);
-        setLengthOfStringsSequence(0);
+        this.lengthOfStringsSequence = 0;
         this.oneStringSequenceDecorator = oneStringSequenceDecorator;
         this.mulitpleStringSequenceDecorator = mulitpleStringSequenceDecorator;
     }
@@ -23,19 +30,15 @@ public class LogStringCommand extends AccumulatingCommand {
         super.setMessage(message);
 
         if (getMessage() == null) {
-            setLengthOfStringsSequence(0);
+            lengthOfStringsSequence = 0;
             return;
         }
 
-        setLengthOfStringsSequence(1);
+        lengthOfStringsSequence = 1;
     }
 
     public int getLengthOfStringsSequence() {
         return lengthOfStringsSequence;
-    }
-
-    public void setLengthOfStringsSequence(int lengthOfStringsSequence) {
-        this.lengthOfStringsSequence = lengthOfStringsSequence;
     }
 
     @Override
@@ -51,7 +54,7 @@ public class LogStringCommand extends AccumulatingCommand {
     protected Command mergeWithCommandOfSameClass(Command oldCommand) throws LoggingException {
         LogStringCommand logStringCommand = (LogStringCommand) oldCommand;
         if (getMessage().equals(logStringCommand.getMessage())) {
-            setLengthOfStringsSequence(getLengthOfStringsSequence() + logStringCommand.getLengthOfStringsSequence());
+            lengthOfStringsSequence = getLengthOfStringsSequence() + logStringCommand.getLengthOfStringsSequence();
         } else {
             logStringCommand.execute();
         }

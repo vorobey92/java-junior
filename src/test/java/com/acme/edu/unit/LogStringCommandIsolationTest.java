@@ -7,6 +7,7 @@ import com.acme.edu.printers.LogWriter;
 import com.acme.edu.printers.LogWriterException;
 import org.junit.Before;
 import org.junit.Test;
+import sun.rmi.runtime.Log;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Matchers.any;
@@ -48,9 +49,13 @@ public class LogStringCommandIsolationTest {
     public void shouldLogWhenAccumulatedNumberIsTwo() throws LogWriterException, LoggingException {
         when(stubOneStringSequenceDecorator.decorate(message, 2)).thenReturn(oneStringSequenceDecoratedString);
         when(stubMultipleStringSequenceDecorator.decorate(message, 2)).thenReturn(multipleStringsSequenceDecoratedString);
+        LogStringCommand stubLogStringCommand = mock(LogStringCommand.class);
+
+        when(stubLogStringCommand.getMessage()).thenReturn(message);
+        when(stubLogStringCommand.getLengthOfStringsSequence()).thenReturn(1);
 
         sut.setMessage(message);
-        sut.setLengthOfStringsSequence(2);
+        sut.merge(stubLogStringCommand);
         sut.execute();
 
         verify(mockLogWriter, times(1)).writeLine(multipleStringsSequenceDecoratedString);
