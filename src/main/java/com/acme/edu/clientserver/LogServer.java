@@ -26,7 +26,7 @@ public class LogServer {
     private static final int INTERNAL_SERVER_ERROR = 500;
 
     private static final PrintStream ERR = System.err;
-    public static final int NUMBER_OF_THREADS = 5;
+    private static final int NUMBER_OF_THREADS = 5;
 
     private Executor executor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
     private int port;
