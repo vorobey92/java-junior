@@ -19,8 +19,8 @@ public class OutputStreamPrinter implements Printable {
     private static final int CAPACITY_OF_BUFFER = 50;
     private List<String> buffer = new LinkedList<>();
     private File file;
-    private Socket socket;
-//    private OutputStream outputStream;
+    private String host;
+    private int port;
     private Class outputStreamHelper;
     private boolean bufferization;
     //CharSet by default for sending to server
@@ -51,13 +51,9 @@ public class OutputStreamPrinter implements Printable {
      * @throws PrintException
      */
     public OutputStreamPrinter(String host, int port, boolean bufferization) throws PrintException {
-//        try {
-//            socket = new Socket(host, port);
-//            outputStreamHelper = socket.getOutputStream().getClass();
-            this.bufferization = bufferization;
-//        } catch (IOException e) {
-//            throw new PrintException("Socket problem",e);
-//        }
+        this.host = host;
+        this.port = port;
+        this.bufferization = bufferization;
     }
 
     /**
@@ -73,19 +69,17 @@ public class OutputStreamPrinter implements Printable {
             if (buffer.size() < CAPACITY_OF_BUFFER) {
                 buffer.add(message);
             } else {
-                buffer.sort(new Comparator<String>() {
-                    @Override
-                    public int compare(String o1, String o2) {
-                        if ( (o1.contains("ERROR")) && (!o2.contains("ERROR")) ) {
-                            return 1;
-                        } else if ( (!o1.contains("ERROR")) && (o2.contains("ERROR")) ) {
-                            return -1;
-                        } else {
-                            return o1.compareTo(o2);
-                        }
+                buffer.sort((o1, o2) -> {
+                    if ( (o1.contains("ERROR")) && (!o2.contains("ERROR")) ) {
+                        return 1;
+                    } else if ( (!o1.contains("ERROR")) && (o2.contains("ERROR")) ) {
+                        return -1;
+                    } else {
+                        return o1.compareTo(o2);
                     }
                 });
                 ourBufferFlush( buffer.toArray(new String[50]));
+                buffer.clear();
             }
 
         } else {
@@ -120,7 +114,7 @@ public class OutputStreamPrinter implements Printable {
             }
         } else {
             try (
-                    Socket socket = new Socket("localhost", 6666);
+                    Socket socket = new Socket(host, port);
                     BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()))
             ) {
                 for (String s : messages) {

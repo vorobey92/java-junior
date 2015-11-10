@@ -15,10 +15,11 @@ public class ClientServerTest {
     @Ignore
     public void testtesttest() throws PrintException {
 
-        Printable net = new OutputStreamPrinter("localhost", 6666, false);
+        Printable net = new OutputStreamPrinter("localhost", 6666, true);
 
-//        for(int i = 0; i < 51; i++)
-            net.print("STOP");
+        while (true) {
+            net.print("1");
+        }
 
     }
 }

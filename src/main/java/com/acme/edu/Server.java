@@ -6,6 +6,8 @@ import com.acme.edu.printer.OutputStreamPrinter;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * Server. Writes logs into file.
@@ -24,27 +26,38 @@ public class Server {
      */
     public static void main(String[] args) throws PrintException, IOException {
 
-        try {
-            ServerSocket ss = new ServerSocket(6666);
-            while (true) {
-                Socket client = ss.accept();
+        ServerSocket ss = new ServerSocket(6666);
 
-                BufferedReader is = new BufferedReader(new InputStreamReader(client.getInputStream()));
+        Executor pool = Executors.newFixedThreadPool(3);
 
-                OutputStreamPrinter pr = new OutputStreamPrinter(new File("ServerLog.txt"), "UTF-8", false);
+        while (true) {
+            Socket client = ss.accept();
+            pool.execute(new Runnable() {
+                @Override
+                public void run() {
+                    try (
+                            BufferedReader is = new BufferedReader(new InputStreamReader(client.getInputStream()));
+                    ) {
 
-                String readLine;
-                while ((readLine = is.readLine()) != null) {
-                    if ("STOP".equals(readLine)) {
-                        System.out.println("Sry, we are closing");
-                        System.exit(0);
+                        OutputStreamPrinter pr = new OutputStreamPrinter(new File("ServerLog.txt"), "UTF-8", false);
+
+                        String readLine;
+//                        while ((readLine = is.readLine()) != null) {
+//                            if ("STOP".equals(readLine)) {
+//                                System.out.println("Sry, we are closing");
+//                                System.exit(0);
+//                            }
+                            readLine = is.readLine();
+                            pr.println(Thread.currentThread().getName().toString() + "MESSAGE: " + readLine);
+//                        }
+                    } catch (PrintException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                    pr.println(readLine);
-                    System.out.println(">>>>>" + readLine);
-
                 }
+            });
+        }
 
-            }
-        }catch (Exception e){}
     }
 }
