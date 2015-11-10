@@ -17,6 +17,7 @@ import java.util.List;
 public class OutputStreamPrinter implements Printable {
 
     private static final int CAPACITY_OF_BUFFER = 50;
+    public static final String ERR_MESSAGE = "ERROR";
     private List<String> buffer = new LinkedList<>();
     private File file;
     private String host;
@@ -69,13 +70,16 @@ public class OutputStreamPrinter implements Printable {
             if (buffer.size() < CAPACITY_OF_BUFFER) {
                 buffer.add(message);
             } else {
-                buffer.sort((o1, o2) -> {
-                    if ( (o1.contains("ERROR")) && (!o2.contains("ERROR")) ) {
-                        return 1;
-                    } else if ( (!o1.contains("ERROR")) && (o2.contains("ERROR")) ) {
-                        return -1;
-                    } else {
-                        return o1.compareTo(o2);
+                buffer.sort(new Comparator<String>() {
+                    @Override
+                    public int compare(String o1, String o2) {
+                        if ((o1.indexOf(ERR_MESSAGE) > 0) && (o2.indexOf(ERR_MESSAGE) < 0)) {
+                            return 1;
+                        } else if ((o1.indexOf(ERR_MESSAGE) < 0) && (o2.indexOf(ERR_MESSAGE) > 0)) {
+                            return -1;
+                        } else {
+                            return o1.compareTo(o2);
+                        }
                     }
                 });
                 ourBufferFlush( buffer.toArray(new String[50]));

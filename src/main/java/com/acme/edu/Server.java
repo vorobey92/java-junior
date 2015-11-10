@@ -2,62 +2,109 @@ package com.acme.edu;
 
 import com.acme.edu.exception.PrintException;
 import com.acme.edu.printer.OutputStreamPrinter;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
+
 
 /**
  * Server. Writes logs into file.
  */
-public class Server {
+public class Server extends Thread {
 
-    private Server() {
-
-    }
+    private int port;
 
     /**
-     * Starts a server
-     *
-     * @param args
-     * @throws PrintException
+     * @param port
      */
-    public static void main(String[] args) throws PrintException, IOException {
+    public Server(int port) {
+        this.port = port;
+        start();
+    }
 
-        ServerSocket ss = new ServerSocket(6666);
-
-        Executor pool = Executors.newFixedThreadPool(3);
-
-        while (true) {
-            Socket client = ss.accept();
-            pool.execute(new Runnable() {
-                @Override
-                public void run() {
-                    try (
-                            BufferedReader is = new BufferedReader(new InputStreamReader(client.getInputStream()));
-                    ) {
-
-                        OutputStreamPrinter pr = new OutputStreamPrinter(new File("ServerLog.txt"), "UTF-8", false);
-
-                        String readLine;
-//                        while ((readLine = is.readLine()) != null) {
-//                            if ("STOP".equals(readLine)) {
-//                                System.out.println("Sry, we are closing");
-//                                System.exit(0);
-//                            }
-                            readLine = is.readLine();
-                            pr.println(Thread.currentThread().getName().toString() + "MESSAGE: " + readLine);
-//                        }
-                    } catch (PrintException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+    @Override
+    public void run() {
+        ServerSocket ss = null;
+        try {
+             ss = new ServerSocket(port);
+        } catch (IOException e) {
+            try {
+                if (ss != null) {
+                    ss.close();
+                }
+            } catch (IOException e1) {
+                throw new RuntimeException(e);
+            }
+        }
+        System.out.println("Server starter!");
+        try {
+            while (true) {
+                Socket client = ss.accept();
+                try {
+                    new ServeClient(client);
+                } catch (IOException e) {
+                    if (client != null){
+                        try{
+                            client.close();
+                        }catch (IOException e1){
+                            throw new RuntimeException(e1);
+                        }
                     }
                 }
-            });
+            }
+        } catch (PrintException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                ss.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
-
     }
 }
+
+
+class ServeClient extends Thread {
+    private Socket socket;
+    private BufferedReader in;
+    private OutputStreamPrinter pr;
+
+
+    public ServeClient(Socket s) throws PrintException, IOException {
+        socket = s;
+        in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+        pr = new OutputStreamPrinter(new File("ServerLog.txt"), "UTF-8", false);
+        start();
+    }
+
+    @Override
+    public void run() {
+        try {
+            while (true) {
+                String readLine = in.readLine();
+                if ("STOP".equals(readLine)) {
+                    break;
+                }
+                if (readLine != null) {
+                    pr.println(Thread.currentThread().getName() + " MESSAGE: " + readLine);
+                    System.out.println(Thread.currentThread().getName() + " MESSAGE: " + readLine);
+                }
+            }
+        } catch (IOException e) {
+            System.err.println(e);
+        } catch (PrintException e) {
+            System.err.println(e);
+        } finally {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                System.err.print(e);
+            }
+        }
+    }
+}
+
+

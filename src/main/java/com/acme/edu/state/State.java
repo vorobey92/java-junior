@@ -1,6 +1,6 @@
 package com.acme.edu.state;
 
-import com.acme.edu.exception.LogException;
+
 import com.acme.edu.exception.PrintException;
 import com.acme.edu.printer.Printable;
 
