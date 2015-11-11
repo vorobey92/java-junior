@@ -9,14 +9,16 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class LogServer {
     private static final int TIMEOUT = 5000;
@@ -25,23 +27,25 @@ public class LogServer {
     private static final int REQUEST_TIMEOUT = 408;
     private static final int INTERNAL_SERVER_ERROR = 500;
 
-    private static final PrintStream ERR = System.err;
     private static final int NUMBER_OF_THREADS = 5;
+    private static final String LOG_FILE = "server-log.txt";
 
     private final Object fileMonitor = new Object();
     private Executor executor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
+    private Logger logger = null;
 
     private int port;
     private FileBufferWriterFactory fileBufferWriterFactory;
 
-    public LogServer(int port, FileBufferWriterFactory fileBufferWriterFactory) {
+    public LogServer(int port, FileBufferWriterFactory fileBufferWriterFactory) throws IOException {
         this.port = port;
         this.fileBufferWriterFactory = fileBufferWriterFactory;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         LogServer server =
                 new LogServer(Integer.parseInt(args[0]), new FileBufferWriterFactory(args[1], args[2]));
+        server.activateLogging();
         server.start();
     }
 
@@ -52,15 +56,39 @@ public class LogServer {
                     Socket clientSocket = serverSocket.accept();
                     executor.execute(new RequestHandler(clientSocket, fileBufferWriterFactory.createBufferWriter()));
                 } catch (IOException e) {
-                    ERR.println(new Date());
-                    e.printStackTrace();
-                    ERR.println();
+                    logExceptionMessage("Cannot accept an incoming connection", e);
                 }
             }
         } catch (IOException e) {
-            ERR.println("The server failed to start:\r\n" + e.getMessage());
-            System.exit(1);
+            String message = "The server failed to start:";
+            RuntimeException runtimeException = new RuntimeException(message);
+            runtimeException.initCause(e);
+            logExceptionMessage(message, e);
+            throw runtimeException;
         }
+    }
+
+    public void activateLogging() throws IOException {
+        logger = Logger.getLogger("server-log");
+        FileHandler fileHandler = new FileHandler(LOG_FILE);
+        fileHandler.setFormatter(new SimpleFormatter());
+        logger.addHandler(fileHandler);
+    }
+
+    private void logExceptionMessage(String message, Exception e) {
+        if (logger != null) {
+            logger.log(Level.WARNING, message + ": " + e.getMessage());
+        }
+    }
+
+    private void logExceptionMessageAndSendDataToClient(
+            String message, Exception e, int statusCode, ObjectOutputStream objectOutputStream, Socket clientSocket
+    ) throws IOException {
+        logExceptionMessage(message, e);
+        objectOutputStream.writeInt(statusCode);
+        objectOutputStream.writeUTF(message);
+        objectOutputStream.flush();
+        clientSocket.shutdownOutput();
     }
 
     private class RequestHandler implements Runnable {
@@ -85,20 +113,21 @@ public class LogServer {
                     messages = (List<String>) objectInputStream.readObject();
                     clientSocket.shutdownInput();
                 } catch (SocketTimeoutException e) {
-                    writeDataAndShutdownOutputStream(
-                            REQUEST_TIMEOUT,
+                    logExceptionMessageAndSendDataToClient(
                             "The server timed out waiting for the request",
+                            e,
+                            REQUEST_TIMEOUT,
                             objectOutputStream,
                             clientSocket
                     );
                     return;
                 } catch (ClassNotFoundException | IOException e) {
-                    writeDataAndShutdownOutputStream(
-                            BAD_REQUEST,
+                    logExceptionMessageAndSendDataToClient(
                             "The communication protocol was violated: the server received unexpected data types",
+                            e,
+                            BAD_REQUEST,
                             objectOutputStream,
-                            clientSocket
-                    );
+                            clientSocket);
                     return;
                 }
 
@@ -110,27 +139,13 @@ public class LogServer {
                     objectOutputStream.flush();
                     clientSocket.shutdownOutput();
                 } catch (LogWriterException e) {
-                    writeDataAndShutdownOutputStream(
-                            INTERNAL_SERVER_ERROR,
-                            e.getMessage(),
-                            objectOutputStream,
-                            clientSocket
+                    logExceptionMessageAndSendDataToClient(
+                            "Cannot write to file", e, INTERNAL_SERVER_ERROR, objectOutputStream, clientSocket
                     );
                 }
             } catch (IOException e) {
-                ERR.println(new Date());
-                e.printStackTrace();
-                ERR.println();
+                logExceptionMessage("An exceptional situation occured", e);
             }
-        }
-
-        private void writeDataAndShutdownOutputStream(
-                int statusCode, String errorMessage, ObjectOutputStream objectOutputStream, Socket clientSocket
-        ) throws IOException {
-            objectOutputStream.writeInt(statusCode);
-            objectOutputStream.writeUTF(errorMessage);
-            objectOutputStream.flush();
-            clientSocket.shutdownOutput();
         }
     }
 }
