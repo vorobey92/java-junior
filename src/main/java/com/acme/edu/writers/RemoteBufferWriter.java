@@ -9,6 +9,10 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.List;
 
+/**
+ * RemoteBufferWriter is an implementation of BufferWriter and can be used to send a List of messages
+ * to a remote LogServer.
+ */
 public class RemoteBufferWriter implements BufferWriter {
     private static final int OK = 200;
     private static final int BAD_REQUEST = 400;
@@ -19,11 +23,21 @@ public class RemoteBufferWriter implements BufferWriter {
     private String host;
     private int port;
 
+    /**
+     * Constructs a new RemoteBufferWriter.
+     * @param host the host on which the LogServer runs
+     * @param port the port number on which the LogServer runs
+     */
     public RemoteBufferWriter(String host, int port) {
         this.host = host;
         this.port = port;
     }
 
+    /**
+     * Sends a List of strings to the LogServer.
+     * @param buffer a list of messages which is to be sent by the RemoteBufferWriter
+     * @throws LogWriterException if an error occurs when writing the message to a log
+     */
     @Override
     public void writeBuffer(List<String> buffer) throws LogWriterException {
         try (Socket socket = new Socket(host, port)) {
