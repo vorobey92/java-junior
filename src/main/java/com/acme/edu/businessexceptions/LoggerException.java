@@ -1,5 +1,6 @@
 package com.acme.edu.businessexceptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  */
 public class LoggerException extends Exception {
 
-    private List<Exception> causes;
+    private ArrayList<Exception> causes;
 
     /**
      * Constructs a new exception with the specified detail message.
@@ -25,20 +26,17 @@ public class LoggerException extends Exception {
      */
     public LoggerException(String message, List<Exception> causes) {
         super(message);
-        this.causes = causes;
+        this.causes = new ArrayList<>(causes);
     }
 
     /**
      * @return the array of causes of this exception
      */
-    public Exception[] getCauses() {
+    public List<Exception> getCauses() {
         if (causes == null) {
-            return new Exception[0];
+            return new ArrayList<>();
         }
 
-        Exception[] exceptions = new Exception[causes.size()];
-        causes.toArray(exceptions);
-
-        return exceptions;
+        return new ArrayList<>(causes);
     }
 }
