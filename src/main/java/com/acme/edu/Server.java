@@ -24,28 +24,15 @@ public class Server extends Thread {
 
     @Override
     public void run() {
-        Socket client = null;
         try(
                 ServerSocket ss = new ServerSocket(port)
         ) {
             while (true) {
-                client = ss.accept();
+                Socket client = ss.accept();
                 new ServeClient(client);
             }
-        } catch (IOException e) {
-            socketCloser(client);
-        } catch (PrintException e) {
+        } catch (IOException | PrintException e) {
             System.err.println(e);
-        }
-    }
-
-    static void socketCloser(Socket socket) {
-        if (socket != null) {
-            try {
-                socket.close();
-            } catch (IOException e1) {
-                System.err.print(e1);
-            }
         }
     }
 }
@@ -53,20 +40,19 @@ public class Server extends Thread {
 
 class ServeClient extends Thread {
     private Socket socket;
-    private BufferedReader in;
-    private OutputStreamPrinter pr;
+    private OutputStreamPrinter pr = new OutputStreamPrinter(new File("ServerLog.txt"), "UTF-8", false);;
 
 
     public ServeClient(Socket s) throws PrintException, IOException {
         socket = s;
-        in = new BufferedReader(new InputStreamReader(s.getInputStream()));
-        pr = new OutputStreamPrinter(new File("ServerLog.txt"), "UTF-8", false);
         start();
     }
 
     @Override
     public void run() {
-        try {
+        try (
+             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))
+        ) {
             while (true) {
                 String readLine = in.readLine();
                 if ("STOP".equals(readLine)) {
@@ -78,11 +64,8 @@ class ServeClient extends Thread {
             }
         } catch (IOException | PrintException e) {
             System.err.println(e);
-        } finally {
-            Server.socketCloser(socket);
         }
     }
-
 }
 
 
