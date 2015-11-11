@@ -11,8 +11,8 @@ import java.net.Socket;
  * Server. Writes logs into file.
  */
 public class Server extends Thread {
-
     private int port;
+
 
     /**
      * @param port
@@ -24,28 +24,28 @@ public class Server extends Thread {
 
     @Override
     public void run() {
+        Socket client = null;
         try(
                 ServerSocket ss = new ServerSocket(port)
         ) {
             while (true) {
-                Socket client = ss.accept();
-                try {
-                    new ServeClient(client);
-                } catch (IOException e) {
-                    System.err.print(e);
-                    if (client != null){
-                        try{
-                            client.close();
-                        }catch (IOException e1){
-                            System.err.print(e1);
-                        }
-                    }
-                }
+                client = ss.accept();
+                new ServeClient(client);
             }
-        } catch (PrintException e) {
-            System.err.print(e);
         } catch (IOException e) {
-            System.err.print(e);
+            socketCloser(client);
+        } catch (PrintException e) {
+            System.err.println(e);
+        }
+    }
+
+    static void socketCloser(Socket socket) {
+        if (socket != null) {
+            try {
+                socket.close();
+            } catch (IOException e1) {
+                System.err.print(e1);
+            }
         }
     }
 }
@@ -79,15 +79,10 @@ class ServeClient extends Thread {
         } catch (IOException | PrintException e) {
             System.err.println(e);
         } finally {
-            try {
-                if (socket != null) {
-                    socket.close();
-                }
-            } catch (IOException e) {
-                System.err.print(e);
-            }
+            Server.socketCloser(socket);
         }
     }
+
 }
 
 

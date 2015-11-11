@@ -7,6 +7,8 @@ import com.acme.edu.printer.Printable;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.io.File;
+
 /**
  *
  */
@@ -29,6 +31,8 @@ public class ClientServerTest {
         }
         Thread.sleep(1000);
         net.println("STOP");
+
+        new File("ServerLog").delete();
     }
 
 }
